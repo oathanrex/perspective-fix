@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <!-- Primary SEO -->
     <title>PerspectiveFix – Free Online Perspective Image Correction Tool</title>
-    <meta name="description"
-        content="PerspectiveFix is a free online perspective correction tool. Fix skewed documents, photos, book pages, whiteboards, and scanned images directly in your browser. No upload. No watermark.">
+    <meta name="description" content="PerspectiveFix is a free online perspective correction tool. Fix skewed documents, photos, book pages, whiteboards, and scanned images directly in your browser. No upload. No watermark.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://oathanrex.github.io/perspective-fix/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="PerspectiveFix – Free Online Perspective Image Correction Tool">
-    <meta property="og:description"
-        content="Fix skewed images and documents online with PerspectiveFix. 100% browser-based, private, and watermark-free.">
+    <meta property="og:description" content="Fix skewed images and documents online with PerspectiveFix. 100% browser-based, private, and watermark-free.">
     <meta property="og:url" content="https://oathanrex.github.io/perspective-fix/">
     <meta property="og:image" content="https://oathanrex.github.io/perspective-fix/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -24,20 +22,38 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PerspectiveFix – Free Perspective Correction Tool">
-    <meta name="twitter:description"
-        content="Correct perspective distortion in images online. No download. No watermark.">
+    <meta name="twitter:description" content="Correct perspective distortion in images online. No download. No watermark.">
     <meta name="twitter:image" content="https://oathanrex.github.io/perspective-fix/og-image.png">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" href="favicon-512.png">
     <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
 
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PerspectiveFix",
+      "applicationCategory": "ImageEditingApplication",
+      "operatingSystem": "Any",
+      "url": "https://oathanrex.github.io/perspective-fix/",
+      "description": "Free online perspective image correction tool to fix skewed photos, documents, book pages, and scans directly in your browser.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         * {
             box-sizing: border-box;
         }
-
+        
         :root {
             --primary: #059669;
             --primary-hover: #047857;
@@ -45,7 +61,7 @@
             --primary-light: #d1fae5;
             --accent: #0d9488;
         }
-
+        
         .corner-handle {
             width: 24px;
             height: 24px;
@@ -55,97 +71,96 @@
             position: absolute;
             cursor: grab;
             transform: translate(-50%, -50%);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             z-index: 100;
             transition: transform 0.1s, background 0.1s;
         }
-
+        
         .corner-handle:hover {
             background: var(--primary-hover);
             transform: translate(-50%, -50%) scale(1.2);
         }
-
+        
         .corner-handle:active {
             cursor: grabbing;
             background: var(--primary-dark);
         }
-
+        
         .corner-handle::after {
             content: attr(data-label);
             position: absolute;
             top: -24px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.8);
             color: white;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 10px;
             white-space: nowrap;
         }
-
+        
         .drop-zone {
             border: 3px dashed #cbd5e1;
             transition: all 0.3s;
         }
-
+        
         .drop-zone:hover {
             border-color: var(--primary);
         }
-
+        
         .drop-zone.drag-over {
             border-color: var(--primary);
             background: var(--primary-light);
         }
-
+        
         .canvas-container {
             position: relative;
             display: inline-block;
         }
-
-        #mainCanvas,
-        #previewCanvas {
+        
+        #mainCanvas, #previewCanvas {
             max-width: 100%;
             max-height: 60vh;
         }
-
+        
         .grid-overlay {
             position: absolute;
             top: 0;
             left: 0;
             pointer-events: none;
         }
-
+        
         .quad-overlay {
             position: absolute;
             top: 0;
             left: 0;
             pointer-events: none;
         }
-
+        
         .tab-btn.active {
             background: var(--primary);
             color: white;
         }
-
+        
         .compare-container {
             position: relative;
             display: inline-block;
             line-height: 0;
             overflow: hidden;
         }
-
+        
         .compare-after {
             display: block;
         }
-
+        
         .compare-before {
             position: absolute;
             top: 0;
             left: 0;
             pointer-events: none;
         }
-
+        
         .slider-container {
             position: absolute;
             left: 50%;
@@ -155,10 +170,10 @@
             background: white;
             cursor: ew-resize;
             transform: translateX(-50%);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
             z-index: 20;
         }
-
+        
         .slider-handle {
             position: absolute;
             top: 50%;
@@ -171,14 +186,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-
+        
         .compare-label {
             position: absolute;
             bottom: 10px;
             padding: 4px 12px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             color: white;
             font-size: 12px;
             font-weight: 500;
@@ -186,32 +201,32 @@
             pointer-events: none;
             z-index: 10;
         }
-
+        
         .compare-label.before {
             left: 10px;
         }
-
+        
         .compare-label.after {
             right: 10px;
         }
-
+        
         .btn-primary {
             background: var(--primary);
             color: white;
         }
-
+        
         .btn-primary:hover {
             background: var(--primary-hover);
         }
-
+        
         .icon-box {
             background: var(--primary-light);
         }
-
+        
         .icon-box svg {
             color: var(--primary);
         }
-
+        
         .use-case-icon {
             width: 48px;
             height: 48px;
@@ -222,13 +237,13 @@
             justify-content: center;
             margin: 0 auto 12px;
         }
-
+        
         .use-case-icon svg {
             width: 24px;
             height: 24px;
             stroke: var(--primary);
         }
-
+        
         @media (max-width: 768px) {
             .corner-handle {
                 width: 32px;
@@ -236,35 +251,15 @@
             }
         }
     </style>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "PerspectiveFix",
-  "applicationCategory": "ImageEditingApplication",
-  "operatingSystem": "Any",
-  "url": "https://oathanrex.github.io/perspective-fix/",
-  "description": "Free online perspective image correction tool to fix skewed photos, documents, book pages, and scans directly in your browser.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
-
 </head>
-
 <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
     <header class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div
-                    class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                 </div>
                 <div>
@@ -273,8 +268,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <a href="#how-it-works" class="text-sm text-gray-600 hover:text-emerald-600 hidden sm:block">How it
-                    works</a>
+                <a href="#how-it-works" class="text-sm text-gray-600 hover:text-emerald-600 hidden sm:block">How it works</a>
             </div>
         </div>
     </header>
@@ -283,11 +277,9 @@
     <main class="max-w-7xl mx-auto px-4 py-6">
         <!-- Hero Section (shown when no image) -->
         <section id="heroSection" class="text-center mb-8">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Free Online Perspective Image Correction Tool
-            </h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Free Online Perspective Image Correction Tool</h2>
             <p class="text-lg text-gray-600 mb-2">Transform distorted images into perfect rectangles in seconds.</p>
-            <p class="text-sm text-gray-500 max-w-2xl mx-auto">Fix skewed documents, architectural photos, book pages,
-                whiteboards, and more. No downloads. No watermark. Your images never leave your device.</p>
+            <p class="text-sm text-gray-500 max-w-2xl mx-auto">Fix skewed documents, architectural photos, book pages, whiteboards, and more. No downloads. No watermark. Your images never leave your device.</p>
         </section>
 
         <!-- Upload Zone -->
@@ -296,8 +288,7 @@
             <div class="flex flex-col items-center">
                 <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
                     <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                     </svg>
                 </div>
                 <p class="text-lg font-medium text-gray-700 mb-1">Drop your image here or click to upload</p>
@@ -311,56 +302,44 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-4">
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
-                        <button id="uploadNewBtn"
-                            class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <button id="uploadNewBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                             </svg>
                             New Image
                         </button>
-                        <button id="resetBtn"
-                            class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <button id="resetBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
                             Reset Points
                         </button>
                     </div>
                     <div class="flex items-center gap-2">
                         <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                            <input type="checkbox" id="gridToggle"
-                                class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
+                            <input type="checkbox" id="gridToggle" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
                             Show Grid
                         </label>
                         <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                            <input type="checkbox" id="livePreviewToggle" checked
-                                class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
+                            <input type="checkbox" id="livePreviewToggle" checked class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
                             Live Preview
                         </label>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button id="zoomOutBtn" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-                            title="Zoom Out">
+                        <button id="zoomOutBtn" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" title="Zoom Out">
                             <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/>
                             </svg>
                         </button>
                         <span id="zoomLevel" class="text-sm text-gray-600 min-w-[50px] text-center">100%</span>
-                        <button id="zoomInBtn" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-                            title="Zoom In">
+                        <button id="zoomInBtn" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" title="Zoom In">
                             <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
                             </svg>
                         </button>
-                        <button id="zoomFitBtn" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-                            title="Fit to Screen">
+                        <button id="zoomFitBtn" class="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors" title="Fit to Screen">
                             <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                             </svg>
                         </button>
                     </div>
@@ -389,10 +368,8 @@
                     <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 flex items-center justify-between">
                         <h3 class="font-medium text-gray-700">Corrected Preview</h3>
                         <div class="flex gap-1">
-                            <button id="tabSideBySide" class="tab-btn px-3 py-1 text-xs rounded-md active">Side by
-                                Side</button>
-                            <button id="tabCompare"
-                                class="tab-btn px-3 py-1 text-xs rounded-md bg-gray-200 hover:bg-gray-300">Compare</button>
+                            <button id="tabSideBySide" class="tab-btn px-3 py-1 text-xs rounded-md active">Side by Side</button>
+                            <button id="tabCompare" class="tab-btn px-3 py-1 text-xs rounded-md bg-gray-200 hover:bg-gray-300">Compare</button>
                         </div>
                     </div>
                     <div class="p-4 overflow-auto" id="previewContainer" style="max-height: 65vh;">
@@ -407,10 +384,8 @@
                                 <span class="compare-label after">Corrected</span>
                                 <div id="compareSlider" class="slider-container">
                                     <div class="slider-handle">
-                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
                                         </svg>
                                     </div>
                                 </div>
@@ -425,33 +400,27 @@
                 <div class="flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <label class="text-sm text-gray-600">Output Format:</label>
-                        <select id="formatSelect"
-                            class="rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <select id="formatSelect" class="rounded-lg border-gray-300 text-sm focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="png">PNG (Lossless)</option>
                             <option value="jpeg">JPEG (Smaller)</option>
                             <option value="webp">WebP (Modern)</option>
                         </select>
                         <div id="qualityContainer" class="hidden items-center gap-2">
                             <label class="text-sm text-gray-600">Quality:</label>
-                            <input type="range" id="qualitySlider" min="10" max="100" value="92"
-                                class="w-24 accent-emerald-600">
+                            <input type="range" id="qualitySlider" min="10" max="100" value="92" class="w-24 accent-emerald-600">
                             <span id="qualityValue" class="text-sm text-gray-600">92%</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <button id="applyBtn"
-                            class="px-6 py-2.5 btn-primary rounded-lg font-medium transition-colors flex items-center gap-2">
+                        <button id="applyBtn" class="px-6 py-2.5 btn-primary rounded-lg font-medium transition-colors flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
                             Apply Correction
                         </button>
-                        <button id="downloadBtn"
-                            class="px-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <button id="downloadBtn" class="px-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                             </svg>
                             Download Image
                         </button>
@@ -505,8 +474,7 @@
                 <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-200">
                     <div class="use-case-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                     </div>
                     <p class="text-sm font-medium text-gray-700">Documents</p>
@@ -514,8 +482,7 @@
                 <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-200">
                     <div class="use-case-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                     </div>
                     <p class="text-sm font-medium text-gray-700">Architecture</p>
@@ -523,8 +490,7 @@
                 <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-200">
                     <div class="use-case-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
                     </div>
                     <p class="text-sm font-medium text-gray-700">Book Pages</p>
@@ -532,8 +498,7 @@
                 <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-200">
                     <div class="use-case-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
                         </svg>
                     </div>
                     <p class="text-sm font-medium text-gray-700">Whiteboards</p>
@@ -541,8 +506,7 @@
                 <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-200">
                     <div class="use-case-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
                     </div>
                     <p class="text-sm font-medium text-gray-700">Posters</p>
@@ -550,8 +514,7 @@
                 <div class="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-200">
                     <div class="use-case-icon">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
                     </div>
                     <p class="text-sm font-medium text-gray-700">Screens</p>
@@ -566,35 +529,29 @@
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                     <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                         </svg>
                     </div>
                     <h3 class="font-semibold text-gray-900 mb-2">100% Private</h3>
-                    <p class="text-sm text-gray-600">Your images never leave your device. All processing happens locally
-                        in your browser.</p>
+                    <p class="text-sm text-gray-600">Your images never leave your device. All processing happens locally in your browser.</p>
                 </div>
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                     <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
                     <h3 class="font-semibold text-gray-900 mb-2">Lightning Fast</h3>
-                    <p class="text-sm text-gray-600">No uploads or downloads to servers. Get instant results with
-                        real-time preview.</p>
+                    <p class="text-sm text-gray-600">No uploads or downloads to servers. Get instant results with real-time preview.</p>
                 </div>
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                     <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
                     </div>
                     <h3 class="font-semibold text-gray-900 mb-2">High Quality</h3>
-                    <p class="text-sm text-gray-600">Export at original resolution with no compression loss. No
-                        watermarks ever.</p>
+                    <p class="text-sm text-gray-600">Export at original resolution with no compression loss. No watermarks ever.</p>
                 </div>
             </div>
         </section>
@@ -604,73 +561,350 @@
     <footer class="bg-white border-t border-gray-200 py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-gray-600 text-sm">PerspectiveFix - Free Online Perspective Correction Tool</p>
-            <p class="text-gray-400 text-xs mt-2">Your images are processed entirely in your browser. We never see,
-                store, or access your files.</p>
+            <p class="text-gray-400 text-xs mt-2">Your images are processed entirely in your browser. We never see, store, or access your files.</p>
         </div>
     </footer>
 
     <script>
-        // State
-        var originalImage = null;
-        var displayScale = 1;
-        var zoom = 1;
-        var corners = [];
-        var isDragging = false;
-        var draggedCorner = null;
-        var correctedImageData = null;
-        var isSliderDragging = false;
+        // =====================================================
+        // WEB WORKER FOR HEAVY IMAGE PROCESSING
+        // =====================================================
+        const WORKER_SOURCE = `
+            // Bilinear interpolation - optimized with reusable variables
+            let srcWidth = 0;
+            let srcHeight = 0;
+            let srcData = null;
+            
+            function bilinearInterpolate(x, y, destData, destIdx) {
+                if (x < 0 || x >= srcWidth - 1 || y < 0 || y >= srcHeight - 1) {
+                    destData[destIdx] = 255;
+                    destData[destIdx + 1] = 255;
+                    destData[destIdx + 2] = 255;
+                    destData[destIdx + 3] = 255;
+                    return;
+                }
 
-        // DOM Elements
-        var uploadZone = document.getElementById('uploadZone');
-        var fileInput = document.getElementById('fileInput');
-        var heroSection = document.getElementById('heroSection');
-        var editorSection = document.getElementById('editorSection');
-        var mainCanvas = document.getElementById('mainCanvas');
-        var mainCtx = mainCanvas.getContext('2d');
-        var previewCanvas = document.getElementById('previewCanvas');
-        var previewCtx = previewCanvas.getContext('2d');
-        var gridCanvas = document.getElementById('gridCanvas');
-        var gridCtx = gridCanvas.getContext('2d');
-        var quadOverlay = document.getElementById('quadOverlay');
-        var cornerHandles = document.getElementById('cornerHandles');
-        var canvasWrapper = document.getElementById('canvasWrapper');
+                const x0 = x | 0; // Faster than Math.floor
+                const y0 = y | 0;
+                const x1 = x0 + 1;
+                const y1 = y0 + 1;
 
-        // Buttons
-        var resetBtn = document.getElementById('resetBtn');
-        var uploadNewBtn = document.getElementById('uploadNewBtn');
-        var applyBtn = document.getElementById('applyBtn');
-        var downloadBtn = document.getElementById('downloadBtn');
-        var gridToggle = document.getElementById('gridToggle');
-        var livePreviewToggle = document.getElementById('livePreviewToggle');
-        var zoomInBtn = document.getElementById('zoomInBtn');
-        var zoomOutBtn = document.getElementById('zoomOutBtn');
-        var zoomFitBtn = document.getElementById('zoomFitBtn');
-        var zoomLevel = document.getElementById('zoomLevel');
-        var formatSelect = document.getElementById('formatSelect');
-        var qualityContainer = document.getElementById('qualityContainer');
-        var qualitySlider = document.getElementById('qualitySlider');
-        var qualityValue = document.getElementById('qualityValue');
-        var imageInfo = document.getElementById('imageInfo');
+                const dx = x - x0;
+                const dy = y - y0;
+                const dx1 = 1 - dx;
+                const dy1 = 1 - dy;
 
-        // Compare view elements
-        var tabSideBySide = document.getElementById('tabSideBySide');
-        var tabCompare = document.getElementById('tabCompare');
-        var sideBySideView = document.getElementById('sideBySideView');
-        var compareView = document.getElementById('compareView');
-        var compareContainer = document.getElementById('compareContainer');
-        var compareBeforeCanvas = document.getElementById('compareBeforeCanvas');
-        var compareAfterCanvas = document.getElementById('compareAfterCanvas');
-        var compareSlider = document.getElementById('compareSlider');
+                const idx00 = (y0 * srcWidth + x0) << 2; // Faster than * 4
+                const idx10 = (y0 * srcWidth + x1) << 2;
+                const idx01 = (y1 * srcWidth + x0) << 2;
+                const idx11 = (y1 * srcWidth + x1) << 2;
+
+                const w00 = dx1 * dy1;
+                const w10 = dx * dy1;
+                const w01 = dx1 * dy;
+                const w11 = dx * dy;
+
+                destData[destIdx] = (w00 * srcData[idx00] + w10 * srcData[idx10] + w01 * srcData[idx01] + w11 * srcData[idx11]) | 0;
+                destData[destIdx + 1] = (w00 * srcData[idx00 + 1] + w10 * srcData[idx10 + 1] + w01 * srcData[idx01 + 1] + w11 * srcData[idx11 + 1]) | 0;
+                destData[destIdx + 2] = (w00 * srcData[idx00 + 2] + w10 * srcData[idx10 + 2] + w01 * srcData[idx01 + 2] + w11 * srcData[idx11 + 2]) | 0;
+                destData[destIdx + 3] = (w00 * srcData[idx00 + 3] + w10 * srcData[idx10 + 3] + w01 * srcData[idx01 + 3] + w11 * srcData[idx11 + 3]) | 0;
+            }
+
+            function solveLinearSystem(A, b) {
+                const n = b.length;
+                const augmented = [];
+                
+                for (let i = 0; i < n; i++) {
+                    augmented[i] = A[i].slice();
+                    augmented[i].push(b[i]);
+                }
+
+                for (let col = 0; col < n; col++) {
+                    let maxRow = col;
+                    for (let row = col + 1; row < n; row++) {
+                        if (Math.abs(augmented[row][col]) > Math.abs(augmented[maxRow][col])) {
+                            maxRow = row;
+                        }
+                    }
+
+                    const temp = augmented[col];
+                    augmented[col] = augmented[maxRow];
+                    augmented[maxRow] = temp;
+
+                    if (Math.abs(augmented[col][col]) < 1e-10) {
+                        return null;
+                    }
+
+                    for (let row = col + 1; row < n; row++) {
+                        const factor = augmented[row][col] / augmented[col][col];
+                        for (let k = col; k <= n; k++) {
+                            augmented[row][k] -= factor * augmented[col][k];
+                        }
+                    }
+                }
+
+                const x = new Array(n);
+                for (let i = n - 1; i >= 0; i--) {
+                    x[i] = augmented[i][n];
+                    for (let j = i + 1; j < n; j++) {
+                        x[i] -= augmented[i][j] * x[j];
+                    }
+                    x[i] /= augmented[i][i];
+                }
+
+                return x;
+            }
+
+            function computeHomography(src, dst) {
+                const A = [];
+                const b = [];
+
+                for (let i = 0; i < 4; i++) {
+                    const sx = src[i].x;
+                    const sy = src[i].y;
+                    const dx = dst[i].x;
+                    const dy = dst[i].y;
+
+                    A.push([sx, sy, 1, 0, 0, 0, -dx * sx, -dx * sy]);
+                    A.push([0, 0, 0, sx, sy, 1, -dy * sx, -dy * sy]);
+                    b.push(dx);
+                    b.push(dy);
+                }
+
+                const h = solveLinearSystem(A, b);
+                if (!h) return null;
+
+                return [h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7], 1];
+            }
+
+            self.onmessage = function(e) {
+                const { imageData, srcCorners, destWidth, destHeight, isPreview } = e.data;
+                
+                srcWidth = imageData.width;
+                srcHeight = imageData.height;
+                srcData = imageData.data;
+
+                const dst = [
+                    { x: 0, y: 0 },
+                    { x: destWidth, y: 0 },
+                    { x: destWidth, y: destHeight },
+                    { x: 0, y: destHeight }
+                ];
+
+                const H = computeHomography(dst, srcCorners);
+
+                if (!H) {
+                    self.postMessage({ error: 'Could not compute homography' });
+                    return;
+                }
+
+                const destData = new Uint8ClampedArray(destWidth * destHeight * 4);
+                
+                const H0 = H[0], H1 = H[1], H2 = H[2];
+                const H3 = H[3], H4 = H[4], H5 = H[5];
+                const H6 = H[6], H7 = H[7], H8 = H[8];
+
+                for (let y = 0; y < destHeight; y++) {
+                    const yH1 = H1 * y + H2;
+                    const yH4 = H4 * y + H5;
+                    const yH7 = H7 * y + H8;
+                    
+                    for (let x = 0; x < destWidth; x++) {
+                        const w = H6 * x + yH7;
+                        const srcX = (H0 * x + yH1) / w;
+                        const srcY = (H3 * x + yH4) / w;
+
+                        const destIdx = (y * destWidth + x) << 2;
+                        bilinearInterpolate(srcX, srcY, destData, destIdx);
+                    }
+                }
+
+                self.postMessage({ 
+                    destData: destData, 
+                    destWidth: destWidth, 
+                    destHeight: destHeight,
+                    isPreview: isPreview
+                }, [destData.buffer]);
+            };
+        `;
+
+        // Create Worker from Blob
+        const workerBlob = new Blob([WORKER_SOURCE], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(workerBlob);
+        let perspectiveWorker = null;
+        let isProcessing = false;
+        let pendingPreviewRequest = null;
+
+        function getWorker() {
+            if (!perspectiveWorker) {
+                perspectiveWorker = new Worker(workerUrl);
+                perspectiveWorker.onmessage = handleWorkerMessage;
+                perspectiveWorker.onerror = function(e) {
+                    console.error('Worker error:', e);
+                    isProcessing = false;
+                };
+            }
+            return perspectiveWorker;
+        }
+
+        function handleWorkerMessage(e) {
+            if (e.data.error) {
+                console.error(e.data.error);
+                isProcessing = false;
+                return;
+            }
+
+            const { destData, destWidth, destHeight, isPreview } = e.data;
+            const imageData = new ImageData(new Uint8ClampedArray(destData), destWidth, destHeight);
+
+            if (isPreview) {
+                // Update preview canvas
+                previewCanvas.width = destWidth;
+                previewCanvas.height = destHeight;
+                previewCtx.putImageData(imageData, 0, 0);
+                
+                isProcessing = false;
+                
+                // Process pending request if any
+                if (pendingPreviewRequest) {
+                    const request = pendingPreviewRequest;
+                    pendingPreviewRequest = null;
+                    processWithWorker(request.srcCorners, request.destWidth, request.destHeight, true);
+                }
+                
+                // Update compare view if visible
+                if (!compareView.classList.contains('hidden')) {
+                    updateCompareView();
+                }
+            } else {
+                // Full resolution - create canvas for download
+                const outputCanvas = document.createElement('canvas');
+                outputCanvas.width = destWidth;
+                outputCanvas.height = destHeight;
+                outputCanvas.getContext('2d').putImageData(imageData, 0, 0);
+                
+                correctedImageData = outputCanvas;
+                
+                // Update preview with scaled version
+                const previewScale = Math.min(400 / destWidth, 400 / destHeight, 1);
+                previewCanvas.width = Math.round(destWidth * previewScale);
+                previewCanvas.height = Math.round(destHeight * previewScale);
+                previewCtx.drawImage(outputCanvas, 0, 0, previewCanvas.width, previewCanvas.height);
+
+                // Reset button state
+                applyBtn.disabled = false;
+                applyBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Apply Correction';
+
+                // Update image info
+                imageInfo.textContent = 'Original: ' + originalImage.width + ' x ' + originalImage.height + ' px → Corrected: ' + destWidth + ' x ' + destHeight + ' px';
+
+                isProcessing = false;
+                
+                // Update compare view if visible
+                if (!compareView.classList.contains('hidden')) {
+                    updateCompareView();
+                }
+                
+                // If download was pending, trigger it
+                if (pendingDownload) {
+                    pendingDownload = false;
+                    performDownload();
+                }
+            }
+        }
+
+        function processWithWorker(srcCorners, destWidth, destHeight, isPreview) {
+            if (!originalImage) return;
+            
+            // For preview, throttle requests
+            if (isPreview && isProcessing) {
+                pendingPreviewRequest = { srcCorners, destWidth, destHeight };
+                return;
+            }
+            
+            isProcessing = true;
+
+            // Get image data from original image
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = originalImage.width;
+            tempCanvas.height = originalImage.height;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.drawImage(originalImage, 0, 0);
+            const imageData = tempCtx.getImageData(0, 0, originalImage.width, originalImage.height);
+
+            getWorker().postMessage({
+                imageData: imageData,
+                srcCorners: srcCorners,
+                destWidth: destWidth,
+                destHeight: destHeight,
+                isPreview: isPreview
+            }, [imageData.data.buffer]);
+        }
+
+        // =====================================================
+        // STATE VARIABLES (using const/let)
+        // =====================================================
+        let originalImage = null;
+        let displayScale = 1;
+        let zoom = 1;
+        let corners = [];
+        let isDragging = false;
+        let draggedCorner = null;
+        let correctedImageData = null;
+        let isSliderDragging = false;
+        let pendingDownload = false;
+
+        // DOM Elements (using const)
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const heroSection = document.getElementById('heroSection');
+        const editorSection = document.getElementById('editorSection');
+        const mainCanvas = document.getElementById('mainCanvas');
+        const mainCtx = mainCanvas.getContext('2d');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const previewCtx = previewCanvas.getContext('2d');
+        const gridCanvas = document.getElementById('gridCanvas');
+        const gridCtx = gridCanvas.getContext('2d');
+        const quadOverlay = document.getElementById('quadOverlay');
+        const cornerHandles = document.getElementById('cornerHandles');
+        const canvasWrapper = document.getElementById('canvasWrapper');
+
+        // Buttons (using const)
+        const resetBtn = document.getElementById('resetBtn');
+        const uploadNewBtn = document.getElementById('uploadNewBtn');
+        const applyBtn = document.getElementById('applyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const gridToggle = document.getElementById('gridToggle');
+        const livePreviewToggle = document.getElementById('livePreviewToggle');
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const zoomFitBtn = document.getElementById('zoomFitBtn');
+        const zoomLevel = document.getElementById('zoomLevel');
+        const formatSelect = document.getElementById('formatSelect');
+        const qualityContainer = document.getElementById('qualityContainer');
+        const qualitySlider = document.getElementById('qualitySlider');
+        const qualityValue = document.getElementById('qualityValue');
+        const imageInfo = document.getElementById('imageInfo');
+
+        // Compare view elements (using const)
+        const tabSideBySide = document.getElementById('tabSideBySide');
+        const tabCompare = document.getElementById('tabCompare');
+        const sideBySideView = document.getElementById('sideBySideView');
+        const compareView = document.getElementById('compareView');
+        const compareContainer = document.getElementById('compareContainer');
+        const compareBeforeCanvas = document.getElementById('compareBeforeCanvas');
+        const compareAfterCanvas = document.getElementById('compareAfterCanvas');
+        const compareSlider = document.getElementById('compareSlider');
 
         // Event Listeners
-        uploadZone.addEventListener('click', function () { fileInput.click(); });
+        uploadZone.addEventListener('click', () => fileInput.click());
         uploadZone.addEventListener('dragover', handleDragOver);
         uploadZone.addEventListener('dragleave', handleDragLeave);
         uploadZone.addEventListener('drop', handleDrop);
         fileInput.addEventListener('change', handleFileSelect);
 
         resetBtn.addEventListener('click', resetCorners);
-        uploadNewBtn.addEventListener('click', function () {
+        uploadNewBtn.addEventListener('click', () => {
             fileInput.value = '';
             fileInput.click();
         });
@@ -678,17 +912,17 @@
         downloadBtn.addEventListener('click', downloadImage);
 
         gridToggle.addEventListener('change', toggleGrid);
-        livePreviewToggle.addEventListener('change', function () {
+        livePreviewToggle.addEventListener('change', () => {
             if (livePreviewToggle.checked) {
                 updatePreview();
             }
         });
 
-        zoomInBtn.addEventListener('click', function () { setZoom(zoom + 0.25); });
-        zoomOutBtn.addEventListener('click', function () { setZoom(zoom - 0.25); });
-        zoomFitBtn.addEventListener('click', function () { setZoom(1); });
+        zoomInBtn.addEventListener('click', () => setZoom(zoom + 0.25));
+        zoomOutBtn.addEventListener('click', () => setZoom(zoom - 0.25));
+        zoomFitBtn.addEventListener('click', () => setZoom(1));
 
-        formatSelect.addEventListener('change', function () {
+        formatSelect.addEventListener('change', () => {
             if (formatSelect.value === 'png') {
                 qualityContainer.classList.add('hidden');
                 qualityContainer.classList.remove('flex');
@@ -698,19 +932,19 @@
             }
         });
 
-        qualitySlider.addEventListener('input', function () {
+        qualitySlider.addEventListener('input', () => {
             qualityValue.textContent = qualitySlider.value + '%';
         });
 
         // Tab switching
-        tabSideBySide.addEventListener('click', function () {
+        tabSideBySide.addEventListener('click', () => {
             tabSideBySide.classList.add('active');
             tabCompare.classList.remove('active');
             sideBySideView.classList.remove('hidden');
             compareView.classList.add('hidden');
         });
 
-        tabCompare.addEventListener('click', function () {
+        tabCompare.addEventListener('click', () => {
             tabCompare.classList.add('active');
             tabSideBySide.classList.remove('active');
             compareView.classList.remove('hidden');
@@ -719,49 +953,44 @@
         });
 
         // Compare slider events
-        compareSlider.addEventListener('mousedown', function (e) {
+        compareSlider.addEventListener('mousedown', (e) => {
             e.preventDefault();
             isSliderDragging = true;
         });
-
-        compareSlider.addEventListener('touchstart', function (e) {
+        
+        compareSlider.addEventListener('touchstart', (e) => {
             e.preventDefault();
             isSliderDragging = true;
         }, { passive: false });
-
-        document.addEventListener('mousemove', function (e) {
+        
+        document.addEventListener('mousemove', (e) => {
             if (isSliderDragging) {
                 updateSliderPosition(e.clientX);
             }
         });
-
-        document.addEventListener('touchmove', function (e) {
-            if (isSliderDragging && e.touches && e.touches.length > 0) {
+        
+        document.addEventListener('touchmove', (e) => {
+            if (isSliderDragging && e.touches?.length > 0) {
                 e.preventDefault();
                 updateSliderPosition(e.touches[0].clientX);
             }
         }, { passive: false });
-
-        document.addEventListener('mouseup', function () {
-            isSliderDragging = false;
-        });
-
-        document.addEventListener('touchend', function () {
-            isSliderDragging = false;
-        });
+        
+        document.addEventListener('mouseup', () => isSliderDragging = false);
+        document.addEventListener('touchend', () => isSliderDragging = false);
 
         function updateSliderPosition(clientX) {
-            var container = document.getElementById('compareContainer');
+            const container = document.getElementById('compareContainer');
             if (!container) return;
-
-            var rect = container.getBoundingClientRect();
+            
+            const rect = container.getBoundingClientRect();
             if (rect.width === 0) return;
-
-            var pos = ((clientX - rect.left) / rect.width) * 100;
+            
+            let pos = ((clientX - rect.left) / rect.width) * 100;
             pos = Math.max(0, Math.min(100, pos));
-
+            
             compareSlider.style.left = pos + '%';
-            compareBeforeCanvas.style.clipPath = 'inset(0 ' + (100 - pos) + '% 0 0)';
+            compareBeforeCanvas.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
         }
 
         // Functions
@@ -778,24 +1007,24 @@
         function handleDrop(e) {
             e.preventDefault();
             uploadZone.classList.remove('drag-over');
-            var file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('image/')) {
+            const file = e.dataTransfer.files[0];
+            if (file?.type.startsWith('image/')) {
                 loadImage(file);
             }
         }
 
         function handleFileSelect(e) {
-            var file = e.target.files[0];
+            const file = e.target.files[0];
             if (file) {
                 loadImage(file);
             }
         }
 
         function loadImage(file) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var img = new Image();
-                img.onload = function () {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
                     originalImage = img;
                     setupEditor();
                 };
@@ -809,18 +1038,18 @@
             uploadZone.classList.add('hidden');
             editorSection.classList.remove('hidden');
 
-            var container = document.getElementById('originalContainer');
-            var maxWidth = container.clientWidth - 32;
-            var maxHeight = window.innerHeight * 0.6;
-
+            const container = document.getElementById('originalContainer');
+            const maxWidth = container.clientWidth - 32;
+            const maxHeight = window.innerHeight * 0.6;
+            
             displayScale = Math.min(
                 maxWidth / originalImage.width,
                 maxHeight / originalImage.height,
                 1
             );
 
-            var displayWidth = originalImage.width * displayScale;
-            var displayHeight = originalImage.height * displayScale;
+            const displayWidth = originalImage.width * displayScale;
+            const displayHeight = originalImage.height * displayScale;
 
             mainCanvas.width = displayWidth;
             mainCanvas.height = displayHeight;
@@ -835,7 +1064,7 @@
 
             resetCorners();
 
-            imageInfo.textContent = 'Original: ' + originalImage.width + ' x ' + originalImage.height + ' px';
+            imageInfo.textContent = `Original: ${originalImage.width} × ${originalImage.height} px`;
 
             correctedImageData = null;
             downloadBtn.disabled = false;
@@ -846,9 +1075,9 @@
         }
 
         function resetCorners() {
-            var w = mainCanvas.width;
-            var h = mainCanvas.height;
-            var margin = Math.min(w, h) * 0.1;
+            const w = mainCanvas.width;
+            const h = mainCanvas.height;
+            const margin = Math.min(w, h) * 0.1;
 
             corners = [
                 { x: margin, y: margin },
@@ -865,12 +1094,11 @@
         }
 
         function renderCornerHandles() {
-            var labels = ['TL', 'TR', 'BR', 'BL'];
+            const labels = ['TL', 'TR', 'BR', 'BL'];
             cornerHandles.innerHTML = '';
 
-            for (var i = 0; i < corners.length; i++) {
-                var corner = corners[i];
-                var handle = document.createElement('div');
+            corners.forEach((corner, i) => {
+                const handle = document.createElement('div');
                 handle.className = 'corner-handle';
                 handle.setAttribute('data-label', labels[i]);
                 handle.setAttribute('data-index', i.toString());
@@ -881,7 +1109,7 @@
                 handle.addEventListener('touchstart', startDrag, { passive: false });
 
                 cornerHandles.appendChild(handle);
-            }
+            });
         }
 
         function startDrag(e) {
@@ -898,10 +1126,10 @@
             if (!isDragging || draggedCorner === null) return;
             e.preventDefault();
 
-            var rect = mainCanvas.getBoundingClientRect();
-            var clientX, clientY;
+            const rect = mainCanvas.getBoundingClientRect();
+            let clientX, clientY;
 
-            if (e.touches && e.touches.length > 0) {
+            if (e.touches?.length > 0) {
                 clientX = e.touches[0].clientX;
                 clientY = e.touches[0].clientY;
             } else {
@@ -909,15 +1137,15 @@
                 clientY = e.clientY;
             }
 
-            var x = (clientX - rect.left) / zoom;
-            var y = (clientY - rect.top) / zoom;
+            let x = (clientX - rect.left) / zoom;
+            let y = (clientY - rect.top) / zoom;
 
             x = Math.max(0, Math.min(mainCanvas.width, x));
             y = Math.max(0, Math.min(mainCanvas.height, y));
 
-            corners[draggedCorner] = { x: x, y: y };
+            corners[draggedCorner] = { x, y };
 
-            var handle = cornerHandles.children[draggedCorner];
+            const handle = cornerHandles.children[draggedCorner];
             handle.style.left = x + 'px';
             handle.style.top = y + 'px';
 
@@ -925,9 +1153,6 @@
 
             if (livePreviewToggle.checked) {
                 updatePreview();
-                if (!compareView.classList.contains('hidden')) {
-                    updateCompareView();
-                }
             }
         }
 
@@ -941,19 +1166,13 @@
         }
 
         function updateQuadOverlay() {
-            var points = '';
-            for (var i = 0; i < corners.length; i++) {
-                points += corners[i].x + ',' + corners[i].y;
-                if (i < corners.length - 1) points += ' ';
-            }
-
-            var linesHtml = '';
-            for (var j = 0; j < corners.length; j++) {
-                var next = corners[(j + 1) % 4];
-                linesHtml += '<line x1="' + corners[j].x + '" y1="' + corners[j].y + '" x2="' + next.x + '" y2="' + next.y + '" stroke="#059669" stroke-width="2" stroke-dasharray="5,5"/>';
-            }
-
-            quadOverlay.innerHTML = '<polygon points="' + points + '" fill="rgba(5, 150, 105, 0.2)" stroke="#059669" stroke-width="2"/>' + linesHtml;
+            const points = corners.map(c => `${c.x},${c.y}`).join(' ');
+            const lines = corners.map((c, i) => {
+                const next = corners[(i + 1) % 4];
+                return `<line x1="${c.x}" y1="${c.y}" x2="${next.x}" y2="${next.y}" stroke="#059669" stroke-width="2" stroke-dasharray="5,5"/>`;
+            }).join('');
+            
+            quadOverlay.innerHTML = `<polygon points="${points}" fill="rgba(5, 150, 105, 0.2)" stroke="#059669" stroke-width="2"/>${lines}`;
         }
 
         function toggleGrid() {
@@ -966,22 +1185,22 @@
         }
 
         function drawGrid() {
-            var w = gridCanvas.width;
-            var h = gridCanvas.height;
+            const w = gridCanvas.width;
+            const h = gridCanvas.height;
             gridCtx.clearRect(0, 0, w, h);
             gridCtx.strokeStyle = 'rgba(5, 150, 105, 0.3)';
             gridCtx.lineWidth = 1;
 
-            var gridSize = 50;
+            const gridSize = 50;
 
-            for (var x = gridSize; x < w; x += gridSize) {
+            for (let x = gridSize; x < w; x += gridSize) {
                 gridCtx.beginPath();
                 gridCtx.moveTo(x, 0);
                 gridCtx.lineTo(x, h);
                 gridCtx.stroke();
             }
 
-            for (var y = gridSize; y < h; y += gridSize) {
+            for (let y = gridSize; y < h; y += gridSize) {
                 gridCtx.beginPath();
                 gridCtx.moveTo(0, y);
                 gridCtx.lineTo(w, y);
@@ -992,210 +1211,41 @@
         function setZoom(newZoom) {
             zoom = Math.max(0.25, Math.min(3, newZoom));
             zoomLevel.textContent = Math.round(zoom * 100) + '%';
-            canvasWrapper.style.transform = 'scale(' + zoom + ')';
+            canvasWrapper.style.transform = `scale(${zoom})`;
             canvasWrapper.style.transformOrigin = 'top left';
         }
 
         function updatePreview() {
             if (!originalImage) return;
 
-            var srcCorners = [];
-            for (var i = 0; i < corners.length; i++) {
-                srcCorners.push({
-                    x: corners[i].x / displayScale,
-                    y: corners[i].y / displayScale
-                });
-            }
+            const srcCorners = corners.map(c => ({
+                x: c.x / displayScale,
+                y: c.y / displayScale
+            }));
 
-            var width = Math.max(
+            const width = Math.max(
                 distance(srcCorners[0], srcCorners[1]),
                 distance(srcCorners[3], srcCorners[2])
             );
-            var height = Math.max(
+            const height = Math.max(
                 distance(srcCorners[0], srcCorners[3]),
                 distance(srcCorners[1], srcCorners[2])
             );
 
-            var previewScale = Math.min(400 / width, 400 / height, 1);
-            var previewWidth = Math.round(width * previewScale);
-            var previewHeight = Math.round(height * previewScale);
+            const previewScale = Math.min(400 / width, 400 / height, 1);
+            const previewWidth = Math.round(width * previewScale);
+            const previewHeight = Math.round(height * previewScale);
 
             if (previewWidth <= 0 || previewHeight <= 0) return;
 
-            previewCanvas.width = previewWidth;
-            previewCanvas.height = previewHeight;
-
-            applyPerspectiveTransform(
-                originalImage,
-                previewCanvas,
-                srcCorners,
-                previewWidth,
-                previewHeight
-            );
+            // Use Web Worker for processing
+            processWithWorker(srcCorners, previewWidth, previewHeight, true);
         }
 
         function distance(p1, p2) {
-            var dx = p2.x - p1.x;
-            var dy = p2.y - p1.y;
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
             return Math.sqrt(dx * dx + dy * dy);
-        }
-
-        function applyPerspectiveTransform(srcImage, destCanvas, srcCorners, destWidth, destHeight) {
-            var destCtx = destCanvas.getContext('2d');
-
-            var src = srcCorners;
-            var dst = [
-                { x: 0, y: 0 },
-                { x: destWidth, y: 0 },
-                { x: destWidth, y: destHeight },
-                { x: 0, y: destHeight }
-            ];
-
-            var H = computeHomography(dst, src);
-
-            if (!H) {
-                console.error('Could not compute homography');
-                return;
-            }
-
-            var tempCanvas = document.createElement('canvas');
-            tempCanvas.width = srcImage.width;
-            tempCanvas.height = srcImage.height;
-            var tempCtx = tempCanvas.getContext('2d');
-            tempCtx.drawImage(srcImage, 0, 0);
-
-            var srcData = tempCtx.getImageData(0, 0, srcImage.width, srcImage.height);
-            var destData = destCtx.createImageData(destWidth, destHeight);
-
-            for (var y = 0; y < destHeight; y++) {
-                for (var x = 0; x < destWidth; x++) {
-                    var w = H[6] * x + H[7] * y + H[8];
-                    var srcX = (H[0] * x + H[1] * y + H[2]) / w;
-                    var srcY = (H[3] * x + H[4] * y + H[5]) / w;
-
-                    var pixel = bilinearInterpolate(srcData, srcX, srcY);
-
-                    var destIdx = (y * destWidth + x) * 4;
-                    destData.data[destIdx] = pixel.r;
-                    destData.data[destIdx + 1] = pixel.g;
-                    destData.data[destIdx + 2] = pixel.b;
-                    destData.data[destIdx + 3] = pixel.a;
-                }
-            }
-
-            destCtx.putImageData(destData, 0, 0);
-        }
-
-        function bilinearInterpolate(imageData, x, y) {
-            var w = imageData.width;
-            var h = imageData.height;
-
-            if (x < 0 || x >= w - 1 || y < 0 || y >= h - 1) {
-                return { r: 255, g: 255, b: 255, a: 255 };
-            }
-
-            var x0 = Math.floor(x);
-            var y0 = Math.floor(y);
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
-
-            var dx = x - x0;
-            var dy = y - y0;
-
-            function getPixel(px, py) {
-                var idx = (py * w + px) * 4;
-                return {
-                    r: imageData.data[idx],
-                    g: imageData.data[idx + 1],
-                    b: imageData.data[idx + 2],
-                    a: imageData.data[idx + 3]
-                };
-            }
-
-            var p00 = getPixel(x0, y0);
-            var p10 = getPixel(x1, y0);
-            var p01 = getPixel(x0, y1);
-            var p11 = getPixel(x1, y1);
-
-            return {
-                r: Math.round((1 - dx) * (1 - dy) * p00.r + dx * (1 - dy) * p10.r + (1 - dx) * dy * p01.r + dx * dy * p11.r),
-                g: Math.round((1 - dx) * (1 - dy) * p00.g + dx * (1 - dy) * p10.g + (1 - dx) * dy * p01.g + dx * dy * p11.g),
-                b: Math.round((1 - dx) * (1 - dy) * p00.b + dx * (1 - dy) * p10.b + (1 - dx) * dy * p01.b + dx * dy * p11.b),
-                a: Math.round((1 - dx) * (1 - dy) * p00.a + dx * (1 - dy) * p10.a + (1 - dx) * dy * p01.a + dx * dy * p11.a)
-            };
-        }
-
-        function computeHomography(src, dst) {
-            var A = [];
-            var b = [];
-
-            for (var i = 0; i < 4; i++) {
-                var sx = src[i].x;
-                var sy = src[i].y;
-                var dx = dst[i].x;
-                var dy = dst[i].y;
-
-                A.push([sx, sy, 1, 0, 0, 0, -dx * sx, -dx * sy]);
-                A.push([0, 0, 0, sx, sy, 1, -dy * sx, -dy * sy]);
-                b.push(dx);
-                b.push(dy);
-            }
-
-            var h = solveLinearSystem(A, b);
-
-            if (!h) return null;
-
-            return [h[0], h[1], h[2], h[3], h[4], h[5], h[6], h[7], 1];
-        }
-
-        function solveLinearSystem(A, b) {
-            var n = b.length;
-            var augmented = [];
-            var idx, col, row, maxRow, temp, factor, k, j;
-
-            for (idx = 0; idx < n; idx++) {
-                augmented[idx] = A[idx].slice();
-                augmented[idx].push(b[idx]);
-            }
-
-            for (col = 0; col < n; col++) {
-                maxRow = col;
-                for (row = col + 1; row < n; row++) {
-                    if (Math.abs(augmented[row][col]) > Math.abs(augmented[maxRow][col])) {
-                        maxRow = row;
-                    }
-                }
-
-                temp = augmented[col];
-                augmented[col] = augmented[maxRow];
-                augmented[maxRow] = temp;
-
-                if (Math.abs(augmented[col][col]) < 1e-10) {
-                    return null;
-                }
-
-                for (row = col + 1; row < n; row++) {
-                    factor = augmented[row][col] / augmented[col][col];
-                    for (k = col; k <= n; k++) {
-                        augmented[row][k] -= factor * augmented[col][k];
-                    }
-                }
-            }
-
-            var x = [];
-            for (idx = 0; idx < n; idx++) {
-                x[idx] = 0;
-            }
-
-            for (idx = n - 1; idx >= 0; idx--) {
-                x[idx] = augmented[idx][n];
-                for (j = idx + 1; j < n; j++) {
-                    x[idx] -= augmented[idx][j] * x[j];
-                }
-                x[idx] /= augmented[idx][idx];
-            }
-
-            return x;
         }
 
         function applyCorrection() {
@@ -1204,96 +1254,38 @@
             applyBtn.disabled = true;
             applyBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...';
 
-            setTimeout(function () {
-                var srcCorners = [];
-                for (var i = 0; i < corners.length; i++) {
-                    srcCorners.push({
-                        x: corners[i].x / displayScale,
-                        y: corners[i].y / displayScale
-                    });
-                }
+            const srcCorners = corners.map(c => ({
+                x: c.x / displayScale,
+                y: c.y / displayScale
+            }));
 
-                var width = Math.round(Math.max(
-                    distance(srcCorners[0], srcCorners[1]),
-                    distance(srcCorners[3], srcCorners[2])
-                ));
-                var height = Math.round(Math.max(
-                    distance(srcCorners[0], srcCorners[3]),
-                    distance(srcCorners[1], srcCorners[2])
-                ));
+            const width = Math.round(Math.max(
+                distance(srcCorners[0], srcCorners[1]),
+                distance(srcCorners[3], srcCorners[2])
+            ));
+            const height = Math.round(Math.max(
+                distance(srcCorners[0], srcCorners[3]),
+                distance(srcCorners[1], srcCorners[2])
+            ));
 
-                if (width <= 0 || height <= 0) {
-                    applyBtn.disabled = false;
-                    applyBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Apply Correction';
-                    return;
-                }
-
-                var outputCanvas = document.createElement('canvas');
-                outputCanvas.width = width;
-                outputCanvas.height = height;
-
-                applyPerspectiveTransform(originalImage, outputCanvas, srcCorners, width, height);
-
-                correctedImageData = outputCanvas;
-                downloadBtn.disabled = false;
-
-                var previewScale = Math.min(400 / width, 400 / height, 1);
-                previewCanvas.width = Math.round(width * previewScale);
-                previewCanvas.height = Math.round(height * previewScale);
-                previewCtx.drawImage(outputCanvas, 0, 0, previewCanvas.width, previewCanvas.height);
-
+            if (width <= 0 || height <= 0) {
                 applyBtn.disabled = false;
                 applyBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Apply Correction';
+                return;
+            }
 
-                imageInfo.textContent = 'Original: ' + originalImage.width + ' x ' + originalImage.height + ' px → Corrected: ' + width + ' x ' + height + ' px';
-
-                if (!compareView.classList.contains('hidden')) {
-                    updateCompareView();
-                }
-            }, 50);
+            // Use Web Worker for full resolution processing
+            processWithWorker(srcCorners, width, height, false);
         }
 
         function downloadImage() {
             // Agar correctedImageData nahi hai toh pehle apply karo
             if (!correctedImageData) {
-                // Auto-apply correction before download
-                applyAndDownload();
+                // Auto-apply correction before download with pending flag
+                pendingDownload = true;
+                applyCorrection();
                 return;
             }
-
-            performDownload();
-        }
-
-        function applyAndDownload() {
-            if (!originalImage) return;
-
-            var srcCorners = [];
-            for (var i = 0; i < corners.length; i++) {
-                srcCorners.push({
-                    x: corners[i].x / displayScale,
-                    y: corners[i].y / displayScale
-                });
-            }
-
-            var width = Math.round(Math.max(
-                distance(srcCorners[0], srcCorners[1]),
-                distance(srcCorners[3], srcCorners[2])
-            ));
-            var height = Math.round(Math.max(
-                distance(srcCorners[0], srcCorners[3]),
-                distance(srcCorners[1], srcCorners[2])
-            ));
-
-            if (width <= 0 || height <= 0) return;
-
-            var outputCanvas = document.createElement('canvas');
-            outputCanvas.width = width;
-            outputCanvas.height = height;
-
-            applyPerspectiveTransform(originalImage, outputCanvas, srcCorners, width, height);
-
-            correctedImageData = outputCanvas;
-            downloadBtn.disabled = false;
 
             performDownload();
         }
@@ -1301,10 +1293,10 @@
         function performDownload() {
             if (!correctedImageData) return;
 
-            var format = formatSelect.value;
-            var quality = qualitySlider.value / 100;
-
-            var mimeType, extension;
+            const format = formatSelect.value;
+            const quality = qualitySlider.value / 100;
+            
+            let mimeType, extension;
             if (format === 'jpeg') {
                 mimeType = 'image/jpeg';
                 extension = 'jpg';
@@ -1316,48 +1308,45 @@
                 extension = 'png';
             }
 
-            var dataUrl;
-            if (format === 'png') {
-                dataUrl = correctedImageData.toDataURL(mimeType);
-            } else {
-                dataUrl = correctedImageData.toDataURL(mimeType, quality);
-            }
+            const dataUrl = format === 'png' 
+                ? correctedImageData.toDataURL(mimeType)
+                : correctedImageData.toDataURL(mimeType, quality);
 
             // Create link and append to body for better browser support
-            var link = document.createElement('a');
+            const link = document.createElement('a');
             link.download = 'corrected-image.' + extension;
             link.href = dataUrl;
             link.style.display = 'none';
             document.body.appendChild(link);
             link.click();
-
+            
             // Cleanup
-            setTimeout(function () {
+            setTimeout(() => {
                 document.body.removeChild(link);
             }, 100);
         }
 
         function updateCompareView() {
             if (!originalImage) return;
-
-            var afterSource = correctedImageData || previewCanvas;
-
+            
+            const afterSource = correctedImageData || previewCanvas;
+            
             if (!afterSource || afterSource.width === 0 || afterSource.height === 0) {
                 return;
             }
 
-            var maxSize = 400;
+            const maxSize = 400;
+            
+            const afterScale = Math.min(maxSize / afterSource.width, maxSize / afterSource.height, 1);
+            const afterDisplayWidth = Math.round(afterSource.width * afterScale);
+            const afterDisplayHeight = Math.round(afterSource.height * afterScale);
 
-            var afterScale = Math.min(maxSize / afterSource.width, maxSize / afterSource.height, 1);
-            var afterDisplayWidth = Math.round(afterSource.width * afterScale);
-            var afterDisplayHeight = Math.round(afterSource.height * afterScale);
-
-            var beforeScale = Math.min(maxSize / originalImage.width, maxSize / originalImage.height, 1);
-            var beforeDisplayWidth = Math.round(originalImage.width * beforeScale);
-            var beforeDisplayHeight = Math.round(originalImage.height * beforeScale);
-
-            var containerWidth = Math.max(afterDisplayWidth, beforeDisplayWidth);
-            var containerHeight = Math.max(afterDisplayHeight, beforeDisplayHeight);
+            const beforeScale = Math.min(maxSize / originalImage.width, maxSize / originalImage.height, 1);
+            const beforeDisplayWidth = Math.round(originalImage.width * beforeScale);
+            const beforeDisplayHeight = Math.round(originalImage.height * beforeScale);
+            
+            const containerWidth = Math.max(afterDisplayWidth, beforeDisplayWidth);
+            const containerHeight = Math.max(afterDisplayHeight, beforeDisplayHeight);
 
             if (containerWidth === 0 || containerHeight === 0) {
                 return;
@@ -1368,18 +1357,18 @@
             compareAfterCanvas.width = containerWidth;
             compareAfterCanvas.height = containerHeight;
 
-            var beforeCtx = compareBeforeCanvas.getContext('2d');
-            var afterCtx = compareAfterCanvas.getContext('2d');
-
+            const beforeCtx = compareBeforeCanvas.getContext('2d');
+            const afterCtx = compareAfterCanvas.getContext('2d');
+            
             beforeCtx.fillStyle = '#f3f4f6';
             afterCtx.fillStyle = '#f3f4f6';
             beforeCtx.fillRect(0, 0, containerWidth, containerHeight);
             afterCtx.fillRect(0, 0, containerWidth, containerHeight);
 
-            var beforeX = Math.round((containerWidth - beforeDisplayWidth) / 2);
-            var beforeY = Math.round((containerHeight - beforeDisplayHeight) / 2);
-            var afterX = Math.round((containerWidth - afterDisplayWidth) / 2);
-            var afterY = Math.round((containerHeight - afterDisplayHeight) / 2);
+            const beforeX = Math.round((containerWidth - beforeDisplayWidth) / 2);
+            const beforeY = Math.round((containerHeight - beforeDisplayHeight) / 2);
+            const afterX = Math.round((containerWidth - afterDisplayWidth) / 2);
+            const afterY = Math.round((containerHeight - afterDisplayHeight) / 2);
 
             beforeCtx.drawImage(originalImage, beforeX, beforeY, beforeDisplayWidth, beforeDisplayHeight);
             afterCtx.drawImage(afterSource, afterX, afterY, afterDisplayWidth, afterDisplayHeight);
@@ -1387,7 +1376,14 @@
             compareSlider.style.left = '50%';
             compareBeforeCanvas.style.clipPath = 'inset(0 50% 0 0)';
         }
+        
+        // Cleanup worker on page unload
+        window.addEventListener('beforeunload', () => {
+            if (perspectiveWorker) {
+                perspectiveWorker.terminate();
+                URL.revokeObjectURL(workerUrl);
+            }
+        });
     </script>
 </body>
-
 </html>
