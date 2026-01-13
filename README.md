@@ -52,5 +52,3 @@ All processing happens **locally in your browser** — your images are never upl
 - GitHub Pages (hosting)
 
 ---
-
-## 📂 Project Structure
