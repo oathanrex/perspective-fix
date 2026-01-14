@@ -1,37 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>PerspectiveFix – Free Online Perspective Image Correction Tool</title>
-    <meta name="description" content="PerspectiveFix is a free online perspective correction tool. Fix skewed documents, photos, book pages, whiteboards, and scanned images directly in your browser. No upload. No watermark.">
-    <meta name="robots" content="index, follow">
+
+    <title>PerspectiveFix – Free Online Tool to Straighten Photos and Documents</title>
+
+    <meta name="description"
+        content="Quickly fix perspective distortion in your browser. PerspectiveFix helps you straighten skewed documents, book pages, and whiteboard photos without any uploads or watermarks. Private, fast, and free.">
+
+    <meta name="author" content="OathanRex">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow">
     <link rel="canonical" href="https://oathanrex.github.io/perspective-fix/">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="PerspectiveFix – Free Online Perspective Image Correction Tool">
-    <meta property="og:description" content="Fix skewed images and documents online with PerspectiveFix. 100% browser-based, private, and watermark-free.">
+    <meta property="og:title" content="PerspectiveFix – Straighten Skewed Images Online for Free">
+    <meta property="og:description"
+        content="Professional-grade perspective correction directly in your browser. No server uploads, total privacy, and high-quality results.">
     <meta property="og:url" content="https://oathanrex.github.io/perspective-fix/">
-    <meta property="og:image" content="https://oathanrex.github.io/perspective-fix/og-image.png">
+    <meta property="og:image"
+        content="https://oathanrex.github.io/perspective-fix/perspective-correction-tool-preview.png">
+    <meta property="og:image:alt"
+        content="PerspectiveFix user interface demonstrating how to pull corners to straighten a document">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="PerspectiveFix">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PerspectiveFix – Free Perspective Correction Tool">
-    <meta name="twitter:description" content="Correct perspective distortion in images online. No download. No watermark.">
-    <meta name="twitter:image" content="https://oathanrex.github.io/perspective-fix/og-image.png">
+    <meta name="twitter:title" content="Fix Perspective Distortion in Photos Instantly">
+    <meta name="twitter:description"
+        content="Free tool to fix skewed documents and photos. 100% browser-based processing for maximum privacy.">
+    <meta name="twitter:image"
+        content="https://oathanrex.github.io/perspective-fix/perspective-correction-tool-preview.png">
+    <meta name="twitter:image:alt" content="Graphic representation of perspective warp tool straightening an image">
 
-    <link rel="apple-touch-icon" href="favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon-512.png">
     <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <meta name="theme-color" content="#4f46e5">
 
     <script>
-        (function() {
+        (function () {
             try {
                 var theme = localStorage.getItem('theme');
                 if (!theme) {
                     theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
                 }
                 document.documentElement.setAttribute('data-theme', theme);
-            } catch(e) {}
+            } catch (e) { }
         })();
     </script>
 
@@ -41,9 +59,17 @@
       "@type": "SoftwareApplication",
       "name": "PerspectiveFix",
       "applicationCategory": "ImageEditingApplication",
-      "operatingSystem": "Any",
+      "operatingSystem": "Any (Web Browser)",
       "url": "https://oathanrex.github.io/perspective-fix/",
-      "description": "Free online perspective image correction tool.",
+      "description": "A privacy-focused web tool to correct perspective and straighten skewed images locally in the browser.",
+      "image": "https://oathanrex.github.io/perspective-fix/perspective-correction-tool-preview.png",
+      "featureList": [
+        "Local browser-based processing",
+        "Interactive corner dragging",
+        "High-resolution output",
+        "Privacy-first (No server uploads)",
+        "Watermark-free downloads"
+      ],
       "author": {
         "@type": "Person",
         "name": "OathanRex",
@@ -56,7 +82,52 @@
       }
     }
     </script>
-    
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is my data safe on PerspectiveFix?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. PerspectiveFix processes all images locally using JavaScript. Your files never leave your computer or touch our servers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I fix document scans with this tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. It is specifically designed to straighten skewed documents, receipts, and book pages into perfectly rectangular shapes."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://oathanrex.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "PerspectiveFix",
+          "item": "https://oathanrex.github.io/perspective-fix/"
+        }
+      ]
+    }
+    </script>
     <style>
         :root {
             --bg-primary: #f8fafc;
@@ -79,16 +150,16 @@
             --teal-text: #0d9488;
             --cyan-bg: #cffafe;
             --cyan-text: #0891b2;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
             --checker-1: #e5e7eb;
             --checker-2: #ffffff;
-            --loading-bg: rgba(255,255,255,0.9);
+            --loading-bg: rgba(255, 255, 255, 0.9);
             --error-bg: #fef2f2;
             --error-border: #fecaca;
             --error-text: #dc2626;
         }
-        
+
         [data-theme="dark"] {
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
@@ -110,22 +181,22 @@
             --teal-text: #5eead4;
             --cyan-bg: #164e63;
             --cyan-text: #67e8f9;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
             --checker-1: #374151;
             --checker-2: #1f2937;
-            --loading-bg: rgba(15,23,42,0.9);
+            --loading-bg: rgba(15, 23, 42, 0.9);
             --error-bg: #450a0a;
             --error-border: #991b1b;
             --error-text: #fca5a5;
         }
-        
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: var(--bg-primary);
@@ -133,16 +204,15 @@
             color: var(--text-secondary);
             line-height: 1.6;
         }
-        
+
         body.ready,
         body.ready * {
-            transition: background-color 0.2s ease, 
-                        border-color 0.2s ease, 
-                        color 0.2s ease, 
-                        box-shadow 0.2s ease;
+            transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease,
+                box-shadow 0.2s ease;
         }
-        
-        /* Exclude certain elements from transition */
+
         body.ready .corner,
         body.ready canvas,
         body.ready .spin {
@@ -171,97 +241,125 @@
             -webkit-mask-image: url('assets/icons/logo.svg');
             mask-image: url('assets/icons/logo.svg');
         }
+
         .icon-moon {
             -webkit-mask-image: url('assets/icons/icon-moon.svg');
             mask-image: url('assets/icons/icon-moon.svg');
         }
+
         .icon-sun {
             -webkit-mask-image: url('assets/icons/icon-sun.svg');
             mask-image: url('assets/icons/icon-sun.svg');
         }
+
         .icon-coffee {
             -webkit-mask-image: url('assets/icons/icon-coffee.svg');
             mask-image: url('assets/icons/icon-coffee.svg');
         }
+
         .icon-upload-cloud {
             -webkit-mask-image: url('assets/icons/icon-upload-cloud.svg');
             mask-image: url('assets/icons/icon-upload-cloud.svg');
         }
+
         .icon-new-image {
             -webkit-mask-image: url('assets/icons/icon-new-image.svg');
             mask-image: url('assets/icons/icon-new-image.svg');
         }
+
         .icon-reset {
             -webkit-mask-image: url('assets/icons/icon-reset.svg');
             mask-image: url('assets/icons/icon-reset.svg');
         }
+
         .icon-download {
             -webkit-mask-image: url('assets/icons/icon-download.svg');
             mask-image: url('assets/icons/icon-download.svg');
         }
+
         .icon-cursor-drag {
             -webkit-mask-image: url('assets/icons/icon-cursor-drag.svg');
             mask-image: url('assets/icons/icon-cursor-drag.svg');
         }
+
         .icon-checkmark {
             -webkit-mask-image: url('assets/icons/icon-checkmark.svg');
             mask-image: url('assets/icons/icon-checkmark.svg');
         }
+
         .icon-spinner {
             -webkit-mask-image: url('assets/icons/icon-spinner.svg');
             mask-image: url('assets/icons/icon-spinner.svg');
         }
+
         .icon-document {
             -webkit-mask-image: url('assets/icons/icon-document.svg');
             mask-image: url('assets/icons/icon-document.svg');
         }
+
         .icon-building {
             -webkit-mask-image: url('assets/icons/icon-building.svg');
             mask-image: url('assets/icons/icon-building.svg');
         }
+
         .icon-book {
             -webkit-mask-image: url('assets/icons/icon-book.svg');
             mask-image: url('assets/icons/icon-book.svg');
         }
+
         .icon-whiteboard {
             -webkit-mask-image: url('assets/icons/icon-whiteboard.svg');
             mask-image: url('assets/icons/icon-whiteboard.svg');
         }
+
         .icon-image {
             -webkit-mask-image: url('assets/icons/icon-image.svg');
             mask-image: url('assets/icons/icon-image.svg');
         }
+
         .icon-screen {
             -webkit-mask-image: url('assets/icons/icon-screen.svg');
             mask-image: url('assets/icons/icon-screen.svg');
         }
+
         .icon-lock-privacy {
             -webkit-mask-image: url('assets/icons/icon-lock-privacy.svg');
             mask-image: url('assets/icons/icon-lock-privacy.svg');
         }
+
         .icon-lightning {
             -webkit-mask-image: url('assets/icons/icon-lightning.svg');
             mask-image: url('assets/icons/icon-lightning.svg');
         }
+
         .icon-image-quality {
             -webkit-mask-image: url('assets/icons/icon-image-quality.svg');
             mask-image: url('assets/icons/icon-image-quality.svg');
         }
+
         .icon-github {
             -webkit-mask-image: url('assets/icons/icon-github.svg');
             mask-image: url('assets/icons/icon-github.svg');
         }
+
         .icon-youtube {
             -webkit-mask-image: url('assets/icons/icon-youtube.svg');
             mask-image: url('assets/icons/icon-youtube.svg');
         }
+
         .icon-codepen {
             -webkit-mask-image: url('assets/icons/icon-codepen.svg');
             mask-image: url('assets/icons/icon-codepen.svg');
         }
+
         .icon-blog {
             -webkit-mask-image: url('assets/icons/icon-blog.svg');
             mask-image: url('assets/icons/icon-blog.svg');
+        }
+
+        .icon-question {
+            -webkit-mask-image: url('assets/icons/icon-question.svg');
+            mask-image: url('assets/icons/icon-question.svg');
         }
 
         /* ========================================
@@ -275,7 +373,7 @@
             top: 0;
             z-index: 100;
         }
-        
+
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -284,14 +382,14 @@
             justify-content: space-between;
             gap: 1rem;
         }
-        
+
         .header-left {
             display: flex;
             align-items: center;
             gap: 0.75rem;
             min-width: 0;
         }
-        
+
         .logo {
             width: 40px;
             height: 40px;
@@ -302,31 +400,31 @@
             justify-content: center;
             flex-shrink: 0;
         }
-        
-        .logo .icon { 
-            color: white; 
-            width: 24px; 
-            height: 24px; 
+
+        .logo .icon {
+            color: white;
+            width: 24px;
+            height: 24px;
         }
-        
+
         .brand h1 {
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-primary);
             white-space: nowrap;
         }
-        
+
         .brand p {
             font-size: 0.75rem;
             color: var(--text-muted);
         }
-        
+
         .header-right {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .nav-link {
             color: var(--text-muted);
             text-decoration: none;
@@ -334,12 +432,12 @@
             padding: 0.5rem 0.75rem;
             border-radius: 6px;
         }
-        
+
         .nav-link:hover {
             color: var(--accent);
             background: var(--accent-lighter);
         }
-        
+
         .theme-btn {
             width: 40px;
             height: 40px;
@@ -353,23 +451,34 @@
             color: var(--text-muted);
             flex-shrink: 0;
         }
-        
+
         .theme-btn:hover {
             background: var(--accent-light);
             color: var(--accent);
             border-color: var(--accent);
         }
-        
-        .theme-btn .icon { 
-            width: 20px; 
-            height: 20px; 
+
+        .theme-btn .icon {
+            width: 20px;
+            height: 20px;
         }
-        
-        .theme-btn .icon-sun { display: none; }
-        .theme-btn .icon-moon { display: block; }
-        [data-theme="dark"] .theme-btn .icon-sun { display: block; }
-        [data-theme="dark"] .theme-btn .icon-moon { display: none; }
-        
+
+        .theme-btn .icon-sun {
+            display: none;
+        }
+
+        .theme-btn .icon-moon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-btn .icon-sun {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-btn .icon-moon {
+            display: none;
+        }
+
         .coffee-btn {
             display: flex;
             align-items: center;
@@ -383,32 +492,47 @@
             text-decoration: none;
             flex-shrink: 0;
         }
-        
+
         .coffee-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(255, 221, 0, 0.4);
         }
-        
-        .coffee-btn .icon { 
-            width: 20px; 
-            height: 20px; 
+
+        .coffee-btn .icon {
+            width: 20px;
+            height: 20px;
         }
-        
-        .coffee-btn .text { 
-            display: inline; 
+
+        .coffee-btn .text {
+            display: inline;
         }
-        
-        /* Mobile responsive */
+
         @media (max-width: 640px) {
-            .brand p { display: none; }
-            .nav-link { display: none; }
-            .coffee-btn .text { display: none; }
-            .coffee-btn { padding: 0.5rem; }
+            .brand p {
+                display: none;
+            }
+
+            .nav-link {
+                display: none;
+            }
+
+            .coffee-btn .text {
+                display: none;
+            }
+
+            .coffee-btn {
+                padding: 0.5rem;
+            }
         }
-        
+
         @media (min-width: 641px) {
-            .brand p { display: block; }
-            .nav-link { display: block; }
+            .brand p {
+                display: block;
+            }
+
+            .nav-link {
+                display: block;
+            }
         }
 
         /* ========================================
@@ -419,27 +543,31 @@
             margin: 0 auto;
             padding: 1.5rem;
         }
-        
+
         .hero {
             text-align: center;
             margin-bottom: 2rem;
         }
-        
+
         .hero h2 {
             font-size: 1.75rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
-        
+
         .hero p {
             color: var(--text-muted);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.7;
         }
-        
+
         @media (min-width: 768px) {
-            .hero h2 { font-size: 2.25rem; }
+            .hero h2 {
+                font-size: 2.25rem;
+            }
         }
 
         /* ========================================
@@ -453,13 +581,13 @@
             background: var(--bg-secondary);
             cursor: pointer;
         }
-        
+
         .upload-zone:hover,
         .upload-zone.drag-over {
             border-color: var(--accent);
             background: var(--bg-hover);
         }
-        
+
         .upload-icon {
             width: 64px;
             height: 64px;
@@ -471,23 +599,23 @@
             margin: 0 auto 1rem;
             color: var(--accent);
         }
-        
-        .upload-icon .icon { 
-            width: 32px; 
-            height: 32px; 
+
+        .upload-icon .icon {
+            width: 32px;
+            height: 32px;
         }
-        
+
         .upload-zone h3 {
             font-size: 1.125rem;
             color: var(--text-secondary);
             margin-bottom: 0.25rem;
         }
-        
+
         .upload-zone p {
             font-size: 0.875rem;
             color: var(--text-light);
         }
-        
+
         .error-msg {
             background: var(--error-bg);
             border: 1px solid var(--error-border);
@@ -501,14 +629,14 @@
         /* ========================================
            EDITOR
            ======================================== */
-        .editor { 
-            display: none; 
+        .editor {
+            display: none;
         }
-        
-        .editor.active { 
-            display: block; 
+
+        .editor.active {
+            display: block;
         }
-        
+
         .toolbar {
             background: var(--bg-secondary);
             border-radius: 0.75rem;
@@ -521,12 +649,12 @@
             justify-content: space-between;
             box-shadow: var(--shadow-sm);
         }
-        
-        .btn-group { 
-            display: flex; 
-            gap: 0.5rem; 
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
         }
-        
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -540,41 +668,43 @@
             cursor: pointer;
             min-height: 40px;
         }
-        
-        .btn:disabled { 
-            opacity: 0.6; 
-            cursor: not-allowed; 
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
-        
-        .btn .icon { 
-            width: 18px; 
-            height: 18px; 
+
+        .btn .icon {
+            width: 18px;
+            height: 18px;
         }
-        
+
         .btn-sec {
             background: var(--bg-tertiary);
             color: var(--text-tertiary);
         }
-        
-        .btn-sec:hover:not(:disabled) { 
-            background: var(--border-primary); 
+
+        .btn-sec:hover:not(:disabled) {
+            background: var(--border-primary);
         }
-        
+
         .btn-pri {
             background: var(--accent);
             color: white;
         }
-        
-        .btn-pri:hover:not(:disabled) { 
-            background: var(--accent-hover); 
+
+        .btn-pri:hover:not(:disabled) {
+            background: var(--accent-hover);
         }
-        
-        .btn-text { 
-            display: none; 
+
+        .btn-text {
+            display: none;
         }
-        
+
         @media (min-width: 480px) {
-            .btn-text { display: inline; }
+            .btn-text {
+                display: inline;
+            }
         }
 
         /* ========================================
@@ -585,20 +715,20 @@
             grid-template-columns: 1fr;
             gap: 1rem;
         }
-        
+
         @media (min-width: 768px) {
-            .canvas-grid { 
-                grid-template-columns: 1fr 1fr; 
+            .canvas-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
-        
+
         .panel {
             background: var(--bg-secondary);
             border-radius: 0.75rem;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
-        
+
         .panel-header {
             background: var(--bg-tertiary);
             padding: 0.75rem 1rem;
@@ -610,20 +740,20 @@
             justify-content: space-between;
             gap: 0.5rem;
         }
-        
+
         .panel-title {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-weight: 600;
         }
-        
-        .panel-title .icon { 
-            width: 18px; 
-            height: 18px; 
-            color: var(--accent); 
+
+        .panel-title .icon {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
         }
-        
+
         .dim-badge {
             font-size: 0.7rem;
             font-weight: 500;
@@ -633,7 +763,7 @@
             border-radius: 4px;
             font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
         }
-        
+
         .panel-body {
             padding: 1rem;
             display: flex;
@@ -644,20 +774,20 @@
             overflow: auto;
             background: var(--bg-tertiary);
         }
-        
+
         .canvas-wrap {
             position: relative;
             display: inline-block;
             line-height: 0;
         }
-        
+
         .canvas-wrap canvas {
             max-width: 100%;
             max-height: 50vh;
             display: block;
             border-radius: 4px;
         }
-        
+
         .preview-wrap {
             position: relative;
             display: inline-flex;
@@ -666,7 +796,7 @@
             min-width: 120px;
             min-height: 120px;
             border-radius: 4px;
-            background-image: 
+            background-image:
                 linear-gradient(45deg, var(--checker-1) 25%, transparent 25%),
                 linear-gradient(-45deg, var(--checker-1) 25%, transparent 25%),
                 linear-gradient(45deg, transparent 75%, var(--checker-1) 75%),
@@ -675,7 +805,7 @@
             background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
             background-color: var(--checker-2);
         }
-        
+
         #prevCanvas {
             display: block;
             border-radius: 4px;
@@ -695,28 +825,28 @@
             position: absolute;
             cursor: grab;
             transform: translate(-50%, -50%);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             z-index: 10;
             touch-action: none;
         }
-        
-        .corner:hover { 
-            background: var(--accent-hover); 
-            transform: translate(-50%, -50%) scale(1.1); 
+
+        .corner:hover {
+            background: var(--accent-hover);
+            transform: translate(-50%, -50%) scale(1.1);
         }
-        
-        .corner.active { 
-            cursor: grabbing; 
-            background: var(--accent-active); 
+
+        .corner.active {
+            cursor: grabbing;
+            background: var(--accent-active);
         }
-        
+
         @media (max-width: 768px) {
-            .corner { 
-                width: 40px; 
-                height: 40px; 
+            .corner {
+                width: 44px;
+                height: 44px;
             }
         }
-        
+
         .quad-svg {
             position: absolute;
             top: 0;
@@ -740,32 +870,34 @@
             pointer-events: none;
             transition: opacity 0.15s ease;
         }
-        
-        .loading-overlay.show { 
-            opacity: 1; 
+
+        .loading-overlay.show {
+            opacity: 1;
         }
-        
-        .loading-overlay .icon { 
-            width: 28px; 
-            height: 28px; 
-            color: var(--accent); 
+
+        .loading-overlay .icon {
+            width: 28px;
+            height: 28px;
+            color: var(--accent);
         }
-        
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
-        
-        .spin { 
-            animation: spin 0.8s linear infinite; 
+
+        .spin {
+            animation: spin 0.8s linear infinite;
         }
 
         /* ========================================
            SECTIONS
            ======================================== */
-        .section { 
-            margin-top: 4rem; 
+        .section {
+            margin-top: 4rem;
         }
-        
+
         .section-title {
             text-align: center;
             font-size: 1.5rem;
@@ -773,19 +905,19 @@
             color: var(--text-primary);
             margin-bottom: 2rem;
         }
-        
+
         /* Steps */
         .steps {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
         }
-        
+
         .step {
             text-align: center;
             padding: 1.5rem 1rem;
         }
-        
+
         .step-num {
             width: 50px;
             height: 50px;
@@ -799,26 +931,26 @@
             font-weight: 700;
             color: var(--accent);
         }
-        
+
         .step h3 {
             font-size: 1rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
-        
-        .step p { 
-            font-size: 0.875rem; 
-            color: var(--text-muted); 
+
+        .step p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
         }
-        
+
         /* Use cases */
         .usecases {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 1rem;
         }
-        
+
         .usecase {
             background: var(--bg-secondary);
             border-radius: 0.75rem;
@@ -826,12 +958,12 @@
             text-align: center;
             box-shadow: var(--shadow-sm);
         }
-        
+
         .usecase:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-lg);
         }
-        
+
         .usecase-icon {
             width: 44px;
             height: 44px;
@@ -843,32 +975,32 @@
             margin: 0 auto 0.75rem;
             color: var(--accent);
         }
-        
-        .usecase-icon .icon { 
-            width: 22px; 
-            height: 22px; 
+
+        .usecase-icon .icon {
+            width: 22px;
+            height: 22px;
         }
-        
-        .usecase p { 
-            font-size: 0.875rem; 
-            font-weight: 500; 
-            color: var(--text-secondary); 
+
+        .usecase p {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
-        
+
         /* Features */
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.5rem;
         }
-        
+
         .feature {
             background: var(--bg-secondary);
             border-radius: 0.75rem;
             padding: 1.5rem;
             box-shadow: var(--shadow-sm);
         }
-        
+
         .feature-icon {
             width: 44px;
             height: 44px;
@@ -880,32 +1012,141 @@
             margin-bottom: 1rem;
             color: var(--accent);
         }
-        
-        .feature-icon .icon { 
-            width: 22px; 
-            height: 22px; 
+
+        .feature-icon .icon {
+            width: 22px;
+            height: 22px;
         }
-        
-        .feature-icon.teal { 
-            background: var(--teal-bg); 
-            color: var(--teal-text); 
+
+        .feature-icon.teal {
+            background: var(--teal-bg);
+            color: var(--teal-text);
         }
-        
-        .feature-icon.cyan { 
-            background: var(--cyan-bg); 
-            color: var(--cyan-text); 
+
+        .feature-icon.cyan {
+            background: var(--cyan-bg);
+            color: var(--cyan-text);
         }
-        
+
         .feature h3 {
             font-size: 1.1rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
-        
-        .feature p { 
-            font-size: 0.875rem; 
-            color: var(--text-muted); 
+
+        .feature p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           INFO CARDS (Humanized Content)
+           ======================================== */
+        .info-card {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-primary);
+        }
+
+        .info-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .info-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .info-card li {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+            line-height: 1.7;
+        }
+
+        .info-card li strong {
+            color: var(--text-primary);
+        }
+
+        /* ========================================
+           FAQ SECTION (Humanized)
+           ======================================== */
+        .faq-section {
+            margin-top: 4rem;
+        }
+
+        .faq-container {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-primary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-container h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .faq-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .faq-item h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-item h4::before {
+            content: "→";
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .faq-item p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            padding-left: 1.25rem;
         }
 
         /* ========================================
@@ -917,13 +1158,13 @@
             margin-top: 4rem;
             padding: 2.5rem 1.5rem;
         }
-        
+
         .footer-inner {
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
         }
-        
+
         .footer-brand {
             display: flex;
             align-items: center;
@@ -931,23 +1172,23 @@
             gap: 0.75rem;
             margin-bottom: 1.5rem;
         }
-        
-        .footer-brand .logo { 
-            width: 32px; 
-            height: 32px; 
+
+        .footer-brand .logo {
+            width: 32px;
+            height: 32px;
         }
-        
-        .footer-brand .logo .icon { 
-            width: 20px; 
-            height: 20px; 
+
+        .footer-brand .logo .icon {
+            width: 20px;
+            height: 20px;
         }
-        
-        .footer-brand h3 { 
-            font-size: 1rem; 
-            font-weight: 700; 
-            color: var(--text-primary); 
+
+        .footer-brand h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
         }
-        
+
         .socials {
             display: flex;
             justify-content: center;
@@ -955,7 +1196,7 @@
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
         }
-        
+
         .social {
             width: 38px;
             height: 38px;
@@ -967,33 +1208,33 @@
             color: var(--text-muted);
             text-decoration: none;
         }
-        
+
         .social:hover {
             background: var(--accent);
             color: white;
             transform: translateY(-2px);
         }
-        
-        .social .icon { 
-            width: 18px; 
-            height: 18px; 
+
+        .social .icon {
+            width: 18px;
+            height: 18px;
         }
-        
-        .footer-text { 
-            font-size: 0.8rem; 
-            color: var(--text-muted); 
-            margin-bottom: 0.5rem; 
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
         }
-        
-        .footer-text a { 
-            color: var(--accent); 
-            text-decoration: none; 
+
+        .footer-text a {
+            color: var(--accent);
+            text-decoration: none;
         }
-        
-        .footer-text a:hover { 
-            text-decoration: underline; 
+
+        .footer-text a:hover {
+            text-decoration: underline;
         }
-        
+
         .coffee-footer {
             display: inline-flex;
             align-items: center;
@@ -1007,40 +1248,43 @@
             text-decoration: none;
             margin-top: 1rem;
         }
-        
+
         .coffee-footer:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(255, 221, 0, 0.4);
         }
-        
-        .coffee-footer .icon { 
-            width: 18px; 
-            height: 18px; 
+
+        .coffee-footer .icon {
+            width: 18px;
+            height: 18px;
         }
 
         /* ========================================
            UTILITIES
            ======================================== */
-        .hidden { 
-            display: none !important; 
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
+
 <body>
     <header class="header">
         <div class="header-content">
             <div class="header-left">
-                <div class="logo">
+                <div class="logo" role="img" aria-label="PerspectiveFix Logo">
                     <span class="icon icon-logo"></span>
                 </div>
                 <div class="brand">
                     <h1>PerspectiveFix</h1>
-                    <p>Free Perspective Correction</p>
+                    <p>Free Perspective Correction Tool</p>
                 </div>
             </div>
             <div class="header-right">
                 <a href="#how-it-works" class="nav-link">How it works</a>
-                <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme" title="Toggle theme (T)">
+                <a href="#faq" class="nav-link">FAQ</a>
+                <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme"
+                    title="Toggle theme (T)">
                     <span class="icon icon-moon"></span>
                     <span class="icon icon-sun"></span>
                 </button>
@@ -1053,34 +1297,39 @@
     </header>
 
     <main class="main">
+        <!-- HUMANIZED Hero Section -->
         <section id="heroSection" class="hero">
-            <h2>Fix Perspective Distortion Instantly</h2>
-            <p>Upload your image, drag the corners, and download the corrected version. 100% private - your images never leave your device.</p>
+            <h2>Fix Tilted Photos in Seconds – No Software Needed</h2>
+            <p>Quickly straighten tilted photos of documents, whiteboards, or signs. PerspectiveFix works entirely in
+                your browser, meaning your images stay 100% private and never touch a server.</p>
         </section>
 
-        <div id="uploadZone" class="upload-zone">
-            <input type="file" id="fileInput" accept="image/*" class="hidden">
+        <div id="uploadZone" class="upload-zone" role="button" tabindex="0"
+            aria-label="Upload image for perspective correction">
+            <input type="file" id="fileInput" accept="image/*" class="hidden" aria-label="Choose image file">
             <div class="upload-icon">
                 <span class="icon icon-upload-cloud"></span>
             </div>
             <h3>Drop your image here or click to upload</h3>
             <p>Supports JPG, PNG, WebP • Paste from clipboard (Ctrl+V)</p>
-            <div id="errorMsg" class="error-msg hidden"></div>
+            <div id="errorMsg" class="error-msg hidden" role="alert"></div>
         </div>
 
-        <section id="editor" class="editor">
+        <section id="editor" class="editor" aria-label="Image perspective correction editor">
             <div class="toolbar">
                 <div class="btn-group">
-                    <button id="newBtn" class="btn btn-sec" type="button">
+                    <button id="newBtn" class="btn btn-sec" type="button" aria-label="Upload new image">
                         <span class="icon icon-new-image"></span>
                         <span class="btn-text">New</span>
                     </button>
-                    <button id="resetBtn" class="btn btn-sec" type="button" title="Reset (R)">
+                    <button id="resetBtn" class="btn btn-sec" type="button" title="Reset corners (R)"
+                        aria-label="Reset corner positions">
                         <span class="icon icon-reset"></span>
                         <span class="btn-text">Reset</span>
                     </button>
                 </div>
-                <button id="downloadBtn" class="btn btn-pri" type="button" title="Download (Ctrl+S)">
+                <button id="downloadBtn" class="btn btn-pri" type="button" title="Download corrected image (Ctrl+S)"
+                    aria-label="Download corrected image">
                     <span id="downloadIcon" class="icon icon-download"></span>
                     <span id="downloadText" class="btn-text">Download</span>
                 </button>
@@ -1091,15 +1340,15 @@
                     <div class="panel-header">
                         <div class="panel-title">
                             <span class="icon icon-cursor-drag"></span>
-                            <span>Original</span>
+                            <span>Original – Drag the corners</span>
                         </div>
-                        <span id="origDim" class="dim-badge">—</span>
+                        <span id="origDim" class="dim-badge" aria-label="Original image dimensions">—</span>
                     </div>
                     <div class="panel-body" id="origContainer">
                         <div class="canvas-wrap" id="canvasWrap">
-                            <canvas id="srcCanvas"></canvas>
-                            <svg id="quadSvg" class="quad-svg"></svg>
-                            <div id="corners"></div>
+                            <canvas id="srcCanvas" aria-label="Original image with perspective selection"></canvas>
+                            <svg id="quadSvg" class="quad-svg" aria-hidden="true"></svg>
+                            <div id="corners" aria-label="Draggable corner handles"></div>
                         </div>
                     </div>
                 </div>
@@ -1108,14 +1357,14 @@
                     <div class="panel-header">
                         <div class="panel-title">
                             <span class="icon icon-checkmark"></span>
-                            <span>Corrected</span>
+                            <span>Fixed – Ready to download</span>
                         </div>
-                        <span id="prevDim" class="dim-badge">—</span>
+                        <span id="prevDim" class="dim-badge" aria-label="Output image dimensions">—</span>
                     </div>
                     <div class="panel-body">
                         <div class="preview-wrap" id="previewWrap">
-                            <canvas id="prevCanvas"></canvas>
-                            <div id="loadingOverlay" class="loading-overlay">
+                            <canvas id="prevCanvas" aria-label="Perspective corrected image preview"></canvas>
+                            <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
                                 <span class="icon icon-spinner spin"></span>
                             </div>
                         </div>
@@ -1124,97 +1373,168 @@
             </div>
         </section>
 
+        <!-- How It Works Section -->
         <section id="how-it-works" class="section">
             <h2 class="section-title">How It Works</h2>
             <div class="steps">
                 <div class="step">
                     <div class="step-num">1</div>
                     <h3>Upload</h3>
-                    <p>Drop or select your image</p>
+                    <p>Drop or pick your tilted photo</p>
                 </div>
                 <div class="step">
                     <div class="step-num">2</div>
-                    <h3>Adjust</h3>
-                    <p>Drag corners to fix perspective</p>
+                    <h3>Drag Corners</h3>
+                    <p>Move the 4 handles to mark what should be straight</p>
                 </div>
                 <div class="step">
                     <div class="step-num">3</div>
-                    <h3>Preview</h3>
-                    <p>See real-time correction</p>
+                    <h3>See It Fixed</h3>
+                    <p>Watch the preview update in real-time</p>
                 </div>
                 <div class="step">
                     <div class="step-num">4</div>
                     <h3>Download</h3>
-                    <p>Save at full resolution</p>
+                    <p>Get your corrected image at full quality</p>
                 </div>
             </div>
         </section>
 
+        <!-- HUMANIZED: Why do your photos look tilted? -->
+        <div class="info-card">
+            <h3>Why do your photos look tilted?</h3>
+            <p>We've all been there: you try to take a quick photo of a document or a whiteboard, but because you're
+                standing at an angle, the image looks skewed or "trapezoid" shaped. This is called perspective
+                distortion.</p>
+            <p>PerspectiveFix uses a smart <strong>perspective warp</strong> algorithm to pull those corners back into a
+                perfect rectangle. It's like having a high-end document scanner right in your web browser—completely
+                free and without any annoying watermarks.</p>
+        </div>
+
+        <!-- HUMANIZED: Perfect for everyday tasks -->
+        <div class="info-card">
+            <h3>Perfect for everyday tasks:</h3>
+            <ul>
+                <li>✅ <strong>Better Document Scans:</strong> Fix crooked photos of receipts, ID cards, or contracts.
+                </li>
+                <li>✅ <strong>Clearer Study Notes:</strong> Straighten whiteboard lectures and book pages for easier
+                    reading.</li>
+                <li>✅ <strong>Architecture & Real Estate:</strong> Fix tilted lines in building photos or room
+                    interiors.</li>
+                <li>✅ <strong>Professional Product Shots:</strong> Make packaging and box photos look flat and
+                    professional.</li>
+            </ul>
+        </div>
+
+        <!-- Use Cases Grid -->
         <section class="section">
-            <h2 class="section-title">Perfect For</h2>
+            <h2 class="section-title">Works Great With</h2>
             <div class="usecases">
-                <div class="usecase">
+                <article class="usecase">
                     <div class="usecase-icon">
                         <span class="icon icon-document"></span>
                     </div>
                     <p>Documents</p>
-                </div>
-                <div class="usecase">
+                </article>
+                <article class="usecase">
                     <div class="usecase-icon">
                         <span class="icon icon-building"></span>
                     </div>
                     <p>Buildings</p>
-                </div>
-                <div class="usecase">
+                </article>
+                <article class="usecase">
                     <div class="usecase-icon">
                         <span class="icon icon-book"></span>
                     </div>
-                    <p>Books</p>
-                </div>
-                <div class="usecase">
+                    <p>Book Pages</p>
+                </article>
+                <article class="usecase">
                     <div class="usecase-icon">
                         <span class="icon icon-whiteboard"></span>
                     </div>
                     <p>Whiteboards</p>
-                </div>
-                <div class="usecase">
+                </article>
+                <article class="usecase">
                     <div class="usecase-icon">
                         <span class="icon icon-image"></span>
                     </div>
                     <p>Posters</p>
-                </div>
-                <div class="usecase">
+                </article>
+                <article class="usecase">
                     <div class="usecase-icon">
                         <span class="icon icon-screen"></span>
                     </div>
                     <p>Screens</p>
-                </div>
+                </article>
             </div>
         </section>
 
+        <!-- Features Section -->
         <section class="section">
-            <h2 class="section-title">Why PerspectiveFix?</h2>
+            <h2 class="section-title">Why People Love This Tool</h2>
             <div class="features">
-                <div class="feature">
+                <article class="feature">
                     <div class="feature-icon">
                         <span class="icon icon-lock-privacy"></span>
                     </div>
-                    <h3>100% Private</h3>
-                    <p>Images never leave your device. All processing is local.</p>
-                </div>
-                <div class="feature">
+                    <h3>Your Photos Stay Private</h3>
+                    <p>Everything happens right here in your browser. We never see, store, or upload your images
+                        anywhere. Perfect for sensitive documents.</p>
+                </article>
+                <article class="feature">
                     <div class="feature-icon teal">
                         <span class="icon icon-lightning"></span>
                     </div>
-                    <h3>Lightning Fast</h3>
-                    <p>No server uploads. Instant real-time preview.</p>
-                </div>
-                <div class="feature">
+                    <h3>No Waiting Around</h3>
+                    <p>Since there's no server upload, you see the corrected result instantly as you move the corners.
+                        Super fast, even on slower connections.</p>
+                </article>
+                <article class="feature">
                     <div class="feature-icon cyan">
                         <span class="icon icon-image-quality"></span>
                     </div>
-                    <h3>High Quality</h3>
-                    <p>Full resolution export. No watermarks.</p>
+                    <h3>Full Quality, No Watermarks</h3>
+                    <p>Download your fixed image at the original resolution. We don't slap a logo on your work—it's
+                        yours, clean and ready to use.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- HUMANIZED FAQ Section -->
+        <section class="faq-section" id="faq">
+            <div class="faq-container">
+                <h2>Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <h4>Is this tool really free?</h4>
+                    <p>Yes, PerspectiveFix is a 100% free online perspective correction tool. There are no hidden fees,
+                        no subscriptions, and we don't add watermarks to your work.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Do I need to upload my private photos to a server?</h4>
+                    <p>No. Unlike other "online" tools, our processing happens locally on your device. Your photos are
+                        never sent to a server, making it the safest way to fix sensitive documents like contracts, IDs,
+                        or personal notes.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Can I use this on my phone?</h4>
+                    <p>Absolutely. It's designed to be lightweight and works directly in any modern mobile browser. The
+                        touch-friendly corner handles make it easy to fix your "scanned" photos on the go.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>What image formats can I use?</h4>
+                    <p>You can use JPG, PNG, WebP, and most common image formats. You can also paste an image directly
+                        from your clipboard by pressing Ctrl+V (or Cmd+V on Mac).</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>How does the perspective correction actually work?</h4>
+                    <p>When you drag the four corners, the tool calculates a perspective warp transformation. It then
+                        "pulls" those corners to form a perfect rectangle, straightening your image mathematically.
+                        Think of it like stretching a rubber photo until it looks flat.</p>
                 </div>
             </div>
         </section>
@@ -1229,656 +1549,1226 @@
                 <h3>PerspectiveFix</h3>
             </div>
             <div class="socials">
-                <a href="https://oathanrex.github.io" target="_blank" rel="noopener" class="social" title="GitHub">
+                <a href="https://github.com/oathanrex" target="_blank" rel="noopener" class="social" title="GitHub"
+                    aria-label="Visit OathanRex on GitHub">
                     <span class="icon icon-github"></span>
                 </a>
-                <a href="https://youtube.com/@oathanrex" target="_blank" rel="noopener" class="social" title="YouTube">
+                <a href="https://youtube.com/@oathanrex" target="_blank" rel="noopener" class="social" title="YouTube"
+                    aria-label="Visit OathanRex on YouTube">
                     <span class="icon icon-youtube"></span>
                 </a>
-                <a href="https://codepen.io/OathanRex" target="_blank" rel="noopener" class="social" title="CodePen">
+                <a href="https://codepen.io/OathanRex" target="_blank" rel="noopener" class="social" title="CodePen"
+                    aria-label="Visit OathanRex on CodePen">
                     <span class="icon icon-codepen"></span>
                 </a>
-                <a href="https://oathanrex.blogspot.com" target="_blank" rel="noopener" class="social" title="Blog">
+                <a href="https://oathanrex.blogspot.com" target="_blank" rel="noopener" class="social" title="Blog"
+                    aria-label="Visit OathanRex Blog">
                     <span class="icon icon-blog"></span>
                 </a>
             </div>
-            <p class="footer-text">Your images are processed entirely in your browser.</p>
+            <p class="footer-text">Free online perspective correction tool. Your images never leave your browser.</p>
             <a href="https://www.buymeacoffee.com/oathanrex" target="_blank" rel="noopener" class="coffee-footer">
                 <span class="icon icon-coffee"></span>
                 Support this project
             </a>
-            <p class="footer-text" style="margin-top:1.5rem">Made with ❤️ by <a href="https://oathanrex.github.io" target="_blank" rel="noopener">OathanRex</a></p>
+            <p class="footer-text" style="margin-top:1.5rem">
+                Made with ❤️ by <a href="https://oathanrex.github.io" target="_blank" rel="noopener">OathanRex</a> |
+                <a href="https://github.com/oathanrex/perspective-fix" target="_blank" rel="noopener">View on GitHub</a>
+            </p>
         </div>
     </footer>
 
     <script>
-    (function() {
-        'use strict';
-        
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        window.addEventListener('load', function() {
-            setTimeout(function() { 
-                document.body.classList.add('ready'); 
-            }, 100);
-        });
-        
-        // ============================================
-        // THEME TOGGLE
-        // ============================================
-        var themeBtn = document.getElementById('themeBtn');
-        
-        function toggleTheme() {
-            var current = document.documentElement.getAttribute('data-theme');
-            var next = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', next);
-            try { 
-                localStorage.setItem('theme', next); 
-            } catch(e) {
-                // localStorage not available
-            }
-        }
-        
-        themeBtn.addEventListener('click', toggleTheme);
-        
-        // ============================================
-        // WEB WORKER
-        // ============================================
-        var WORKER_CODE = 'var sw,sh,sd;function bi(x,y,dd,di){if(x<0||x>=sw-1||y<0||y>=sh-1){dd[di]=dd[di+1]=dd[di+2]=255;dd[di+3]=0;return}var x0=x|0,y0=y|0,dx=x-x0,dy=y-y0,dx1=1-dx,dy1=1-dy,i0=(y0*sw+x0)*4,i1=i0+4,i2=((y0+1)*sw+x0)*4,i3=i2+4,w0=dx1*dy1,w1=dx*dy1,w2=dx1*dy,w3=dx*dy;for(var c=0;c<4;c++)dd[di+c]=(w0*sd[i0+c]+w1*sd[i1+c]+w2*sd[i2+c]+w3*sd[i3+c])|0}function solve(A,b){var n=b.length,aug=A.map(function(r,i){return r.concat(b[i])});for(var c=0;c<n;c++){var mx=c;for(var r=c+1;r<n;r++)if(Math.abs(aug[r][c])>Math.abs(aug[mx][c]))mx=r;var t=aug[c];aug[c]=aug[mx];aug[mx]=t;if(Math.abs(aug[c][c])<1e-10)return null;for(var r=c+1;r<n;r++){var f=aug[r][c]/aug[c][c];for(var k=c;k<=n;k++)aug[r][k]-=f*aug[c][k]}}var x=[];for(var i=n-1;i>=0;i--){x[i]=aug[i][n];for(var j=i+1;j<n;j++)x[i]-=aug[i][j]*x[j];x[i]/=aug[i][i]}return x}function homo(src,dst){var A=[],b=[];for(var i=0;i<4;i++){var sx=src[i].x,sy=src[i].y,dx=dst[i].x,dy=dst[i].y;A.push([sx,sy,1,0,0,0,-dx*sx,-dx*sy]);A.push([0,0,0,sx,sy,1,-dy*sx,-dy*sy]);b.push(dx,dy)}var h=solve(A,b);return h?h.concat(1):null}self.onmessage=function(e){var d=e.data;sw=d.imageData.width;sh=d.imageData.height;sd=d.imageData.data;var dw=d.destWidth,dh=d.destHeight,dst=[{x:0,y:0},{x:dw,y:0},{x:dw,y:dh},{x:0,y:dh}];var H=homo(dst,d.srcCorners);if(!H){self.postMessage({error:1,requestId:d.requestId});return}var dd=new Uint8ClampedArray(dw*dh*4);for(var y=0;y<dh;y++)for(var x=0;x<dw;x++){var w=H[6]*x+H[7]*y+H[8],sx=(H[0]*x+H[1]*y+H[2])/w,sy=(H[3]*x+H[4]*y+H[5])/w;bi(sx,sy,dd,(y*dw+x)*4)}self.postMessage({data:dd,w:dw,h:dh,preview:d.preview,requestId:d.requestId},[dd.buffer])}';
-        
-        var worker = null;
-        var workerUrl = null;
-        
-        function getWorker() {
-            if (!worker) {
-                try {
-                    var blob = new Blob([WORKER_CODE], {type: 'application/javascript'});
-                    workerUrl = URL.createObjectURL(blob);
-                    worker = new Worker(workerUrl);
-                    worker.onmessage = onWorkerMsg;
-                    worker.onerror = function(e) {
-                        console.error('Worker error:', e);
-                        processing = false;
-                        hideLoading();
-                    };
-                } catch(e) {
-                    console.error('Worker creation failed:', e);
-                    return null;
-                }
-            }
-            return worker;
-        }
-        
-        // ============================================
-        // STATE VARIABLES
-        // ============================================
-        var origImg = null;
-        var origData = null;
-        var scale = 1;
-        var pts = [];
-        var dragging = false;
-        var dragIdx = -1;
-        var processing = false;
-        var pending = null;
-        var reqId = 0;
-        var dlReqId = null;
-        var fullCanvas = null;
-        
-        // ============================================
-        // DOM ELEMENTS
-        // ============================================
-        var uploadZone = document.getElementById('uploadZone');
-        var fileInput = document.getElementById('fileInput');
-        var errorMsg = document.getElementById('errorMsg');
-        var heroSection = document.getElementById('heroSection');
-        var editor = document.getElementById('editor');
-        var srcCanvas = document.getElementById('srcCanvas');
-        var srcCtx = srcCanvas.getContext('2d');
-        var prevCanvas = document.getElementById('prevCanvas');
-        var prevCtx = prevCanvas.getContext('2d');
-        var quadSvg = document.getElementById('quadSvg');
-        var cornersDiv = document.getElementById('corners');
-        var origDim = document.getElementById('origDim');
-        var prevDim = document.getElementById('prevDim');
-        var loadingOverlay = document.getElementById('loadingOverlay');
-        var newBtn = document.getElementById('newBtn');
-        var resetBtn = document.getElementById('resetBtn');
-        var downloadBtn = document.getElementById('downloadBtn');
-        var downloadIcon = document.getElementById('downloadIcon');
-        var downloadText = document.getElementById('downloadText');
-        
-        // ============================================
-        // HELPER FUNCTIONS
-        // ============================================
-        function showError(msg) {
-            errorMsg.textContent = msg;
-            errorMsg.classList.remove('hidden');
-        }
-        
-        function hideError() {
-            errorMsg.classList.add('hidden');
-        }
-        
-        function showLoading() {
-            loadingOverlay.classList.add('show');
-        }
-        
-        function hideLoading() {
-            loadingOverlay.classList.remove('show');
-        }
-        
-        function dist(a, b) {
-            var dx = b.x - a.x;
-            var dy = b.y - a.y;
-            return Math.sqrt(dx * dx + dy * dy);
-        }
-        
-        // ============================================
-        // FILE UPLOAD HANDLERS
-        // ============================================
-        uploadZone.addEventListener('click', function(e) {
-            if (e.target !== errorMsg) {
-                fileInput.click();
-            }
-        });
-        
-        uploadZone.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            uploadZone.classList.add('drag-over');
-        });
-        
-        uploadZone.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            uploadZone.classList.remove('drag-over');
-        });
-        
-        uploadZone.addEventListener('drop', function(e) {
-            e.preventDefault();
-            uploadZone.classList.remove('drag-over');
-            hideError();
-            var file = e.dataTransfer.files[0];
-            if (file && file.type.indexOf('image') === 0) {
-                loadFile(file);
-            } else if (file) {
-                showError('Please upload an image file');
-            }
-        });
-        
-        fileInput.addEventListener('change', function() {
-            hideError();
-            if (fileInput.files[0]) {
-                loadFile(fileInput.files[0]);
-            }
-        });
-        
-        // Clipboard paste
-        document.addEventListener('paste', function(e) {
-            var items = e.clipboardData && e.clipboardData.items;
-            if (!items) return;
-            for (var i = 0; i < items.length; i++) {
-                if (items[i].type.indexOf('image') === 0) {
-                    e.preventDefault();
-                    hideError();
-                    loadFile(items[i].getAsFile());
-                    break;
-                }
-            }
-        });
-        
-        function loadFile(file) {
-            var reader = new FileReader();
-            reader.onerror = function() { 
-                showError('Failed to read file'); 
-            };
-            reader.onload = function(e) {
-                var img = new Image();
-                img.onerror = function() { 
-                    showError('Failed to load image'); 
-                };
-                img.onload = function() {
-                    origImg = img;
-                    // Create canvas to get image data
-                    var tc = document.createElement('canvas');
-                    tc.width = img.width;
-                    tc.height = img.height;
-                    var tctx = tc.getContext('2d');
-                    tctx.drawImage(img, 0, 0);
-                    origData = tctx.getImageData(0, 0, img.width, img.height);
-                    setup();
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        // ============================================
-        // EDITOR SETUP
-        // ============================================
-        function setup() {
-            heroSection.classList.add('hidden');
-            uploadZone.classList.add('hidden');
-            editor.classList.add('active');
-            
-            var container = document.getElementById('origContainer');
-            var maxW = container.clientWidth - 32;
-            var maxH = window.innerHeight * 0.5;
-            scale = Math.min(maxW / origImg.width, maxH / origImg.height, 1);
-            
-            var w = Math.round(origImg.width * scale);
-            var h = Math.round(origImg.height * scale);
-            
-            srcCanvas.width = w;
-            srcCanvas.height = h;
-            srcCtx.drawImage(origImg, 0, 0, w, h);
-            
-            quadSvg.setAttribute('width', w);
-            quadSvg.setAttribute('height', h);
-            quadSvg.style.width = w + 'px';
-            quadSvg.style.height = h + 'px';
-            
-            origDim.textContent = origImg.width + ' × ' + origImg.height;
-            prevDim.textContent = '—';
-            
-            resetPts();
-        }
-        
-        function resetPts() {
-            var w = srcCanvas.width;
-            var h = srcCanvas.height;
-            var m = Math.min(w, h) * 0.1;
-            pts = [
-                {x: m, y: m},
-                {x: w - m, y: m},
-                {x: w - m, y: h - m},
-                {x: m, y: h - m}
-            ];
-            renderCorners();
-            renderQuad();
-            updatePreview();
-        }
-        
-        // ============================================
-        // CORNER RENDERING
-        // ============================================
-        function renderCorners() {
-            cornersDiv.innerHTML = '';
-            for (var i = 0; i < 4; i++) {
-                var el = document.createElement('div');
-                el.className = 'corner';
-                el.style.left = pts[i].x + 'px';
-                el.style.top = pts[i].y + 'px';
-                el.setAttribute('data-idx', String(i));
-                el.addEventListener('mousedown', startDrag);
-                el.addEventListener('touchstart', startDrag, {passive: false});
-                cornersDiv.appendChild(el);
-            }
-        }
-        
-        function renderQuad() {
-            var style = getComputedStyle(document.documentElement);
-            var color = style.getPropertyValue('--accent').trim() || '#059669';
-            
-            var points = pts.map(function(p) { 
-                return p.x + ',' + p.y; 
-            }).join(' ');
-            
-            var lines = '';
-            for (var i = 0; i < 4; i++) {
-                var n = (i + 1) % 4;
-                lines += '<line x1="' + pts[i].x + '" y1="' + pts[i].y + 
-                         '" x2="' + pts[n].x + '" y2="' + pts[n].y + 
-                         '" stroke="' + color + '" stroke-width="2" stroke-dasharray="5,4"/>';
-            }
-            
-            quadSvg.innerHTML = '<polygon points="' + points + 
-                '" fill="' + color + '" fill-opacity="0.12" stroke="' + 
-                color + '" stroke-width="2"/>' + lines;
-        }
-        
-        // ============================================
-        // DRAG HANDLERS
-        // ============================================
-        function startDrag(e) {
-            e.preventDefault();
-            dragging = true;
-            dragIdx = parseInt(e.target.getAttribute('data-idx'), 10);
-            e.target.classList.add('active');
-            
-            document.addEventListener('mousemove', onDrag);
-            document.addEventListener('mouseup', stopDrag);
-            document.addEventListener('touchmove', onDrag, {passive: false});
-            document.addEventListener('touchend', stopDrag);
-        }
-        
-        function onDrag(e) {
-            if (!dragging || dragIdx < 0) return;
-            e.preventDefault();
-            
-            var rect = srcCanvas.getBoundingClientRect();
-            var cx, cy;
-            
-            if (e.touches && e.touches.length > 0) {
-                cx = e.touches[0].clientX;
-                cy = e.touches[0].clientY;
-            } else {
-                cx = e.clientX;
-                cy = e.clientY;
-            }
-            
-            var x = Math.max(0, Math.min(srcCanvas.width, cx - rect.left));
-            var y = Math.max(0, Math.min(srcCanvas.height, cy - rect.top));
-            
-            pts[dragIdx] = {x: x, y: y};
-            
-            var el = cornersDiv.children[dragIdx];
-            if (el) {
-                el.style.left = x + 'px';
-                el.style.top = y + 'px';
-            }
-            
-            renderQuad();
-            updatePreview();
-        }
-        
-        function stopDrag() {
-            if (dragIdx >= 0 && cornersDiv.children[dragIdx]) {
-                cornersDiv.children[dragIdx].classList.remove('active');
-            }
-            dragging = false;
-            dragIdx = -1;
-            
-            document.removeEventListener('mousemove', onDrag);
-            document.removeEventListener('mouseup', stopDrag);
-            document.removeEventListener('touchmove', onDrag);
-            document.removeEventListener('touchend', stopDrag);
-        }
-        
-        // ============================================
-        // DIMENSION CALCULATION
-        // ============================================
-        function calcDims() {
-            var src = pts.map(function(p) {
-                return {x: p.x / scale, y: p.y / scale};
+        (function () {
+            'use strict';
+
+            // ============================================
+            // INITIALIZATION
+            // ============================================
+            window.addEventListener('load', function () {
+                setTimeout(function () {
+                    document.body.classList.add('ready');
+                }, 100);
             });
-            
-            var topWidth = dist(src[0], src[1]);
-            var bottomWidth = dist(src[3], src[2]);
-            var leftHeight = dist(src[0], src[3]);
-            var rightHeight = dist(src[1], src[2]);
-            
-            var w = Math.round(Math.max(topWidth, bottomWidth));
-            var h = Math.round(Math.max(leftHeight, rightHeight));
-            
-            return {
-                w: Math.max(1, w), 
-                h: Math.max(1, h), 
-                src: src
-            };
-        }
-        
-        // ============================================
-        // IMAGE PROCESSING
-        // ============================================
-        function process(srcCorners, dw, dh, preview, rid) {
-            if (!origData || dw < 1 || dh < 1) return;
-            
-            if (preview && processing) {
-                pending = {srcCorners: srcCorners, dw: dw, dh: dh, rid: rid};
-                return;
+
+            // ============================================
+            // DOM ELEMENTS - Get all required elements first
+            // ============================================
+            var themeBtn = document.getElementById('themeBtn');
+            var uploadZone = document.getElementById('uploadZone');
+            var fileInput = document.getElementById('fileInput');
+            var errorMsg = document.getElementById('errorMsg');
+            var heroSection = document.getElementById('heroSection');
+            var editor = document.getElementById('editor');
+            var srcCanvas = document.getElementById('srcCanvas');
+            var prevCanvas = document.getElementById('prevCanvas');
+            var quadSvg = document.getElementById('quadSvg');
+            var cornersDiv = document.getElementById('corners');
+            var origDim = document.getElementById('origDim');
+            var prevDim = document.getElementById('prevDim');
+            var loadingOverlay = document.getElementById('loadingOverlay');
+            var newBtn = document.getElementById('newBtn');
+            var resetBtn = document.getElementById('resetBtn');
+            var downloadBtn = document.getElementById('downloadBtn');
+            var downloadIcon = document.getElementById('downloadIcon');
+            var downloadText = document.getElementById('downloadText');
+
+            // ============================================
+            // CRITICAL ELEMENT VALIDATION
+            // ============================================
+            var criticalElements = [
+                { el: uploadZone, name: 'uploadZone' },
+                { el: fileInput, name: 'fileInput' },
+                { el: srcCanvas, name: 'srcCanvas' },
+                { el: prevCanvas, name: 'prevCanvas' },
+                { el: cornersDiv, name: 'corners' },
+                { el: quadSvg, name: 'quadSvg' },
+                { el: downloadBtn, name: 'downloadBtn' }
+            ];
+
+            var missingElements = [];
+            for (var i = 0; i < criticalElements.length; i++) {
+                if (!criticalElements[i].el) {
+                    missingElements.push(criticalElements[i].name);
+                }
             }
-            
-            processing = true;
-            if (preview) showLoading();
-            
-            var w = getWorker();
-            if (!w) {
-                processing = false;
-                hideLoading();
-                return;
-            }
-            
-            // Clone image data for worker
-            var clone = new ImageData(
-                new Uint8ClampedArray(origData.data),
-                origData.width,
-                origData.height
-            );
-            
-            w.postMessage({
-                imageData: clone,
-                srcCorners: srcCorners,
-                destWidth: dw,
-                destHeight: dh,
-                preview: preview,
-                requestId: rid
-            }, [clone.data.buffer]);
-        }
-        
-        function onWorkerMsg(e) {
-            var d = e.data;
-            
-            if (d.error) {
-                processing = false;
-                hideLoading();
-                if (d.requestId === dlReqId) {
-                    resetDlBtn();
-                    showError('Processing failed. Try adjusting corners.');
+
+            if (missingElements.length > 0) {
+                console.error('Critical elements missing:', missingElements.join(', '));
+                if (document.body) {
+                    var errorDiv = document.createElement('div');
+                    errorDiv.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fee;color:#c00;padding:20px;border-radius:8px;text-align:center;z-index:9999;';
+                    errorDiv.innerHTML = '<h3>Application Error</h3><p>Failed to initialize. Please refresh the page.</p>';
+                    document.body.appendChild(errorDiv);
                 }
                 return;
             }
-            
-            var imgData = new ImageData(
-                new Uint8ClampedArray(d.data), 
-                d.w, 
-                d.h
-            );
-            
-            if (d.preview) {
-                prevCanvas.width = d.w;
-                prevCanvas.height = d.h;
-                prevCtx.putImageData(imgData, 0, 0);
-                
-                var dims = calcDims();
-                prevDim.textContent = dims.w + ' × ' + dims.h;
-                
-                hideLoading();
-                processing = false;
-                
-                // Process pending request if any
-                if (pending) {
-                    var p = pending;
-                    pending = null;
-                    process(p.srcCorners, p.dw, p.dh, true, p.rid);
+
+            // Get 2D contexts - these are critical
+            var srcCtx = srcCanvas.getContext('2d');
+            var prevCtx = prevCanvas.getContext('2d');
+
+            if (!srcCtx || !prevCtx) {
+                console.error('Failed to get 2D canvas contexts');
+                if (errorMsg) {
+                    errorMsg.textContent = 'Your browser does not support canvas. Please use a modern browser.';
+                    errorMsg.classList.remove('hidden');
                 }
-            } else {
-                // Full resolution download
-                if (d.requestId === dlReqId) {
-                    fullCanvas = document.createElement('canvas');
-                    fullCanvas.width = d.w;
-                    fullCanvas.height = d.h;
-                    fullCanvas.getContext('2d').putImageData(imgData, 0, 0);
-                    processing = false;
-                    doDownload();
-                }
-            }
-        }
-        
-        // Debounced preview update
-        var previewTimer = null;
-        function updatePreview() {
-            clearTimeout(previewTimer);
-            previewTimer = setTimeout(function() {
-                var dims = calcDims();
-                var maxSize = 480;
-                var s = Math.min(maxSize / dims.w, maxSize / dims.h, 1);
-                var pw = Math.max(1, Math.round(dims.w * s));
-                var ph = Math.max(1, Math.round(dims.h * s));
-                reqId++;
-                process(dims.src, pw, ph, true, reqId);
-            }, 50);
-        }
-        
-        // ============================================
-        // BUTTON HANDLERS
-        // ============================================
-        newBtn.addEventListener('click', function() {
-            fileInput.value = '';
-            fileInput.click();
-        });
-        
-        resetBtn.addEventListener('click', resetPts);
-        
-        downloadBtn.addEventListener('click', function() {
-            if (!origImg || downloadBtn.disabled) return;
-            
-            downloadBtn.disabled = true;
-            downloadIcon.classList.add('spin');
-            downloadText.textContent = 'Processing...';
-            
-            var dims = calcDims();
-            reqId++;
-            dlReqId = reqId;
-            process(dims.src, dims.w, dims.h, false, dlReqId);
-        });
-        
-        function resetDlBtn() {
-            downloadBtn.disabled = false;
-            downloadIcon.classList.remove('spin');
-            downloadText.textContent = 'Download';
-        }
-        
-        function doDownload() {
-            if (!fullCanvas) {
-                resetDlBtn();
                 return;
             }
-            
-            try {
-                var link = document.createElement('a');
-                link.download = 'perspectivefix-corrected.png';
-                link.href = fullCanvas.toDataURL('image/png');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch(err) {
-                console.error('Download failed:', err);
-                showError('Download failed');
+
+            // ============================================
+            // ACCESSIBILITY: Create live region for announcements
+            // ============================================
+            var liveRegion = document.createElement('div');
+            liveRegion.setAttribute('role', 'status');
+            liveRegion.setAttribute('aria-live', 'polite');
+            liveRegion.setAttribute('aria-atomic', 'true');
+            liveRegion.className = 'sr-only';
+            liveRegion.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;';
+            document.body.appendChild(liveRegion);
+
+            function announce(message) {
+                liveRegion.textContent = '';
+                // Use setTimeout to ensure the DOM update triggers a screen reader announcement
+                setTimeout(function () {
+                    liveRegion.textContent = message;
+                }, 50);
             }
-            
-            resetDlBtn();
-        }
-        
-        // ============================================
-        // WINDOW RESIZE HANDLER
-        // ============================================
-        var resizeTimer = null;
-        window.addEventListener('resize', function() {
-            if (!origImg || !editor.classList.contains('active')) return;
-            
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                var oldW = srcCanvas.width;
-                var oldH = srcCanvas.height;
-                if (oldW === 0 || oldH === 0) return;
-                
-                var container = document.getElementById('origContainer');
-                var maxW = container.clientWidth - 32;
-                var maxH = window.innerHeight * 0.5;
-                var newScale = Math.min(maxW / origImg.width, maxH / origImg.height, 1);
-                var newW = Math.round(origImg.width * newScale);
-                var newH = Math.round(origImg.height * newScale);
-                
-                // Scale corner positions
-                var sx = newW / oldW;
-                var sy = newH / oldH;
-                pts = pts.map(function(p) {
+
+            // ============================================
+            // THEME TOGGLE
+            // ============================================
+            function toggleTheme() {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+
+                // Announce theme change for accessibility
+                announce('Theme changed to ' + next + ' mode');
+
+                try {
+                    localStorage.setItem('theme', next);
+                } catch (e) {
+                    // localStorage not available, ignore
+                }
+            }
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', toggleTheme);
+            }
+
+            // ============================================
+            // WEB WORKER CODE
+            // ============================================
+            var WORKER_CODE = 'var sw,sh,sd;function hasInvalidValues(arr){if(!arr)return true;for(var i=0;i<arr.length;i++){if(typeof arr[i]!=="number"||isNaN(arr[i])||!isFinite(arr[i]))return true}return false}function bi(x,y,dd,di){if(x<0||x>=sw-1||y<0||y>=sh-1){dd[di]=dd[di+1]=dd[di+2]=255;dd[di+3]=0;return}var x0=x|0,y0=y|0,dx=x-x0,dy=y-y0,dx1=1-dx,dy1=1-dy,i0=(y0*sw+x0)*4,i1=i0+4,i2=((y0+1)*sw+x0)*4,i3=i2+4,w0=dx1*dy1,w1=dx*dy1,w2=dx1*dy,w3=dx*dy;for(var c=0;c<4;c++)dd[di+c]=(w0*sd[i0+c]+w1*sd[i1+c]+w2*sd[i2+c]+w3*sd[i3+c])|0}function solve(A,b){var n=b.length,aug=A.map(function(r,i){return r.concat(b[i])});for(var c=0;c<n;c++){var mx=c;for(var r=c+1;r<n;r++)if(Math.abs(aug[r][c])>Math.abs(aug[mx][c]))mx=r;var t=aug[c];aug[c]=aug[mx];aug[mx]=t;if(Math.abs(aug[c][c])<1e-10)return null;for(var r=c+1;r<n;r++){var f=aug[r][c]/aug[c][c];for(var k=c;k<=n;k++)aug[r][k]-=f*aug[c][k]}}var x=[];for(var i=n-1;i>=0;i--){x[i]=aug[i][n];for(var j=i+1;j<n;j++)x[i]-=aug[i][j]*x[j];x[i]/=aug[i][i]}return x}function homo(src,dst){var A=[],b=[];for(var i=0;i<4;i++){var sx=src[i].x,sy=src[i].y,dx=dst[i].x,dy=dst[i].y;A.push([sx,sy,1,0,0,0,-dx*sx,-dx*sy]);A.push([0,0,0,sx,sy,1,-dy*sx,-dy*sy]);b.push(dx,dy)}var h=solve(A,b);return h?h.concat(1):null}self.onmessage=function(e){var d=e.data;sw=d.imageData.width;sh=d.imageData.height;sd=d.imageData.data;var dw=d.destWidth,dh=d.destHeight,dst=[{x:0,y:0},{x:dw,y:0},{x:dw,y:dh},{x:0,y:dh}];var H=homo(dst,d.srcCorners);if(!H||hasInvalidValues(H)){self.postMessage({error:1,errorCode:"INVALID_HOMOGRAPHY",requestId:d.requestId});return}var dd=new Uint8ClampedArray(dw*dh*4);for(var y=0;y<dh;y++)for(var x=0;x<dw;x++){var w=H[6]*x+H[7]*y+H[8];if(w===0||isNaN(w)||!isFinite(w)){self.postMessage({error:1,errorCode:"INVALID_TRANSFORM",requestId:d.requestId});return}var sx=(H[0]*x+H[1]*y+H[2])/w,sy=(H[3]*x+H[4]*y+H[5])/w;if(isNaN(sx)||isNaN(sy)||!isFinite(sx)||!isFinite(sy)){self.postMessage({error:1,errorCode:"INVALID_COORDINATES",requestId:d.requestId});return}bi(sx,sy,dd,(y*dw+x)*4)}self.postMessage({data:dd,w:dw,h:dh,preview:d.preview,requestId:d.requestId},[dd.buffer])}';
+
+            // ============================================
+            // WORKER MANAGEMENT
+            // ============================================
+            var worker = null;
+            var workerUrl = null;
+            var workerTimeoutId = null;
+            var currentWorkerRequestId = null;
+            var WORKER_TIMEOUT_MS = 15000;
+
+            function clearWorkerTimeout() {
+                if (workerTimeoutId !== null) {
+                    clearTimeout(workerTimeoutId);
+                    workerTimeoutId = null;
+                }
+            }
+
+            function terminateWorker() {
+                clearWorkerTimeout();
+                currentWorkerRequestId = null;
+                if (worker) {
+                    try {
+                        worker.terminate();
+                    } catch (e) {
+                        console.warn('Worker termination error:', e);
+                    }
+                    worker = null;
+                }
+                if (workerUrl) {
+                    try {
+                        URL.revokeObjectURL(workerUrl);
+                    } catch (e) {
+                        console.warn('URL revocation error:', e);
+                    }
+                    workerUrl = null;
+                }
+            }
+
+            function getWorker() {
+                if (!worker) {
+                    try {
+                        var blob = new Blob([WORKER_CODE], { type: 'application/javascript' });
+                        workerUrl = URL.createObjectURL(blob);
+                        worker = new Worker(workerUrl);
+                        worker.onmessage = onWorkerMsg;
+                        worker.onerror = function (e) {
+                            console.error('Worker error:', e);
+                            clearWorkerTimeout();
+                            currentWorkerRequestId = null;
+                            processing = false;
+                            pending = null;
+                            hideLoading();
+                            showError('Image processing failed. Please try again.');
+                            if (downloadInProgress) {
+                                resetDlBtn();
+                                dlReqId = null;
+                            }
+                            terminateWorker();
+                        };
+                    } catch (e) {
+                        console.error('Worker creation failed:', e);
+                        showError('Failed to initialize image processor. Please use a different browser.');
+                        return null;
+                    }
+                }
+                return worker;
+            }
+
+            // ============================================
+            // OUTPUT LIMITS
+            // ============================================
+            var MAX_OUTPUT_DIMENSION = 4096;
+            var MAX_OUTPUT_PIXELS = 16 * 1000 * 1000;
+
+            function validateOutputDimensions(w, h) {
+                if (w > MAX_OUTPUT_DIMENSION || h > MAX_OUTPUT_DIMENSION) {
                     return {
-                        x: Math.max(0, Math.min(newW, p.x * sx)),
-                        y: Math.max(0, Math.min(newH, p.y * sy))
+                        valid: false,
+                        reason: 'Output dimensions (' + w + '×' + h + ') exceed maximum (' + MAX_OUTPUT_DIMENSION + 'px per side).'
                     };
-                });
-                
-                scale = newScale;
-                srcCanvas.width = newW;
-                srcCanvas.height = newH;
-                srcCtx.drawImage(origImg, 0, 0, newW, newH);
-                
-                quadSvg.setAttribute('width', newW);
-                quadSvg.setAttribute('height', newH);
-                quadSvg.style.width = newW + 'px';
-                quadSvg.style.height = newH + 'px';
-                
+                }
+                var totalPixels = w * h;
+                if (totalPixels > MAX_OUTPUT_PIXELS) {
+                    return {
+                        valid: false,
+                        reason: 'Output size (' + (totalPixels / 1000000).toFixed(1) + 'MP) exceeds limit (' + (MAX_OUTPUT_PIXELS / 1000000) + 'MP).'
+                    };
+                }
+                return { valid: true, reason: null };
+            }
+
+            // ============================================
+            // STATE VARIABLES
+            // ============================================
+            var origImg = null;
+            var origData = null;
+            var scale = 1;
+            var pts = [];
+            var dragging = false;
+            var dragIdx = -1;
+            var processing = false;
+            var pending = null;
+            var reqId = 0;
+            var dlReqId = null;
+            var downloadInProgress = false;
+            var fullCanvas = null;
+            var previewTimer = null;
+            var rafPending = false;
+            var lastDragUpdateTime = 0;
+            var DRAG_THROTTLE_MS = 50;
+            var resizeTimer = null;
+            var currentFileName = '';
+
+            // ============================================
+            // UI HELPER FUNCTIONS
+            // ============================================
+            function showError(msg) {
+                if (errorMsg) {
+                    errorMsg.textContent = msg;
+                    errorMsg.classList.remove('hidden');
+                    announce('Error: ' + msg);
+                }
+            }
+
+            function hideError() {
+                if (errorMsg) {
+                    errorMsg.classList.add('hidden');
+                }
+            }
+
+            function showLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.classList.add('show');
+                }
+            }
+
+            function hideLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.classList.remove('show');
+                }
+            }
+
+            // ============================================
+            // GEOMETRY HELPERS
+            // ============================================
+            function dist(a, b) {
+                var dx = b.x - a.x;
+                var dy = b.y - a.y;
+                return Math.sqrt(dx * dx + dy * dy);
+            }
+
+            function crossProduct2D(o, a, b) {
+                return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+            }
+
+            function isQuadrilateralValid(points) {
+                if (!points || !Array.isArray(points) || points.length !== 4) {
+                    return false;
+                }
+
+                for (var i = 0; i < 4; i++) {
+                    var p = points[i];
+                    if (!p || typeof p.x !== 'number' || typeof p.y !== 'number') {
+                        return false;
+                    }
+                    if (isNaN(p.x) || isNaN(p.y) || !isFinite(p.x) || !isFinite(p.y)) {
+                        return false;
+                    }
+                }
+
+                var epsilon = 1.0;
+
+                for (var i = 0; i < 4; i++) {
+                    var p1 = points[i];
+                    var p2 = points[(i + 1) % 4];
+                    var p3 = points[(i + 2) % 4];
+
+                    if (dist(p1, p2) < epsilon) {
+                        return false;
+                    }
+
+                    if (Math.abs(crossProduct2D(p1, p2, p3)) < epsilon) {
+                        return false;
+                    }
+                }
+
+                var cp1 = crossProduct2D(points[0], points[1], points[2]);
+                var cp2 = crossProduct2D(points[1], points[2], points[3]);
+                var cp3 = crossProduct2D(points[2], points[3], points[0]);
+                var cp4 = crossProduct2D(points[3], points[0], points[1]);
+
+                var sign1 = Math.sign(cp1);
+                var sign2 = Math.sign(cp2);
+                var sign3 = Math.sign(cp3);
+                var sign4 = Math.sign(cp4);
+
+                if (sign1 === 0 || sign2 === 0 || sign3 === 0 || sign4 === 0) {
+                    return false;
+                }
+
+                if (sign1 !== sign2 || sign2 !== sign3 || sign3 !== sign4) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            // ============================================
+            // FILE UPLOAD HANDLERS
+            // ============================================
+            uploadZone.addEventListener('click', function (e) {
+                if (e.target !== errorMsg) {
+                    fileInput.click();
+                }
+            });
+
+            uploadZone.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInput.click();
+                }
+            });
+
+            uploadZone.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                uploadZone.classList.add('drag-over');
+            });
+
+            uploadZone.addEventListener('dragleave', function (e) {
+                e.preventDefault();
+                uploadZone.classList.remove('drag-over');
+            });
+
+            uploadZone.addEventListener('drop', function (e) {
+                e.preventDefault();
+                uploadZone.classList.remove('drag-over');
+                hideError();
+                var files = e.dataTransfer && e.dataTransfer.files;
+                if (files && files[0]) {
+                    if (files[0].type.indexOf('image') === 0) {
+                        loadFile(files[0]);
+                    } else {
+                        showError('Please upload an image file (JPG, PNG, WebP)');
+                    }
+                }
+            });
+
+            fileInput.addEventListener('change', function () {
+                hideError();
+                if (fileInput.files && fileInput.files[0]) {
+                    loadFile(fileInput.files[0]);
+                }
+            });
+
+            document.addEventListener('paste', function (e) {
+                var items = e.clipboardData && e.clipboardData.items;
+                if (!items) return;
+
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') === 0) {
+                        e.preventDefault();
+                        hideError();
+                        var file = items[i].getAsFile();
+                        if (file) {
+                            loadFile(file);
+                        }
+                        break;
+                    }
+                }
+            });
+
+            function loadFile(file) {
+                if (!file) {
+                    showError('No file provided');
+                    return;
+                }
+
+                // Store filename for later use
+                currentFileName = file.name || 'image';
+
+                // Clean up previous state
+                fullCanvas = null;
+                pending = null;
+                processing = false;
+                downloadInProgress = false;
+                clearWorkerTimeout();
+
+                var reader = new FileReader();
+
+                reader.onerror = function () {
+                    showError('Failed to read file');
+                };
+
+                reader.onload = function (e) {
+                    var img = new Image();
+
+                    img.onerror = function () {
+                        showError('Failed to load image. File may be corrupted or unsupported.');
+                    };
+
+                    img.onload = function () {
+                        if (img.width < 1 || img.height < 1) {
+                            showError('Invalid image: zero or negative dimensions.');
+                            return;
+                        }
+
+                        var MAX_INPUT_PIXELS = 100000000;
+                        var totalPixels = img.width * img.height;
+
+                        if (totalPixels > MAX_INPUT_PIXELS) {
+                            showError(
+                                'Image too large (' + (totalPixels / 1000000).toFixed(1) +
+                                'MP). Maximum is ' + (MAX_INPUT_PIXELS / 1000000) + 'MP.'
+                            );
+                            return;
+                        }
+
+                        origImg = img;
+
+                        try {
+                            var tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = img.width;
+                            tempCanvas.height = img.height;
+                            var tempCtx = tempCanvas.getContext('2d');
+
+                            if (!tempCtx) {
+                                showError('Canvas context creation failed.');
+                                return;
+                            }
+
+                            tempCtx.drawImage(img, 0, 0);
+                            origData = tempCtx.getImageData(0, 0, img.width, img.height);
+
+                            // Announce successful load
+                            announce('Image loaded: ' + currentFileName + ', ' + img.width + ' by ' + img.height + ' pixels');
+
+                            setup();
+                        } catch (err) {
+                            console.error('Image processing error:', err);
+                            showError('Failed to process image. It may be too large for this browser.');
+                        }
+                    };
+
+                    img.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            // ============================================
+            // EDITOR SETUP
+            // ============================================
+            function setup() {
+                if (heroSection) heroSection.classList.add('hidden');
+                uploadZone.classList.add('hidden');
+                if (editor) editor.classList.add('active');
+
+                var container = document.getElementById('origContainer');
+                var containerWidth = container ? container.clientWidth - 32 : window.innerWidth - 64;
+                var maxW = containerWidth;
+                var maxH = window.innerHeight * 0.5;
+
+                scale = Math.min(maxW / origImg.width, maxH / origImg.height, 1);
+
+                var displayW = Math.round(origImg.width * scale);
+                var displayH = Math.round(origImg.height * scale);
+
+                srcCanvas.width = displayW;
+                srcCanvas.height = displayH;
+                srcCtx.drawImage(origImg, 0, 0, displayW, displayH);
+
+                quadSvg.setAttribute('width', displayW);
+                quadSvg.setAttribute('height', displayH);
+                quadSvg.style.width = displayW + 'px';
+                quadSvg.style.height = displayH + 'px';
+
+                if (origDim) origDim.textContent = origImg.width + ' × ' + origImg.height;
+                if (prevDim) prevDim.textContent = '—';
+
+                resetPts();
+            }
+
+            function resetPts() {
+                var w = srcCanvas.width;
+                var h = srcCanvas.height;
+                var margin = Math.min(w, h) * 0.1;
+
+                pts = [
+                    { x: margin, y: margin },
+                    { x: w - margin, y: margin },
+                    { x: w - margin, y: h - margin },
+                    { x: margin, y: h - margin }
+                ];
+
+                hideError();
                 renderCorners();
                 renderQuad();
                 updatePreview();
-            }, 200);
-        });
-        
-        // ============================================
-        // KEYBOARD SHORTCUTS
-        // ============================================
-        document.addEventListener('keydown', function(e) {
-            var key = e.key;
-            if (!key) return;
-            
-            var activeTag = document.activeElement.tagName;
-            var isInput = activeTag === 'INPUT' || activeTag === 'TEXTAREA';
-            
-            // T for theme toggle
-            if (key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
-                e.preventDefault();
-                toggleTheme();
-                return;
+
+                announce('Corner positions reset');
             }
-            
-            // Editor shortcuts
-            if (!editor.classList.contains('active')) return;
-            
-            // Ctrl+S for download
-            if ((e.ctrlKey || e.metaKey) && key.toLowerCase() === 's') {
-                e.preventDefault();
-                if (!downloadBtn.disabled) {
-                    downloadBtn.click();
+
+            // ============================================
+            // CORNER RENDERING
+            // ============================================
+            function renderCorners() {
+                cornersDiv.innerHTML = '';
+                var labels = ['Top-left', 'Top-right', 'Bottom-right', 'Bottom-left'];
+
+                for (var i = 0; i < 4; i++) {
+                    var el = document.createElement('div');
+                    el.className = 'corner';
+                    el.style.left = pts[i].x + 'px';
+                    el.style.top = pts[i].y + 'px';
+                    el.setAttribute('data-idx', String(i));
+                    el.setAttribute('role', 'slider');
+                    el.setAttribute('aria-label', labels[i] + ' corner');
+                    el.setAttribute('aria-valuemin', '0');
+                    el.setAttribute('aria-valuemax', '100');
+                    // Calculate percentage position for aria-valuenow
+                    var xPercent = Math.round((pts[i].x / srcCanvas.width) * 100);
+                    var yPercent = Math.round((pts[i].y / srcCanvas.height) * 100);
+                    el.setAttribute('aria-valuenow', xPercent + ',' + yPercent);
+                    el.setAttribute('aria-valuetext', labels[i] + ' at ' + xPercent + '% horizontal, ' + yPercent + '% vertical');
+                    el.setAttribute('tabindex', '0');
+                    el.addEventListener('mousedown', startDrag);
+                    el.addEventListener('touchstart', startDrag, { passive: false });
+                    el.addEventListener('keydown', handleCornerKeydown);
+                    cornersDiv.appendChild(el);
                 }
-                return;
             }
-            
-            // R for reset
-            if (key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
+
+            function updateCornerAria(idx) {
+                if (idx < 0 || idx > 3) return;
+                var cornerEl = cornersDiv.children[idx];
+                if (!cornerEl) return;
+
+                var labels = ['Top-left', 'Top-right', 'Bottom-right', 'Bottom-left'];
+                var xPercent = Math.round((pts[idx].x / srcCanvas.width) * 100);
+                var yPercent = Math.round((pts[idx].y / srcCanvas.height) * 100);
+
+                cornerEl.setAttribute('aria-valuenow', xPercent + ',' + yPercent);
+                cornerEl.setAttribute('aria-valuetext', labels[idx] + ' at ' + xPercent + '% horizontal, ' + yPercent + '% vertical');
+            }
+
+            function renderQuad() {
+                var style = getComputedStyle(document.documentElement);
+                var color = style.getPropertyValue('--accent').trim() || '#059669';
+
+                var pointsStr = pts.map(function (p) {
+                    return p.x + ',' + p.y;
+                }).join(' ');
+
+                var linesHtml = '';
+                for (var i = 0; i < 4; i++) {
+                    var next = (i + 1) % 4;
+                    linesHtml += '<line x1="' + pts[i].x + '" y1="' + pts[i].y +
+                        '" x2="' + pts[next].x + '" y2="' + pts[next].y +
+                        '" stroke="' + color + '" stroke-width="2" stroke-dasharray="5,4"/>';
+                }
+
+                quadSvg.innerHTML =
+                    '<polygon points="' + pointsStr + '" fill="' + color +
+                    '" fill-opacity="0.12" stroke="' + color + '" stroke-width="2"/>' +
+                    linesHtml;
+            }
+
+            // ============================================
+            // DRAG HANDLERS
+            // ============================================
+            function startDrag(e) {
                 e.preventDefault();
-                resetPts();
-                return;
+                dragging = true;
+                dragIdx = parseInt(e.target.getAttribute('data-idx'), 10);
+                e.target.classList.add('active');
+
+                document.addEventListener('mousemove', onDrag);
+                document.addEventListener('mouseup', stopDrag);
+                document.addEventListener('touchmove', onDrag, { passive: false });
+                document.addEventListener('touchend', stopDrag);
             }
-            
-            // Escape to cancel drag
-            if (key === 'Escape' && dragging) {
-                stopDrag();
+
+            function onDrag(e) {
+                if (!dragging || dragIdx < 0) return;
+                e.preventDefault();
+
+                var rect = srcCanvas.getBoundingClientRect();
+                var clientX, clientY;
+
+                if (e.touches && e.touches.length > 0) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+
+                var x = Math.max(0, Math.min(srcCanvas.width, clientX - rect.left));
+                var y = Math.max(0, Math.min(srcCanvas.height, clientY - rect.top));
+
+                pts[dragIdx] = { x: x, y: y };
+
+                var cornerEl = cornersDiv.children[dragIdx];
+                if (cornerEl) {
+                    cornerEl.style.left = x + 'px';
+                    cornerEl.style.top = y + 'px';
+                }
+
+                // Update ARIA values
+                updateCornerAria(dragIdx);
+
+                hideError();
+                renderQuad();
+
+                var now = Date.now();
+                if (!rafPending && (now - lastDragUpdateTime) >= DRAG_THROTTLE_MS) {
+                    rafPending = true;
+                    requestAnimationFrame(function () {
+                        rafPending = false;
+                        lastDragUpdateTime = Date.now();
+                        updatePreview();
+                    });
+                }
             }
-        });
-        
-        // ============================================
-        // CONTEXT MENU PREVENTION
-        // ============================================
-        cornersDiv.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-        
-        // ============================================
-        // CLEANUP
-        // ============================================
-        window.addEventListener('beforeunload', function() {
-            if (worker) {
-                worker.terminate();
-                worker = null;
+
+            function stopDrag() {
+                if (dragIdx >= 0 && cornersDiv.children[dragIdx]) {
+                    cornersDiv.children[dragIdx].classList.remove('active');
+                }
+
+                dragging = false;
+                dragIdx = -1;
+
+                document.removeEventListener('mousemove', onDrag);
+                document.removeEventListener('mouseup', stopDrag);
+                document.removeEventListener('touchmove', onDrag);
+                document.removeEventListener('touchend', stopDrag);
+
+                updatePreview();
             }
-            if (workerUrl) {
-                URL.revokeObjectURL(workerUrl);
-                workerUrl = null;
+
+            // ============================================
+            // KEYBOARD CORNER CONTROL
+            // ============================================
+            var CORNER_STEP = 2;
+            var CORNER_STEP_FAST = 10;
+
+            function handleCornerKeydown(e) {
+                var key = e.key;
+
+                if (key !== 'ArrowUp' && key !== 'ArrowDown' &&
+                    key !== 'ArrowLeft' && key !== 'ArrowRight') {
+                    return;
+                }
+
+                e.preventDefault();
+
+                var idx = parseInt(e.target.getAttribute('data-idx'), 10);
+                if (isNaN(idx) || idx < 0 || idx > 3) return;
+
+                var step = e.shiftKey ? CORNER_STEP_FAST : CORNER_STEP;
+                var pt = pts[idx];
+                var newX = pt.x;
+                var newY = pt.y;
+
+                switch (key) {
+                    case 'ArrowUp': newY -= step; break;
+                    case 'ArrowDown': newY += step; break;
+                    case 'ArrowLeft': newX -= step; break;
+                    case 'ArrowRight': newX += step; break;
+                }
+
+                newX = Math.max(0, Math.min(srcCanvas.width, newX));
+                newY = Math.max(0, Math.min(srcCanvas.height, newY));
+
+                pts[idx] = { x: newX, y: newY };
+
+                var cornerEl = cornersDiv.children[idx];
+                if (cornerEl) {
+                    cornerEl.style.left = newX + 'px';
+                    cornerEl.style.top = newY + 'px';
+                }
+
+                // Update ARIA values
+                updateCornerAria(idx);
+
+                hideError();
+                renderQuad();
+                updatePreview();
             }
-        });
-        
-    })();
+
+            // ============================================
+            // DIMENSION CALCULATION
+            // ============================================
+            function calcDims() {
+                var srcPts = pts.map(function (p) {
+                    return { x: p.x / scale, y: p.y / scale };
+                });
+
+                if (!isQuadrilateralValid(srcPts)) {
+                    return { w: 0, h: 0, src: null, isValid: false };
+                }
+
+                var topW = dist(srcPts[0], srcPts[1]);
+                var bottomW = dist(srcPts[3], srcPts[2]);
+                var leftH = dist(srcPts[0], srcPts[3]);
+                var rightH = dist(srcPts[1], srcPts[2]);
+
+                var w = Math.round(Math.max(topW, bottomW));
+                var h = Math.round(Math.max(leftH, rightH));
+
+                return {
+                    w: Math.max(1, w),
+                    h: Math.max(1, h),
+                    src: srcPts,
+                    isValid: true
+                };
+            }
+
+            // ============================================
+            // IMAGE PROCESSING
+            // ============================================
+            function process(srcCorners, destW, destH, isPreview, requestId) {
+                // Validate input first
+                if (!origData || destW < 1 || destH < 1 || !srcCorners) {
+                    return;
+                }
+
+                // Queue if already processing preview
+                if (isPreview && processing) {
+                    pending = {
+                        srcCorners: srcCorners,
+                        dw: destW,
+                        dh: destH,
+                        rid: requestId
+                    };
+                    return;
+                }
+
+                // Validate output dimensions for full-res
+                if (!isPreview) {
+                    var validation = validateOutputDimensions(destW, destH);
+                    if (!validation.valid) {
+                        showError(validation.reason + ' Select a smaller region.');
+                        if (downloadInProgress) {
+                            resetDlBtn();
+                            dlReqId = null;
+                        }
+                        return;
+                    }
+                }
+
+                // Clear any existing timeout and set new one
+                clearWorkerTimeout();
+                currentWorkerRequestId = requestId;
+
+                workerTimeoutId = setTimeout(function () {
+                    if (currentWorkerRequestId === requestId) {
+                        console.warn('Worker timeout for request:', requestId);
+                        currentWorkerRequestId = null;
+                        terminateWorker();
+                        processing = false;
+                        pending = null;
+                        hideLoading();
+                        showError('Processing timed out. Try a smaller selection.');
+                        if (downloadInProgress && requestId === dlReqId) {
+                            resetDlBtn();
+                            dlReqId = null;
+                        }
+                    }
+                }, WORKER_TIMEOUT_MS);
+
+                processing = true;
+                if (isPreview) showLoading();
+
+                var w = getWorker();
+                if (!w) {
+                    clearWorkerTimeout();
+                    currentWorkerRequestId = null;
+                    processing = false;
+                    pending = null;
+                    hideLoading();
+                    return;
+                }
+
+                try {
+                    var clonedData = new ImageData(
+                        new Uint8ClampedArray(origData.data),
+                        origData.width,
+                        origData.height
+                    );
+
+                    w.postMessage({
+                        imageData: clonedData,
+                        srcCorners: srcCorners,
+                        destWidth: destW,
+                        destHeight: destH,
+                        preview: isPreview,
+                        requestId: requestId
+                    }, [clonedData.data.buffer]);
+
+                } catch (err) {
+                    console.error('Worker message error:', err);
+                    clearWorkerTimeout();
+                    currentWorkerRequestId = null;
+                    processing = false;
+                    pending = null;
+                    hideLoading();
+                    showError('Failed to process image.');
+                    if (downloadInProgress && requestId === dlReqId) {
+                        resetDlBtn();
+                        dlReqId = null;
+                    }
+                }
+            }
+
+            function onWorkerMsg(e) {
+                clearWorkerTimeout();
+                var data = e.data;
+
+                // Validate data
+                if (!data) {
+                    processing = false;
+                    pending = null;
+                    hideLoading();
+                    return;
+                }
+
+                // Check if this response is still relevant
+                if (data.requestId !== currentWorkerRequestId) {
+                    // Stale response, ignore but don't reset processing state
+                    // as there might be a newer request in flight
+                    return;
+                }
+
+                currentWorkerRequestId = null;
+
+                // Handle errors
+                if (data.error) {
+                    var msg = 'Processing failed. Adjust the corners.';
+
+                    switch (data.errorCode) {
+                        case 'INVALID_HOMOGRAPHY':
+                            msg = 'Invalid corner positions. Please adjust corners.';
+                            break;
+                        case 'INVALID_TRANSFORM':
+                            msg = 'Transform failed. Corners may be invalid.';
+                            break;
+                        case 'INVALID_COORDINATES':
+                            msg = 'Invalid coordinates detected. Adjust corners.';
+                            break;
+                    }
+
+                    processing = false;
+                    pending = null;
+                    hideLoading();
+
+                    if (downloadInProgress && data.requestId === dlReqId) {
+                        resetDlBtn();
+                        dlReqId = null;
+                        showError(msg);
+                    }
+                    return;
+                }
+
+                // Process successful result
+                try {
+                    var imgData = new ImageData(
+                        new Uint8ClampedArray(data.data),
+                        data.w,
+                        data.h
+                    );
+
+                    if (data.preview) {
+                        prevCanvas.width = data.w;
+                        prevCanvas.height = data.h;
+                        prevCtx.putImageData(imgData, 0, 0);
+
+                        var dims = calcDims();
+                        if (prevDim && dims.isValid) {
+                            prevDim.textContent = dims.w + ' × ' + dims.h;
+                            // Announce preview update (debounced by the preview timer)
+                            announce('Preview updated: ' + dims.w + ' by ' + dims.h + ' pixels');
+                        } else if (prevDim) {
+                            prevDim.textContent = '—';
+                        }
+
+                        hideLoading();
+                        processing = false;
+
+                        if (pending) {
+                            var p = pending;
+                            pending = null;
+                            process(p.srcCorners, p.dw, p.dh, true, p.rid);
+                        }
+                    } else {
+                        if (data.requestId === dlReqId) {
+                            fullCanvas = document.createElement('canvas');
+                            fullCanvas.width = data.w;
+                            fullCanvas.height = data.h;
+                            var ctx = fullCanvas.getContext('2d');
+                            if (ctx) {
+                                ctx.putImageData(imgData, 0, 0);
+                            }
+                            processing = false;
+                            doDownload();
+                        } else {
+                            processing = false;
+                        }
+                    }
+                } catch (err) {
+                    console.error('Result processing error:', err);
+                    processing = false;
+                    pending = null;
+                    hideLoading();
+                    showError('Failed to render result.');
+                    if (downloadInProgress && data.requestId === dlReqId) {
+                        resetDlBtn();
+                        dlReqId = null;
+                    }
+                }
+            }
+
+            function updatePreview() {
+                clearTimeout(previewTimer);
+
+                previewTimer = setTimeout(function () {
+                    var dims = calcDims();
+
+                    if (!dims.isValid || !dims.src) {
+                        prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
+                        if (prevDim) prevDim.textContent = '—';
+                        showError('Invalid selection: corners form an invalid shape.');
+                        if (!downloadInProgress) {
+                            downloadBtn.disabled = true;
+                        }
+                        hideLoading();
+                        processing = false;
+                        pending = null;
+                        return;
+                    }
+
+                    hideError();
+                    if (!downloadInProgress) {
+                        downloadBtn.disabled = false;
+                    }
+
+                    var maxPreviewSize = 480;
+                    var previewScale = Math.min(maxPreviewSize / dims.w, maxPreviewSize / dims.h, 1);
+                    var previewW = Math.max(1, Math.round(dims.w * previewScale));
+                    var previewH = Math.max(1, Math.round(dims.h * previewScale));
+
+                    reqId++;
+                    process(dims.src, previewW, previewH, true, reqId);
+                }, 50);
+            }
+
+            // ============================================
+            // BUTTON HANDLERS
+            // ============================================
+            if (newBtn) {
+                newBtn.addEventListener('click', function () {
+                    fileInput.value = '';
+                    fileInput.click();
+                });
+            }
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', resetPts);
+            }
+
+            downloadBtn.addEventListener('click', function () {
+                if (!origImg || downloadBtn.disabled || downloadInProgress) return;
+
+                hideError();
+
+                var dims = calcDims();
+
+                if (!dims.isValid || !dims.src) {
+                    showError('Cannot download: invalid corner selection.');
+                    return;
+                }
+
+                var validation = validateOutputDimensions(dims.w, dims.h);
+                if (!validation.valid) {
+                    showError(validation.reason);
+                    return;
+                }
+
+                downloadInProgress = true;
+                downloadBtn.disabled = true;
+                if (downloadIcon) downloadIcon.classList.add('spin');
+                if (downloadText) downloadText.textContent = 'Processing...';
+
+                announce('Processing image for download');
+
+                reqId++;
+                dlReqId = reqId;
+                process(dims.src, dims.w, dims.h, false, dlReqId);
+            });
+
+            function resetDlBtn() {
+                downloadInProgress = false;
+                downloadBtn.disabled = false;
+                if (downloadIcon) downloadIcon.classList.remove('spin');
+                if (downloadText) downloadText.textContent = 'Download';
+            }
+
+            function doDownload() {
+                if (!fullCanvas) {
+                    resetDlBtn();
+                    dlReqId = null;
+                    return;
+                }
+
+                try {
+                    var link = document.createElement('a');
+                    link.download = 'perspectivefix-corrected.png';
+                    link.href = fullCanvas.toDataURL('image/png');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    announce('Download started: perspectivefix-corrected.png');
+                } catch (err) {
+                    console.error('Download error:', err);
+                    showError('Download failed. Try again.');
+                }
+
+                resetDlBtn();
+                dlReqId = null;
+                fullCanvas = null;
+            }
+
+            // ============================================
+            // RESIZE HANDLER
+            // ============================================
+            window.addEventListener('resize', function () {
+                if (!origImg || !editor || !editor.classList.contains('active')) return;
+
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    var oldW = srcCanvas.width;
+                    var oldH = srcCanvas.height;
+                    if (oldW === 0 || oldH === 0) return;
+
+                    var container = document.getElementById('origContainer');
+                    var containerWidth = container ? container.clientWidth - 32 : window.innerWidth - 64;
+                    var maxH = window.innerHeight * 0.5;
+
+                    var newScale = Math.min(containerWidth / origImg.width, maxH / origImg.height, 1);
+                    var newW = Math.round(origImg.width * newScale);
+                    var newH = Math.round(origImg.height * newScale);
+
+                    var scaleX = newW / oldW;
+                    var scaleY = newH / oldH;
+
+                    pts = pts.map(function (p) {
+                        return {
+                            x: Math.max(0, Math.min(newW, p.x * scaleX)),
+                            y: Math.max(0, Math.min(newH, p.y * scaleY))
+                        };
+                    });
+
+                    scale = newScale;
+
+                    srcCanvas.width = newW;
+                    srcCanvas.height = newH;
+                    srcCtx.drawImage(origImg, 0, 0, newW, newH);
+
+                    quadSvg.setAttribute('width', newW);
+                    quadSvg.setAttribute('height', newH);
+                    quadSvg.style.width = newW + 'px';
+                    quadSvg.style.height = newH + 'px';
+
+                    renderCorners();
+                    renderQuad();
+                    updatePreview();
+                }, 200);
+            });
+
+            // ============================================
+            // KEYBOARD SHORTCUTS
+            // ============================================
+            document.addEventListener('keydown', function (e) {
+                var key = e.key;
+                if (!key) return;
+
+                var activeEl = document.activeElement;
+                var isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+                if (key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
+                    e.preventDefault();
+                    toggleTheme();
+                    return;
+                }
+
+                if (!editor || !editor.classList.contains('active')) return;
+
+                if ((e.ctrlKey || e.metaKey) && key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    if (!downloadBtn.disabled && !downloadInProgress) {
+                        downloadBtn.click();
+                    }
+                    return;
+                }
+
+                if (key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
+                    e.preventDefault();
+                    resetPts();
+                    return;
+                }
+
+                if (key === 'Escape' && dragging) {
+                    stopDrag();
+                }
+            });
+
+            // ============================================
+            // GLOBAL ERROR HANDLERS
+            // ============================================
+            window.addEventListener('error', function (e) {
+                console.error('Global error:', e.message, e.filename, e.lineno);
+                showError('An error occurred. Please refresh the page.');
+                hideLoading();
+                processing = false;
+                pending = null;
+                clearWorkerTimeout();
+                if (downloadInProgress) {
+                    resetDlBtn();
+                    dlReqId = null;
+                }
+            });
+
+            window.addEventListener('unhandledrejection', function (e) {
+                console.error('Unhandled rejection:', e.reason);
+                showError('An error occurred. Please refresh the page.');
+                hideLoading();
+                processing = false;
+                pending = null;
+                clearWorkerTimeout();
+                if (downloadInProgress) {
+                    resetDlBtn();
+                    dlReqId = null;
+                }
+            });
+
+            // ============================================
+            // CONTEXT MENU
+            // ============================================
+            cornersDiv.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+            });
+
+            // ============================================
+            // CLEANUP ON UNLOAD
+            // ============================================
+            window.addEventListener('beforeunload', function () {
+                terminateWorker();
+                // Clean up live region
+                if (liveRegion && liveRegion.parentNode) {
+                    liveRegion.parentNode.removeChild(liveRegion);
+                }
+            });
+
+        })();
     </script>
 </body>
+
 </html>
