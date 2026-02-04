@@ -707,6 +707,49 @@
             }
         }
 
+        /* Format Selector */
+        .format-select {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            min-height: 44px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%23334155" d="M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2.5rem;
+        }
+
+        .format-select:hover:not(:disabled) {
+            border-color: var(--border-secondary);
+        }
+
+        .format-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-lighter);
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+        
+        .format-select:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 640px) {
+            .format-select {
+                min-height: 48px;
+                font-size: 16px; /* Prevent iOS zoom */
+            }
+        }
+
         /* ========================================
            CANVAS PANELS
            ======================================== */
@@ -1328,11 +1371,18 @@
                         <span class="btn-text">Reset</span>
                     </button>
                 </div>
-                <button id="downloadBtn" class="btn btn-pri" type="button" title="Download corrected image (Ctrl+S)"
-                    aria-label="Download corrected image">
-                    <span id="downloadIcon" class="icon icon-download"></span>
-                    <span id="downloadText" class="btn-text">Download</span>
-                </button>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <label for="formatSelect" style="font-size: 0.875rem; color: var(--text-tertiary); display: none;">Format:</label>
+                    <select id="formatSelect" class="format-select" aria-label="Select output format: PNG for lossless quality or JPG for smaller file size">
+                        <option value="png">PNG (Lossless)</option>
+                        <option value="jpg">JPG (Smaller)</option>
+                    </select>
+                    <button id="downloadBtn" class="btn btn-pri" type="button" title="Download corrected image (Ctrl+S)"
+                        aria-label="Download corrected image">
+                        <span id="downloadIcon" class="icon icon-download"></span>
+                        <span id="downloadText" class="btn-text">Download</span>
+                    </button>
+                </div>
             </div>
 
             <div class="canvas-grid">
@@ -1572,8 +1622,7 @@
                 Support this project
             </a>
             <p class="footer-text" style="margin-top:1.5rem">
-                Made with ❤️ by <a href="https://oathanrex.github.io" target="_blank" rel="noopener">OathanRex</a> |
-                <a href="https://github.com/oathanrex/perspective-fix" target="_blank" rel="noopener">View on GitHub</a>
+                Made with ❤️ by <a href="https://oathanrex.github.io" target="_blank" rel="noopener">OathanRex</a>
             </p>
         </div>
     </footer>
@@ -2573,8 +2622,19 @@
                 resetBtn.addEventListener('click', resetPts);
             }
 
+            var lastDownloadTime = 0;
+            var DOWNLOAD_THROTTLE_MS = 1000;
+            
             downloadBtn.addEventListener('click', function () {
                 if (!origImg || downloadBtn.disabled || downloadInProgress) return;
+
+                // Throttle rapid downloads
+                var now = Date.now();
+                if (now - lastDownloadTime < DOWNLOAD_THROTTLE_MS) {
+                    showError('Please wait before downloading again');
+                    return;
+                }
+                lastDownloadTime = now;
 
                 hideError();
 
@@ -2593,6 +2653,13 @@
 
                 downloadInProgress = true;
                 downloadBtn.disabled = true;
+                
+                // Lock format selector during download
+                var formatSelect = document.getElementById('formatSelect');
+                if (formatSelect) {
+                    formatSelect.disabled = true;
+                }
+                
                 if (downloadIcon) downloadIcon.classList.add('spin');
                 if (downloadText) downloadText.textContent = 'Processing...';
 
@@ -2606,6 +2673,13 @@
             function resetDlBtn() {
                 downloadInProgress = false;
                 downloadBtn.disabled = false;
+                
+                // Re-enable format selector
+                var formatSelect = document.getElementById('formatSelect');
+                if (formatSelect) {
+                    formatSelect.disabled = false;
+                }
+                
                 if (downloadIcon) downloadIcon.classList.remove('spin');
                 if (downloadText) downloadText.textContent = 'Download';
             }
@@ -2618,22 +2692,123 @@
                 }
 
                 try {
-                    var link = document.createElement('a');
-                    link.download = 'perspectivefix-corrected.png';
-                    link.href = fullCanvas.toDataURL('image/png');
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-
-                    announce('Download started: perspectivefix-corrected.png');
+                    // Get selected format safely
+                    var formatSelect = document.getElementById('formatSelect');
+                    var format = 'png'; // Default to PNG
+                    
+                    if (formatSelect && formatSelect.value) {
+                        format = formatSelect.value;
+                    }
+                    
+                    var extension = format === 'jpg' ? 'jpg' : 'png';
+                    var mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+                    var filename = 'perspectivefix-corrected.' + extension;
+                    
+                    // Calculate adaptive quality for JPG based on image size
+                    var quality = 0.95;
+                    if (format === 'jpg') {
+                        var totalPixels = fullCanvas.width * fullCanvas.height;
+                        if (totalPixels > 10000000) {
+                            quality = 0.98; // Near lossless for large images
+                        } else if (totalPixels > 5000000) {
+                            quality = 0.95;
+                        } else {
+                            quality = 0.92;
+                        }
+                    }
+                    
+                    // Use toBlob if available (better for large images)
+                    if (fullCanvas.toBlob && typeof fullCanvas.toBlob === 'function') {
+                        fullCanvas.toBlob(function(blob) {
+                            if (!blob) {
+                                showError('Failed to create download file. Image may be too large.');
+                                resetDlBtn();
+                                dlReqId = null;
+                                fullCanvas = null;
+                                return;
+                            }
+                            
+                            try {
+                                var url = URL.createObjectURL(blob);
+                                var link = document.createElement('a');
+                                link.download = filename;
+                                link.href = url;
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                                
+                                // Clean up blob URL after brief delay
+                                setTimeout(function() {
+                                    try {
+                                        URL.revokeObjectURL(url);
+                                    } catch (e) {
+                                        console.warn('Blob URL cleanup failed:', e);
+                                    }
+                                }, 100);
+                                
+                                announce('Download started: ' + filename);
+                            } catch (err) {
+                                console.error('Blob download error:', err);
+                                showError('Download failed. Please try again.');
+                            }
+                            
+                            resetDlBtn();
+                            dlReqId = null;
+                            
+                            // Clean up canvas
+                            try {
+                                var ctx = fullCanvas.getContext('2d');
+                                if (ctx) {
+                                    ctx.clearRect(0, 0, fullCanvas.width, fullCanvas.height);
+                                }
+                            } catch (e) {
+                                console.warn('Canvas cleanup failed:', e);
+                            }
+                            fullCanvas = null;
+                        }, mimeType, format === 'jpg' ? quality : undefined);
+                    } else {
+                        // Fallback to toDataURL for older browsers
+                        try {
+                            var link = document.createElement('a');
+                            link.download = filename;
+                            
+                            if (format === 'jpg') {
+                                link.href = fullCanvas.toDataURL(mimeType, quality);
+                            } else {
+                                link.href = fullCanvas.toDataURL(mimeType);
+                            }
+                            
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            
+                            announce('Download started: ' + filename);
+                        } catch (canvasError) {
+                            console.error('Canvas toDataURL error:', canvasError);
+                            showError('Failed to generate image. Image may be too large for this browser.');
+                        }
+                        
+                        resetDlBtn();
+                        dlReqId = null;
+                        
+                        // Clean up canvas
+                        try {
+                            var ctx = fullCanvas.getContext('2d');
+                            if (ctx) {
+                                ctx.clearRect(0, 0, fullCanvas.width, fullCanvas.height);
+                            }
+                        } catch (e) {
+                            console.warn('Canvas cleanup failed:', e);
+                        }
+                        fullCanvas = null;
+                    }
                 } catch (err) {
                     console.error('Download error:', err);
-                    showError('Download failed. Try again.');
+                    showError('Download failed. Please try again.');
+                    resetDlBtn();
+                    dlReqId = null;
+                    fullCanvas = null;
                 }
-
-                resetDlBtn();
-                dlReqId = null;
-                fullCanvas = null;
             }
 
             // ============================================
