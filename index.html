@@ -737,7 +737,7 @@
             outline: 2px solid transparent;
             outline-offset: 2px;
         }
-        
+
         .format-select:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -746,7 +746,8 @@
         @media (max-width: 640px) {
             .format-select {
                 min-height: 48px;
-                font-size: 16px; /* Prevent iOS zoom */
+                font-size: 16px;
+                /* Prevent iOS zoom */
             }
         }
 
@@ -1372,8 +1373,10 @@
                     </button>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <label for="formatSelect" style="font-size: 0.875rem; color: var(--text-tertiary); display: none;">Format:</label>
-                    <select id="formatSelect" class="format-select" aria-label="Select output format: PNG for lossless quality or JPG for smaller file size">
+                    <label for="formatSelect"
+                        style="font-size: 0.875rem; color: var(--text-tertiary); display: none;">Format:</label>
+                    <select id="formatSelect" class="format-select"
+                        aria-label="Select output format: PNG for lossless quality or JPG for smaller file size">
                         <option value="png">PNG (Lossless)</option>
                         <option value="jpg">JPG (Smaller)</option>
                     </select>
@@ -1628,1202 +1631,2393 @@
     </footer>
 
     <script>
+        /**
+         * PerspectiveFix Pro - Modular Architecture
+         * @version 2.0.0
+         * @author OathanRex
+         * @license MIT
+         * 
+         * Features:
+         * - Modular ES5 IIFE pattern with clear separation of concerns
+         * - OffscreenCanvas support for better performance
+         * - Web Worker with transferable objects
+         * - Comprehensive error handling
+         * - Full accessibility (WCAG 2.1 AA)
+         * - Memory-efficient processing
+         * - Responsive design support
+         */
+
         (function () {
             'use strict';
 
             // ============================================
-            // INITIALIZATION
+            // MODULE: Configuration
             // ============================================
-            window.addEventListener('load', function () {
-                setTimeout(function () {
-                    document.body.classList.add('ready');
-                }, 100);
-            });
-
-            // ============================================
-            // DOM ELEMENTS - Get all required elements first
-            // ============================================
-            var themeBtn = document.getElementById('themeBtn');
-            var uploadZone = document.getElementById('uploadZone');
-            var fileInput = document.getElementById('fileInput');
-            var errorMsg = document.getElementById('errorMsg');
-            var heroSection = document.getElementById('heroSection');
-            var editor = document.getElementById('editor');
-            var srcCanvas = document.getElementById('srcCanvas');
-            var prevCanvas = document.getElementById('prevCanvas');
-            var quadSvg = document.getElementById('quadSvg');
-            var cornersDiv = document.getElementById('corners');
-            var origDim = document.getElementById('origDim');
-            var prevDim = document.getElementById('prevDim');
-            var loadingOverlay = document.getElementById('loadingOverlay');
-            var newBtn = document.getElementById('newBtn');
-            var resetBtn = document.getElementById('resetBtn');
-            var downloadBtn = document.getElementById('downloadBtn');
-            var downloadIcon = document.getElementById('downloadIcon');
-            var downloadText = document.getElementById('downloadText');
-
-            // ============================================
-            // CRITICAL ELEMENT VALIDATION
-            // ============================================
-            var criticalElements = [
-                { el: uploadZone, name: 'uploadZone' },
-                { el: fileInput, name: 'fileInput' },
-                { el: srcCanvas, name: 'srcCanvas' },
-                { el: prevCanvas, name: 'prevCanvas' },
-                { el: cornersDiv, name: 'corners' },
-                { el: quadSvg, name: 'quadSvg' },
-                { el: downloadBtn, name: 'downloadBtn' }
-            ];
-
-            var missingElements = [];
-            for (var i = 0; i < criticalElements.length; i++) {
-                if (!criticalElements[i].el) {
-                    missingElements.push(criticalElements[i].name);
-                }
-            }
-
-            if (missingElements.length > 0) {
-                console.error('Critical elements missing:', missingElements.join(', '));
-                if (document.body) {
-                    var errorDiv = document.createElement('div');
-                    errorDiv.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fee;color:#c00;padding:20px;border-radius:8px;text-align:center;z-index:9999;';
-                    errorDiv.innerHTML = '<h3>Application Error</h3><p>Failed to initialize. Please refresh the page.</p>';
-                    document.body.appendChild(errorDiv);
-                }
-                return;
-            }
-
-            // Get 2D contexts - these are critical
-            var srcCtx = srcCanvas.getContext('2d');
-            var prevCtx = prevCanvas.getContext('2d');
-
-            if (!srcCtx || !prevCtx) {
-                console.error('Failed to get 2D canvas contexts');
-                if (errorMsg) {
-                    errorMsg.textContent = 'Your browser does not support canvas. Please use a modern browser.';
-                    errorMsg.classList.remove('hidden');
-                }
-                return;
-            }
-
-            // ============================================
-            // ACCESSIBILITY: Create live region for announcements
-            // ============================================
-            var liveRegion = document.createElement('div');
-            liveRegion.setAttribute('role', 'status');
-            liveRegion.setAttribute('aria-live', 'polite');
-            liveRegion.setAttribute('aria-atomic', 'true');
-            liveRegion.className = 'sr-only';
-            liveRegion.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;';
-            document.body.appendChild(liveRegion);
-
-            function announce(message) {
-                liveRegion.textContent = '';
-                // Use setTimeout to ensure the DOM update triggers a screen reader announcement
-                setTimeout(function () {
-                    liveRegion.textContent = message;
-                }, 50);
-            }
-
-            // ============================================
-            // THEME TOGGLE
-            // ============================================
-            function toggleTheme() {
-                var current = document.documentElement.getAttribute('data-theme');
-                var next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-
-                // Announce theme change for accessibility
-                announce('Theme changed to ' + next + ' mode');
-
-                try {
-                    localStorage.setItem('theme', next);
-                } catch (e) {
-                    // localStorage not available, ignore
-                }
-            }
-
-            if (themeBtn) {
-                themeBtn.addEventListener('click', toggleTheme);
-            }
-
-            // ============================================
-            // WEB WORKER CODE
-            // ============================================
-            var WORKER_CODE = 'var sw,sh,sd;function hasInvalidValues(arr){if(!arr)return true;for(var i=0;i<arr.length;i++){if(typeof arr[i]!=="number"||isNaN(arr[i])||!isFinite(arr[i]))return true}return false}function bi(x,y,dd,di){if(x<0||x>=sw-1||y<0||y>=sh-1){dd[di]=dd[di+1]=dd[di+2]=255;dd[di+3]=0;return}var x0=x|0,y0=y|0,dx=x-x0,dy=y-y0,dx1=1-dx,dy1=1-dy,i0=(y0*sw+x0)*4,i1=i0+4,i2=((y0+1)*sw+x0)*4,i3=i2+4,w0=dx1*dy1,w1=dx*dy1,w2=dx1*dy,w3=dx*dy;for(var c=0;c<4;c++)dd[di+c]=(w0*sd[i0+c]+w1*sd[i1+c]+w2*sd[i2+c]+w3*sd[i3+c])|0}function solve(A,b){var n=b.length,aug=A.map(function(r,i){return r.concat(b[i])});for(var c=0;c<n;c++){var mx=c;for(var r=c+1;r<n;r++)if(Math.abs(aug[r][c])>Math.abs(aug[mx][c]))mx=r;var t=aug[c];aug[c]=aug[mx];aug[mx]=t;if(Math.abs(aug[c][c])<1e-10)return null;for(var r=c+1;r<n;r++){var f=aug[r][c]/aug[c][c];for(var k=c;k<=n;k++)aug[r][k]-=f*aug[c][k]}}var x=[];for(var i=n-1;i>=0;i--){x[i]=aug[i][n];for(var j=i+1;j<n;j++)x[i]-=aug[i][j]*x[j];x[i]/=aug[i][i]}return x}function homo(src,dst){var A=[],b=[];for(var i=0;i<4;i++){var sx=src[i].x,sy=src[i].y,dx=dst[i].x,dy=dst[i].y;A.push([sx,sy,1,0,0,0,-dx*sx,-dx*sy]);A.push([0,0,0,sx,sy,1,-dy*sx,-dy*sy]);b.push(dx,dy)}var h=solve(A,b);return h?h.concat(1):null}self.onmessage=function(e){var d=e.data;sw=d.imageData.width;sh=d.imageData.height;sd=d.imageData.data;var dw=d.destWidth,dh=d.destHeight,dst=[{x:0,y:0},{x:dw,y:0},{x:dw,y:dh},{x:0,y:dh}];var H=homo(dst,d.srcCorners);if(!H||hasInvalidValues(H)){self.postMessage({error:1,errorCode:"INVALID_HOMOGRAPHY",requestId:d.requestId});return}var dd=new Uint8ClampedArray(dw*dh*4);for(var y=0;y<dh;y++)for(var x=0;x<dw;x++){var w=H[6]*x+H[7]*y+H[8];if(w===0||isNaN(w)||!isFinite(w)){self.postMessage({error:1,errorCode:"INVALID_TRANSFORM",requestId:d.requestId});return}var sx=(H[0]*x+H[1]*y+H[2])/w,sy=(H[3]*x+H[4]*y+H[5])/w;if(isNaN(sx)||isNaN(sy)||!isFinite(sx)||!isFinite(sy)){self.postMessage({error:1,errorCode:"INVALID_COORDINATES",requestId:d.requestId});return}bi(sx,sy,dd,(y*dw+x)*4)}self.postMessage({data:dd,w:dw,h:dh,preview:d.preview,requestId:d.requestId},[dd.buffer])}';
-
-            // ============================================
-            // WORKER MANAGEMENT
-            // ============================================
-            var worker = null;
-            var workerUrl = null;
-            var workerTimeoutId = null;
-            var currentWorkerRequestId = null;
-            var WORKER_TIMEOUT_MS = 15000;
-
-            function clearWorkerTimeout() {
-                if (workerTimeoutId !== null) {
-                    clearTimeout(workerTimeoutId);
-                    workerTimeoutId = null;
-                }
-            }
-
-            function terminateWorker() {
-                clearWorkerTimeout();
-                currentWorkerRequestId = null;
-                if (worker) {
+            var Config = (function () {
+                // Feature detection
+                var _supportsOffscreenCanvas = (function () {
                     try {
-                        worker.terminate();
+                        if (typeof OffscreenCanvas === 'undefined') return false;
+                        var test = new OffscreenCanvas(1, 1);
+                        var ctx = test.getContext('2d');
+                        return ctx !== null;
                     } catch (e) {
-                        console.warn('Worker termination error:', e);
+                        return false;
                     }
-                    worker = null;
-                }
-                if (workerUrl) {
-                    try {
-                        URL.revokeObjectURL(workerUrl);
-                    } catch (e) {
-                        console.warn('URL revocation error:', e);
-                    }
-                    workerUrl = null;
-                }
-            }
+                })();
 
-            function getWorker() {
-                if (!worker) {
+                var _supportsImageBitmap = typeof createImageBitmap === 'function';
+
+                return Object.freeze({
+                    // Processing limits
+                    MAX_INPUT_PIXELS: 100000000,        // 100MP
+                    MAX_OUTPUT_DIMENSION: 4096,
+                    MAX_OUTPUT_PIXELS: 16000000,        // 16MP
+
+                    // Timing
+                    WORKER_TIMEOUT_MS: 15000,
+                    DRAG_THROTTLE_MS: 50,
+                    PREVIEW_DEBOUNCE_MS: 50,
+                    RESIZE_DEBOUNCE_MS: 200,
+                    DOWNLOAD_THROTTLE_MS: 1000,
+
+                    // UI
+                    CORNER_STEP: 2,
+                    CORNER_STEP_FAST: 10,
+                    MAX_PREVIEW_SIZE: 480,
+                    CORNER_MARGIN_RATIO: 0.1,
+
+                    // Feature flags
+                    supportsOffscreenCanvas: _supportsOffscreenCanvas,
+                    supportsImageBitmap: _supportsImageBitmap,
+
+                    // Quality settings
+                    jpgQuality: Object.freeze({
+                        large: 0.98,    // > 10MP
+                        medium: 0.95,   // > 5MP
+                        small: 0.92     // <= 5MP
+                    }),
+
+                    // Corner labels for accessibility
+                    CORNER_LABELS: Object.freeze(['Top-left', 'Top-right', 'Bottom-right', 'Bottom-left'])
+                });
+            })();
+
+            // ============================================
+            // MODULE: Utilities
+            // ============================================
+            var Utils = (function () {
+                /**
+                 * Debounce function execution
+                 * @param {Function} func - Function to debounce
+                 * @param {number} wait - Wait time in ms
+                 * @returns {Function} Debounced function
+                 */
+                function debounce(func, wait) {
+                    var timeout = null;
+                    return function () {
+                        var context = this;
+                        var args = arguments;
+                        if (timeout !== null) {
+                            clearTimeout(timeout);
+                        }
+                        timeout = setTimeout(function () {
+                            timeout = null;
+                            func.apply(context, args);
+                        }, wait);
+                    };
+                }
+
+                /**
+                 * Throttle function execution
+                 * @param {Function} func - Function to throttle
+                 * @param {number} limit - Minimum time between calls in ms
+                 * @returns {Function} Throttled function
+                 */
+                function throttle(func, limit) {
+                    var lastCall = 0;
+                    var lastResult;
+                    return function () {
+                        var now = Date.now();
+                        if (now - lastCall >= limit) {
+                            lastCall = now;
+                            lastResult = func.apply(this, arguments);
+                        }
+                        return lastResult;
+                    };
+                }
+
+                /**
+                 * Calculate distance between two points
+                 * @param {{x: number, y: number}} a - First point
+                 * @param {{x: number, y: number}} b - Second point
+                 * @returns {number} Distance
+                 */
+                function dist(a, b) {
+                    var dx = b.x - a.x;
+                    var dy = b.y - a.y;
+                    return Math.sqrt(dx * dx + dy * dy);
+                }
+
+                /**
+                 * Calculate 2D cross product (determines winding order)
+                 * @param {{x: number, y: number}} o - Origin point
+                 * @param {{x: number, y: number}} a - First point
+                 * @param {{x: number, y: number}} b - Second point
+                 * @returns {number} Cross product value
+                 */
+                function crossProduct2D(o, a, b) {
+                    return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+                }
+
+                /**
+                 * Clamp value between min and max
+                 * @param {number} value - Value to clamp
+                 * @param {number} min - Minimum value
+                 * @param {number} max - Maximum value
+                 * @returns {number} Clamped value
+                 */
+                function clamp(value, min, max) {
+                    return Math.max(min, Math.min(max, value));
+                }
+
+                /**
+                 * Deep clone an object (simple implementation for plain objects)
+                 * @param {*} obj - Object to clone
+                 * @returns {*} Cloned object
+                 */
+                function deepClone(obj) {
+                    if (obj === null || typeof obj !== 'object') return obj;
+                    if (Array.isArray(obj)) {
+                        var arrClone = [];
+                        for (var i = 0; i < obj.length; i++) {
+                            arrClone[i] = deepClone(obj[i]);
+                        }
+                        return arrClone;
+                    }
+                    var clone = {};
+                    for (var key in obj) {
+                        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                            clone[key] = deepClone(obj[key]);
+                        }
+                    }
+                    return clone;
+                }
+
+                /**
+                 * Generate unique ID
+                 * @param {string} [prefix='id'] - ID prefix
+                 * @returns {string} Unique ID
+                 */
+                var idCounter = 0;
+                function uniqueId(prefix) {
+                    idCounter++;
+                    return (prefix || 'id') + '_' + idCounter + '_' + Date.now();
+                }
+
+                /**
+                 * Check if value is a valid finite number
+                 * @param {*} val - Value to check
+                 * @returns {boolean} True if valid number
+                 */
+                function isValidNumber(val) {
+                    return typeof val === 'number' && !isNaN(val) && isFinite(val);
+                }
+
+                /**
+                 * Safely get file extension from filename
+                 * @param {string} filename - Filename
+                 * @returns {string} Extension without dot, lowercase
+                 */
+                function getFileExtension(filename) {
+                    if (!filename || typeof filename !== 'string') return '';
+                    var lastDot = filename.lastIndexOf('.');
+                    if (lastDot === -1 || lastDot === filename.length - 1) return '';
+                    return filename.substring(lastDot + 1).toLowerCase();
+                }
+
+                return Object.freeze({
+                    debounce: debounce,
+                    throttle: throttle,
+                    dist: dist,
+                    crossProduct2D: crossProduct2D,
+                    clamp: clamp,
+                    deepClone: deepClone,
+                    uniqueId: uniqueId,
+                    isValidNumber: isValidNumber,
+                    getFileExtension: getFileExtension
+                });
+            })();
+
+            // ============================================
+            // MODULE: DOM Manager
+            // ============================================
+            var DOM = (function () {
+                var elements = {};
+                var listeners = [];
+
+                var elementIds = [
+                    'themeBtn', 'uploadZone', 'fileInput', 'errorMsg',
+                    'heroSection', 'editor', 'srcCanvas', 'prevCanvas',
+                    'quadSvg', 'corners', 'origDim', 'prevDim',
+                    'loadingOverlay', 'newBtn', 'resetBtn', 'downloadBtn',
+                    'downloadIcon', 'downloadText', 'formatSelect', 'origContainer',
+                    'canvasWrap', 'previewWrap'
+                ];
+
+                var criticalIds = [
+                    'uploadZone', 'fileInput', 'srcCanvas', 'prevCanvas',
+                    'corners', 'quadSvg', 'downloadBtn'
+                ];
+
+                /**
+                 * Initialize DOM elements cache
+                 * @returns {{success: boolean, missing: string[]}} Initialization result
+                 */
+                function init() {
+                    elements = {};
+                    for (var i = 0; i < elementIds.length; i++) {
+                        var id = elementIds[i];
+                        elements[id] = document.getElementById(id);
+                    }
+                    return validate();
+                }
+
+                /**
+                 * Validate critical elements exist
+                 * @returns {{success: boolean, missing: string[]}} Validation result
+                 */
+                function validate() {
+                    var missing = [];
+                    for (var i = 0; i < criticalIds.length; i++) {
+                        var id = criticalIds[i];
+                        if (!elements[id]) {
+                            missing.push(id);
+                        }
+                    }
+
+                    if (missing.length > 0) {
+                        console.error('Critical elements missing:', missing.join(', '));
+                        return { success: false, missing: missing };
+                    }
+
+                    return { success: true, missing: [] };
+                }
+
+                /**
+                 * Get element by ID (from cache or DOM)
+                 * @param {string} id - Element ID
+                 * @returns {HTMLElement|null} Element or null
+                 */
+                function get(id) {
+                    if (elements[id] !== undefined) {
+                        return elements[id];
+                    }
+                    return document.getElementById(id);
+                }
+
+                /**
+                 * Create element with attributes
+                 * @param {string} tag - Tag name
+                 * @param {Object} [attrs] - Attributes object
+                 * @param {string|HTMLElement|HTMLElement[]} [children] - Children
+                 * @returns {HTMLElement} Created element
+                 */
+                function create(tag, attrs, children) {
+                    var el = document.createElement(tag);
+
+                    if (attrs) {
+                        for (var key in attrs) {
+                            if (!Object.prototype.hasOwnProperty.call(attrs, key)) continue;
+                            var value = attrs[key];
+
+                            if (key === 'className') {
+                                el.className = value;
+                            } else if (key === 'style' && typeof value === 'object') {
+                                for (var styleKey in value) {
+                                    if (Object.prototype.hasOwnProperty.call(value, styleKey)) {
+                                        el.style[styleKey] = value[styleKey];
+                                    }
+                                }
+                            } else if (key.indexOf('data-') === 0 || key.indexOf('aria-') === 0 || key === 'role' || key === 'tabindex') {
+                                el.setAttribute(key, value);
+                            } else if (key === 'tabIndex') {
+                                el.tabIndex = value;
+                            } else {
+                                el[key] = value;
+                            }
+                        }
+                    }
+
+                    if (children !== undefined && children !== null) {
+                        if (typeof children === 'string') {
+                            el.textContent = children;
+                        } else if (children instanceof HTMLElement) {
+                            el.appendChild(children);
+                        } else if (Array.isArray(children)) {
+                            for (var i = 0; i < children.length; i++) {
+                                if (children[i] instanceof HTMLElement) {
+                                    el.appendChild(children[i]);
+                                }
+                            }
+                        }
+                    }
+
+                    return el;
+                }
+
+                /**
+                 * Add event listener with tracking for cleanup
+                 * @param {EventTarget} element - Target element
+                 * @param {string} event - Event type
+                 * @param {Function} handler - Event handler
+                 * @param {Object|boolean} [options] - Event options
+                 * @returns {Function} Remove function
+                 */
+                function on(element, event, handler, options) {
+                    if (!element || !event || !handler) return function () { };
+
+                    element.addEventListener(event, handler, options);
+
+                    var entry = {
+                        element: element,
+                        event: event,
+                        handler: handler,
+                        options: options
+                    };
+                    listeners.push(entry);
+
+                    return function remove() {
+                        element.removeEventListener(event, handler, options);
+                        var idx = listeners.indexOf(entry);
+                        if (idx > -1) {
+                            listeners.splice(idx, 1);
+                        }
+                    };
+                }
+
+                /**
+                 * Remove all tracked listeners
+                 */
+                function removeAllListeners() {
+                    for (var i = listeners.length - 1; i >= 0; i--) {
+                        var entry = listeners[i];
+                        try {
+                            entry.element.removeEventListener(entry.event, entry.handler, entry.options);
+                        } catch (e) {
+                            console.warn('Failed to remove listener:', e);
+                        }
+                    }
+                    listeners = [];
+                }
+
+                /**
+                 * Show element (remove hidden class)
+                 * @param {string|HTMLElement} el - Element or ID
+                 */
+                function show(el) {
+                    if (typeof el === 'string') el = get(el);
+                    if (el) el.classList.remove('hidden');
+                }
+
+                /**
+                 * Hide element (add hidden class)
+                 * @param {string|HTMLElement} el - Element or ID
+                 */
+                function hide(el) {
+                    if (typeof el === 'string') el = get(el);
+                    if (el) el.classList.add('hidden');
+                }
+
+                /**
+                 * Toggle class on element
+                 * @param {string|HTMLElement} el - Element or ID
+                 * @param {string} className - Class name
+                 * @param {boolean} [force] - Force add/remove
+                 */
+                function toggleClass(el, className, force) {
+                    if (typeof el === 'string') el = get(el);
+                    if (el) el.classList.toggle(className, force);
+                }
+
+                /**
+                 * Check if element has class
+                 * @param {string|HTMLElement} el - Element or ID
+                 * @param {string} className - Class name
+                 * @returns {boolean} Has class
+                 */
+                function hasClass(el, className) {
+                    if (typeof el === 'string') el = get(el);
+                    return el ? el.classList.contains(className) : false;
+                }
+
+                return Object.freeze({
+                    init: init,
+                    get: get,
+                    create: create,
+                    on: on,
+                    removeAllListeners: removeAllListeners,
+                    show: show,
+                    hide: hide,
+                    toggleClass: toggleClass,
+                    hasClass: hasClass
+                });
+            })();
+
+            // ============================================
+            // MODULE: Accessibility
+            // ============================================
+            var A11y = (function () {
+                var liveRegion = null;
+                var announceTimeout = null;
+
+                /**
+                 * Initialize accessibility features
+                 */
+                function init() {
+                    if (liveRegion) return; // Already initialized
+
+                    liveRegion = DOM.create('div', {
+                        role: 'status',
+                        'aria-live': 'polite',
+                        'aria-atomic': 'true',
+                        className: 'sr-only',
+                        style: {
+                            position: 'absolute',
+                            width: '1px',
+                            height: '1px',
+                            padding: '0',
+                            margin: '-1px',
+                            overflow: 'hidden',
+                            clip: 'rect(0,0,0,0)',
+                            whiteSpace: 'nowrap',
+                            border: '0'
+                        }
+                    });
+                    document.body.appendChild(liveRegion);
+                }
+
+                /**
+                 * Announce message to screen readers
+                 * @param {string} message - Message to announce
+                 * @param {string} [priority='polite'] - 'polite' or 'assertive'
+                 */
+                function announce(message, priority) {
+                    if (!liveRegion) return;
+
+                    if (announceTimeout !== null) {
+                        clearTimeout(announceTimeout);
+                    }
+
+                    // Clear first to ensure re-announcement
+                    liveRegion.textContent = '';
+                    liveRegion.setAttribute('aria-live', priority === 'assertive' ? 'assertive' : 'polite');
+
+                    announceTimeout = setTimeout(function () {
+                        liveRegion.textContent = message;
+                        announceTimeout = null;
+                    }, 50);
+                }
+
+                /**
+                 * Update corner ARIA attributes
+                 * @param {HTMLElement} cornerEl - Corner element
+                 * @param {number} index - Corner index (0-3)
+                 * @param {number} x - X position
+                 * @param {number} y - Y position
+                 * @param {number} canvasWidth - Canvas width
+                 * @param {number} canvasHeight - Canvas height
+                 */
+                function updateCornerAria(cornerEl, index, x, y, canvasWidth, canvasHeight) {
+                    if (!cornerEl || index < 0 || index > 3) return;
+
+                    var xPercent = Math.round((x / canvasWidth) * 100);
+                    var yPercent = Math.round((y / canvasHeight) * 100);
+                    var label = Config.CORNER_LABELS[index];
+
+                    cornerEl.setAttribute('aria-valuenow', xPercent + ',' + yPercent);
+                    cornerEl.setAttribute('aria-valuetext',
+                        label + ' at ' + xPercent + '% horizontal, ' + yPercent + '% vertical');
+                }
+
+                /**
+                 * Cleanup accessibility resources
+                 */
+                function destroy() {
+                    if (announceTimeout !== null) {
+                        clearTimeout(announceTimeout);
+                        announceTimeout = null;
+                    }
+                    if (liveRegion && liveRegion.parentNode) {
+                        liveRegion.parentNode.removeChild(liveRegion);
+                    }
+                    liveRegion = null;
+                }
+
+                return Object.freeze({
+                    init: init,
+                    announce: announce,
+                    updateCornerAria: updateCornerAria,
+                    destroy: destroy
+                });
+            })();
+
+            // ============================================
+            // MODULE: Theme Manager
+            // ============================================
+            var Theme = (function () {
+                var STORAGE_KEY = 'theme';
+
+                /**
+                 * Initialize theme from storage or system preference
+                 */
+                function init() {
+                    // Theme is already set by inline script in HTML
+                    // This just ensures consistency
+                    var saved = getSaved();
+                    if (saved) {
+                        apply(saved);
+                    }
+                }
+
+                /**
+                 * Get saved theme from localStorage
+                 * @returns {string|null} Saved theme or null
+                 */
+                function getSaved() {
+                    try {
+                        return localStorage.getItem(STORAGE_KEY);
+                    } catch (e) {
+                        return null;
+                    }
+                }
+
+                /**
+                 * Apply theme to document
+                 * @param {string} theme - Theme name ('light' or 'dark')
+                 */
+                function apply(theme) {
+                    document.documentElement.setAttribute('data-theme', theme);
+                }
+
+                /**
+                 * Save theme to localStorage
+                 * @param {string} theme - Theme name
+                 */
+                function save(theme) {
+                    try {
+                        localStorage.setItem(STORAGE_KEY, theme);
+                    } catch (e) {
+                        // localStorage not available, ignore
+                    }
+                }
+
+                /**
+                 * Toggle between light and dark theme
+                 * @returns {string} New theme name
+                 */
+                function toggle() {
+                    var current = getCurrent();
+                    var next = current === 'dark' ? 'light' : 'dark';
+                    apply(next);
+                    save(next);
+                    A11y.announce('Theme changed to ' + next + ' mode');
+                    return next;
+                }
+
+                /**
+                 * Get current theme
+                 * @returns {string} Current theme name
+                 */
+                function getCurrent() {
+                    return document.documentElement.getAttribute('data-theme') || 'light';
+                }
+
+                return Object.freeze({
+                    init: init,
+                    toggle: toggle,
+                    getCurrent: getCurrent
+                });
+            })();
+
+            // ============================================
+            // MODULE: Canvas Manager (with OffscreenCanvas)
+            // ============================================
+            var CanvasManager = (function () {
+                var srcCanvas = null;
+                var srcCtx = null;
+                var prevCanvas = null;
+                var prevCtx = null;
+                var useOffscreen = Config.supportsOffscreenCanvas;
+
+                /**
+                 * Initialize canvases
+                 * @returns {{success: boolean, error?: string}} Result
+                 */
+                function init() {
+                    srcCanvas = DOM.get('srcCanvas');
+                    prevCanvas = DOM.get('prevCanvas');
+
+                    if (!srcCanvas || !prevCanvas) {
+                        return { success: false, error: 'Canvas elements not found' };
+                    }
+
+                    // Get contexts with optimization hints
+                    srcCtx = srcCanvas.getContext('2d', {
+                        alpha: false,
+                        desynchronized: true
+                    });
+                    prevCtx = prevCanvas.getContext('2d', {
+                        alpha: true,
+                        desynchronized: true
+                    });
+
+                    if (!srcCtx || !prevCtx) {
+                        return { success: false, error: 'Canvas context creation failed' };
+                    }
+
+                    enableSmoothing(srcCtx);
+                    enableSmoothing(prevCtx);
+
+                    if (typeof console !== 'undefined' && console.log) {
+                        console.log('OffscreenCanvas support:', useOffscreen);
+                    }
+
+                    return { success: true };
+                }
+
+                /**
+                 * Enable high-quality image smoothing
+                 * @param {CanvasRenderingContext2D} ctx - Canvas context
+                 */
+                function enableSmoothing(ctx) {
+                    if (!ctx) return;
+                    ctx.imageSmoothingEnabled = true;
+                    if (ctx.imageSmoothingQuality !== undefined) {
+                        ctx.imageSmoothingQuality = 'high';
+                    }
+                }
+
+                /**
+                 * Get image data from image, using OffscreenCanvas if available
+                 * @param {HTMLImageElement} img - Source image
+                 * @param {number} [width] - Target width
+                 * @param {number} [height] - Target height
+                 * @returns {ImageData} Image data
+                 */
+                function getImageData(img, width, height) {
+                    width = width || img.width;
+                    height = height || img.height;
+
+                    // Try OffscreenCanvas first
+                    if (useOffscreen) {
+                        try {
+                            var offscreen = new OffscreenCanvas(width, height);
+                            var ctx = offscreen.getContext('2d');
+                            if (ctx) {
+                                enableSmoothing(ctx);
+                                ctx.drawImage(img, 0, 0, width, height);
+                                return ctx.getImageData(0, 0, width, height);
+                            }
+                        } catch (e) {
+                            console.warn('OffscreenCanvas getImageData failed, using fallback:', e);
+                        }
+                    }
+
+                    // Fallback to regular canvas
+                    var tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = width;
+                    tempCanvas.height = height;
+                    var tempCtx = tempCanvas.getContext('2d');
+                    enableSmoothing(tempCtx);
+                    tempCtx.drawImage(img, 0, 0, width, height);
+                    var data = tempCtx.getImageData(0, 0, width, height);
+
+                    // Cleanup
+                    tempCanvas.width = 0;
+                    tempCanvas.height = 0;
+
+                    return data;
+                }
+
+                /**
+                 * Draw image to source canvas
+                 * @param {HTMLImageElement} img - Source image
+                 * @param {number} width - Display width
+                 * @param {number} height - Display height
+                 */
+                function drawSource(img, width, height) {
+                    srcCanvas.width = width;
+                    srcCanvas.height = height;
+                    enableSmoothing(srcCtx);
+                    srcCtx.drawImage(img, 0, 0, width, height);
+                }
+
+                /**
+                 * Draw image data to preview canvas
+                 * @param {ImageData} imageData - Image data to draw
+                 */
+                function drawPreview(imageData) {
+                    prevCanvas.width = imageData.width;
+                    prevCanvas.height = imageData.height;
+                    prevCtx.putImageData(imageData, 0, 0);
+                }
+
+                /**
+                 * Clear preview canvas
+                 */
+                function clearPreview() {
+                    prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
+                }
+
+                /**
+                 * Create full-resolution canvas from image data
+                 * @param {ImageData} imageData - Source image data
+                 * @returns {Object} Canvas object with metadata
+                 */
+                function createFullResCanvas(imageData) {
+                    var width = imageData.width;
+                    var height = imageData.height;
+
+                    // Try OffscreenCanvas for better memory management
+                    if (useOffscreen) {
+                        try {
+                            var offscreen = new OffscreenCanvas(width, height);
+                            var ctx = offscreen.getContext('2d');
+                            if (ctx) {
+                                ctx.putImageData(imageData, 0, 0);
+                                return {
+                                    canvas: offscreen,
+                                    ctx: ctx,
+                                    isOffscreen: true,
+                                    width: width,
+                                    height: height
+                                };
+                            }
+                        } catch (e) {
+                            console.warn('OffscreenCanvas for full res failed:', e);
+                        }
+                    }
+
+                    // Fallback to regular canvas
+                    var canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext('2d');
+                    ctx.putImageData(imageData, 0, 0);
+
+                    return {
+                        canvas: canvas,
+                        ctx: ctx,
+                        isOffscreen: false,
+                        width: width,
+                        height: height
+                    };
+                }
+
+                /**
+                 * Convert canvas to blob
+                 * @param {Object} canvasObj - Canvas object from createFullResCanvas
+                 * @param {string} mimeType - MIME type
+                 * @param {number} [quality] - Quality for lossy formats
+                 * @returns {Promise<Blob>} Blob promise
+                 */
+                function toBlob(canvasObj, mimeType, quality) {
+                    return new Promise(function (resolve, reject) {
+                        try {
+                            // OffscreenCanvas with convertToBlob
+                            if (canvasObj.isOffscreen && typeof canvasObj.canvas.convertToBlob === 'function') {
+                                var options = { type: mimeType };
+                                if (quality !== undefined) {
+                                    options.quality = quality;
+                                }
+                                canvasObj.canvas.convertToBlob(options)
+                                    .then(resolve)
+                                    .catch(function (e) {
+                                        console.warn('convertToBlob failed, using fallback:', e);
+                                        fallbackToBlob(canvasObj, mimeType, quality, resolve, reject);
+                                    });
+                                return;
+                            }
+
+                            // Regular canvas with toBlob
+                            if (!canvasObj.isOffscreen && typeof canvasObj.canvas.toBlob === 'function') {
+                                canvasObj.canvas.toBlob(function (blob) {
+                                    if (blob) {
+                                        resolve(blob);
+                                    } else {
+                                        reject(new Error('toBlob returned null'));
+                                    }
+                                }, mimeType, quality);
+                                return;
+                            }
+
+                            // Fallback
+                            fallbackToBlob(canvasObj, mimeType, quality, resolve, reject);
+
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                }
+
+                /**
+                 * Fallback blob creation using toDataURL
+                 */
+                function fallbackToBlob(canvasObj, mimeType, quality, resolve, reject) {
+                    try {
+                        var canvas = canvasObj.canvas;
+
+                        // For OffscreenCanvas, we need to transfer to regular canvas
+                        if (canvasObj.isOffscreen) {
+                            var tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = canvasObj.width;
+                            tempCanvas.height = canvasObj.height;
+                            var tempCtx = tempCanvas.getContext('2d');
+                            tempCtx.drawImage(canvas, 0, 0);
+                            canvas = tempCanvas;
+                        }
+
+                        var dataUrl = canvas.toDataURL(mimeType, quality);
+
+                        // Convert data URL to blob
+                        var parts = dataUrl.split(',');
+                        var byteString = atob(parts[1]);
+                        var mimeMatch = parts[0].match(/:(.*?);/);
+                        var mime = mimeMatch ? mimeMatch[1] : mimeType;
+
+                        var ab = new ArrayBuffer(byteString.length);
+                        var ia = new Uint8Array(ab);
+                        for (var i = 0; i < byteString.length; i++) {
+                            ia[i] = byteString.charCodeAt(i);
+                        }
+
+                        resolve(new Blob([ab], { type: mime }));
+
+                    } catch (e) {
+                        reject(e);
+                    }
+                }
+
+                /**
+                 * Get source canvas dimensions
+                 * @returns {{width: number, height: number}} Dimensions
+                 */
+                function getSourceDimensions() {
+                    return {
+                        width: srcCanvas ? srcCanvas.width : 0,
+                        height: srcCanvas ? srcCanvas.height : 0
+                    };
+                }
+
+                /**
+                 * Cleanup canvas object
+                 * @param {Object} canvasObj - Canvas object to cleanup
+                 */
+                function cleanup(canvasObj) {
+                    if (!canvasObj) return;
+
+                    try {
+                        if (canvasObj.ctx) {
+                            canvasObj.ctx.clearRect(0, 0, canvasObj.width, canvasObj.height);
+                        }
+                        if (!canvasObj.isOffscreen && canvasObj.canvas) {
+                            canvasObj.canvas.width = 0;
+                            canvasObj.canvas.height = 0;
+                        }
+                        canvasObj.canvas = null;
+                        canvasObj.ctx = null;
+                    } catch (e) {
+                        console.warn('Canvas cleanup error:', e);
+                    }
+                }
+
+                return Object.freeze({
+                    init: init,
+                    getImageData: getImageData,
+                    drawSource: drawSource,
+                    drawPreview: drawPreview,
+                    clearPreview: clearPreview,
+                    createFullResCanvas: createFullResCanvas,
+                    toBlob: toBlob,
+                    getSourceDimensions: getSourceDimensions,
+                    cleanup: cleanup,
+                    get srcCanvas() { return srcCanvas; },
+                    get prevCanvas() { return prevCanvas; },
+                    get useOffscreen() { return useOffscreen; }
+                });
+            })();
+
+            // ============================================
+            // MODULE: Worker Manager
+            // ============================================
+            var WorkerManager = (function () {
+                var worker = null;
+                var workerUrl = null;
+                var timeoutId = null;
+                var currentRequestId = null;
+                var messageHandler = null;
+
+                // Minified worker code for perspective transformation
+                var WORKER_CODE = [
+                    'var sw,sh,sd;',
+                    'function hasInvalidValues(a){if(!a)return!0;for(var i=0;i<a.length;i++)if("number"!=typeof a[i]||isNaN(a[i])||!isFinite(a[i]))return!0;return!1}',
+                    'function bilinear(x,y,dd,di){if(x<0||x>=sw-1||y<0||y>=sh-1){dd[di]=dd[di+1]=dd[di+2]=255;dd[di+3]=0;return}',
+                    'var x0=x|0,y0=y|0,dx=x-x0,dy=y-y0,dx1=1-dx,dy1=1-dy,i0=(y0*sw+x0)*4,i1=i0+4,i2=((y0+1)*sw+x0)*4,i3=i2+4,',
+                    'w0=dx1*dy1,w1=dx*dy1,w2=dx1*dy,w3=dx*dy;',
+                    'for(var c=0;c<4;c++)dd[di+c]=(w0*sd[i0+c]+w1*sd[i1+c]+w2*sd[i2+c]+w3*sd[i3+c])|0}',
+                    'function solve(A,b){var n=b.length,aug=A.map(function(r,i){return r.concat(b[i])});',
+                    'for(var c=0;c<n;c++){var mx=c;for(var r=c+1;r<n;r++)if(Math.abs(aug[r][c])>Math.abs(aug[mx][c]))mx=r;',
+                    'var t=aug[c];aug[c]=aug[mx];aug[mx]=t;if(Math.abs(aug[c][c])<1e-10)return null;',
+                    'for(var r=c+1;r<n;r++){var f=aug[r][c]/aug[c][c];for(var k=c;k<=n;k++)aug[r][k]-=f*aug[c][k]}}',
+                    'var x=[];for(var i=n-1;i>=0;i--){x[i]=aug[i][n];for(var j=i+1;j<n;j++)x[i]-=aug[i][j]*x[j];x[i]/=aug[i][i]}return x}',
+                    'function computeHomography(src,dst){var A=[],b=[];',
+                    'for(var i=0;i<4;i++){var sx=src[i].x,sy=src[i].y,dx=dst[i].x,dy=dst[i].y;',
+                    'A.push([sx,sy,1,0,0,0,-dx*sx,-dx*sy]);A.push([0,0,0,sx,sy,1,-dy*sx,-dy*sy]);b.push(dx,dy)}',
+                    'var h=solve(A,b);return h?h.concat(1):null}',
+                    'self.onmessage=function(e){var d=e.data;sw=d.imageData.width;sh=d.imageData.height;sd=d.imageData.data;',
+                    'var dw=d.destWidth,dh=d.destHeight,dst=[{x:0,y:0},{x:dw,y:0},{x:dw,y:dh},{x:0,y:dh}];',
+                    'var H=computeHomography(dst,d.srcCorners);',
+                    'if(!H||hasInvalidValues(H)){self.postMessage({error:1,errorCode:"INVALID_HOMOGRAPHY",requestId:d.requestId});return}',
+                    'var dd=new Uint8ClampedArray(dw*dh*4);',
+                    'for(var y=0;y<dh;y++)for(var x=0;x<dw;x++){',
+                    'var w=H[6]*x+H[7]*y+H[8];if(w===0||isNaN(w)||!isFinite(w)){self.postMessage({error:1,errorCode:"INVALID_TRANSFORM",requestId:d.requestId});return}',
+                    'var sx=(H[0]*x+H[1]*y+H[2])/w,sy=(H[3]*x+H[4]*y+H[5])/w;',
+                    'if(isNaN(sx)||isNaN(sy)||!isFinite(sx)||!isFinite(sy)){self.postMessage({error:1,errorCode:"INVALID_COORDINATES",requestId:d.requestId});return}',
+                    'bilinear(sx,sy,dd,(y*dw+x)*4)}',
+                    'self.postMessage({data:dd,w:dw,h:dh,preview:d.preview,requestId:d.requestId},[dd.buffer])}'
+                ].join('\n');
+
+                /**
+                 * Create worker instance
+                 * @returns {Worker|null} Worker or null if failed
+                 */
+                function create() {
+                    if (worker) return worker;
+
                     try {
                         var blob = new Blob([WORKER_CODE], { type: 'application/javascript' });
                         workerUrl = URL.createObjectURL(blob);
                         worker = new Worker(workerUrl);
-                        worker.onmessage = onWorkerMsg;
+
+                        worker.onmessage = function (e) {
+                            clearTimeoutSafe();
+                            if (messageHandler) {
+                                messageHandler(e.data);
+                            }
+                        };
+
                         worker.onerror = function (e) {
                             console.error('Worker error:', e);
-                            clearWorkerTimeout();
-                            currentWorkerRequestId = null;
-                            processing = false;
-                            pending = null;
-                            hideLoading();
-                            showError('Image processing failed. Please try again.');
-                            if (downloadInProgress) {
-                                resetDlBtn();
-                                dlReqId = null;
+                            clearTimeoutSafe();
+                            currentRequestId = null;
+
+                            if (messageHandler) {
+                                messageHandler({ error: true, errorCode: 'WORKER_ERROR' });
                             }
-                            terminateWorker();
+
+                            terminate();
                         };
+
+                        return worker;
                     } catch (e) {
                         console.error('Worker creation failed:', e);
-                        showError('Failed to initialize image processor. Please use a different browser.');
                         return null;
                     }
                 }
-                return worker;
-            }
 
-            // ============================================
-            // OUTPUT LIMITS
-            // ============================================
-            var MAX_OUTPUT_DIMENSION = 4096;
-            var MAX_OUTPUT_PIXELS = 16 * 1000 * 1000;
-
-            function validateOutputDimensions(w, h) {
-                if (w > MAX_OUTPUT_DIMENSION || h > MAX_OUTPUT_DIMENSION) {
-                    return {
-                        valid: false,
-                        reason: 'Output dimensions (' + w + '×' + h + ') exceed maximum (' + MAX_OUTPUT_DIMENSION + 'px per side).'
-                    };
-                }
-                var totalPixels = w * h;
-                if (totalPixels > MAX_OUTPUT_PIXELS) {
-                    return {
-                        valid: false,
-                        reason: 'Output size (' + (totalPixels / 1000000).toFixed(1) + 'MP) exceeds limit (' + (MAX_OUTPUT_PIXELS / 1000000) + 'MP).'
-                    };
-                }
-                return { valid: true, reason: null };
-            }
-
-            // ============================================
-            // STATE VARIABLES
-            // ============================================
-            var origImg = null;
-            var origData = null;
-            var scale = 1;
-            var pts = [];
-            var dragging = false;
-            var dragIdx = -1;
-            var processing = false;
-            var pending = null;
-            var reqId = 0;
-            var dlReqId = null;
-            var downloadInProgress = false;
-            var fullCanvas = null;
-            var previewTimer = null;
-            var rafPending = false;
-            var lastDragUpdateTime = 0;
-            var DRAG_THROTTLE_MS = 50;
-            var resizeTimer = null;
-            var currentFileName = '';
-
-            // ============================================
-            // UI HELPER FUNCTIONS
-            // ============================================
-            function showError(msg) {
-                if (errorMsg) {
-                    errorMsg.textContent = msg;
-                    errorMsg.classList.remove('hidden');
-                    announce('Error: ' + msg);
-                }
-            }
-
-            function hideError() {
-                if (errorMsg) {
-                    errorMsg.classList.add('hidden');
-                }
-            }
-
-            function showLoading() {
-                if (loadingOverlay) {
-                    loadingOverlay.classList.add('show');
-                }
-            }
-
-            function hideLoading() {
-                if (loadingOverlay) {
-                    loadingOverlay.classList.remove('show');
-                }
-            }
-
-            // ============================================
-            // GEOMETRY HELPERS
-            // ============================================
-            function dist(a, b) {
-                var dx = b.x - a.x;
-                var dy = b.y - a.y;
-                return Math.sqrt(dx * dx + dy * dy);
-            }
-
-            function crossProduct2D(o, a, b) {
-                return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
-            }
-
-            function isQuadrilateralValid(points) {
-                if (!points || !Array.isArray(points) || points.length !== 4) {
-                    return false;
-                }
-
-                for (var i = 0; i < 4; i++) {
-                    var p = points[i];
-                    if (!p || typeof p.x !== 'number' || typeof p.y !== 'number') {
-                        return false;
-                    }
-                    if (isNaN(p.x) || isNaN(p.y) || !isFinite(p.x) || !isFinite(p.y)) {
-                        return false;
+                /**
+                 * Clear timeout safely
+                 */
+                function clearTimeoutSafe() {
+                    if (timeoutId !== null) {
+                        clearTimeout(timeoutId);
+                        timeoutId = null;
                     }
                 }
 
-                var epsilon = 1.0;
-
-                for (var i = 0; i < 4; i++) {
-                    var p1 = points[i];
-                    var p2 = points[(i + 1) % 4];
-                    var p3 = points[(i + 2) % 4];
-
-                    if (dist(p1, p2) < epsilon) {
-                        return false;
-                    }
-
-                    if (Math.abs(crossProduct2D(p1, p2, p3)) < epsilon) {
-                        return false;
-                    }
+                /**
+                 * Set message handler
+                 * @param {Function} handler - Message handler function
+                 */
+                function onMessage(handler) {
+                    messageHandler = handler;
                 }
 
-                var cp1 = crossProduct2D(points[0], points[1], points[2]);
-                var cp2 = crossProduct2D(points[1], points[2], points[3]);
-                var cp3 = crossProduct2D(points[2], points[3], points[0]);
-                var cp4 = crossProduct2D(points[3], points[0], points[1]);
-
-                var sign1 = Math.sign(cp1);
-                var sign2 = Math.sign(cp2);
-                var sign3 = Math.sign(cp3);
-                var sign4 = Math.sign(cp4);
-
-                if (sign1 === 0 || sign2 === 0 || sign3 === 0 || sign4 === 0) {
-                    return false;
-                }
-
-                if (sign1 !== sign2 || sign2 !== sign3 || sign3 !== sign4) {
-                    return false;
-                }
-
-                return true;
-            }
-
-            // ============================================
-            // FILE UPLOAD HANDLERS
-            // ============================================
-            uploadZone.addEventListener('click', function (e) {
-                if (e.target !== errorMsg) {
-                    fileInput.click();
-                }
-            });
-
-            uploadZone.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    fileInput.click();
-                }
-            });
-
-            uploadZone.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                uploadZone.classList.add('drag-over');
-            });
-
-            uploadZone.addEventListener('dragleave', function (e) {
-                e.preventDefault();
-                uploadZone.classList.remove('drag-over');
-            });
-
-            uploadZone.addEventListener('drop', function (e) {
-                e.preventDefault();
-                uploadZone.classList.remove('drag-over');
-                hideError();
-                var files = e.dataTransfer && e.dataTransfer.files;
-                if (files && files[0]) {
-                    if (files[0].type.indexOf('image') === 0) {
-                        loadFile(files[0]);
-                    } else {
-                        showError('Please upload an image file (JPG, PNG, WebP)');
-                    }
-                }
-            });
-
-            fileInput.addEventListener('change', function () {
-                hideError();
-                if (fileInput.files && fileInput.files[0]) {
-                    loadFile(fileInput.files[0]);
-                }
-            });
-
-            document.addEventListener('paste', function (e) {
-                var items = e.clipboardData && e.clipboardData.items;
-                if (!items) return;
-
-                for (var i = 0; i < items.length; i++) {
-                    if (items[i].type.indexOf('image') === 0) {
-                        e.preventDefault();
-                        hideError();
-                        var file = items[i].getAsFile();
-                        if (file) {
-                            loadFile(file);
+                /**
+                 * Send message to worker
+                 * @param {Object} data - Data to send
+                 * @param {Array} [transferables] - Transferable objects
+                 * @returns {boolean} Success
+                 */
+                function postMessage(data, transferables) {
+                    var w = create();
+                    if (!w) {
+                        if (messageHandler) {
+                            messageHandler({ error: true, errorCode: 'WORKER_UNAVAILABLE' });
                         }
-                        break;
+                        return false;
+                    }
+
+                    currentRequestId = data.requestId;
+
+                    // Set timeout
+                    clearTimeoutSafe();
+                    timeoutId = setTimeout(function () {
+                        if (currentRequestId === data.requestId) {
+                            console.warn('Worker timeout for request:', data.requestId);
+                            currentRequestId = null;
+                            terminate();
+
+                            if (messageHandler) {
+                                messageHandler({ error: true, errorCode: 'TIMEOUT', requestId: data.requestId });
+                            }
+                        }
+                    }, Config.WORKER_TIMEOUT_MS);
+
+                    try {
+                        w.postMessage(data, transferables || []);
+                        return true;
+                    } catch (e) {
+                        console.error('Worker postMessage error:', e);
+                        clearTimeoutSafe();
+                        currentRequestId = null;
+                        return false;
                     }
                 }
-            });
 
-            function loadFile(file) {
-                if (!file) {
-                    showError('No file provided');
-                    return;
+                /**
+                 * Terminate worker and cleanup
+                 */
+                function terminate() {
+                    clearTimeoutSafe();
+                    currentRequestId = null;
+
+                    if (worker) {
+                        try {
+                            worker.terminate();
+                        } catch (e) {
+                            console.warn('Worker termination error:', e);
+                        }
+                        worker = null;
+                    }
+
+                    if (workerUrl) {
+                        try {
+                            URL.revokeObjectURL(workerUrl);
+                        } catch (e) {
+                            console.warn('URL revocation error:', e);
+                        }
+                        workerUrl = null;
+                    }
                 }
 
-                // Store filename for later use
-                currentFileName = file.name || 'image';
+                /**
+                 * Check if request ID is current
+                 * @param {*} requestId - Request ID to check
+                 * @returns {boolean} Is current
+                 */
+                function isCurrentRequest(requestId) {
+                    return currentRequestId === requestId;
+                }
 
-                // Clean up previous state
-                fullCanvas = null;
-                pending = null;
-                processing = false;
-                downloadInProgress = false;
-                clearWorkerTimeout();
+                return Object.freeze({
+                    create: create,
+                    onMessage: onMessage,
+                    postMessage: postMessage,
+                    terminate: terminate,
+                    isCurrentRequest: isCurrentRequest
+                });
+            })();
 
-                var reader = new FileReader();
+            // ============================================
+            // MODULE: Geometry
+            // ============================================
+            var Geometry = (function () {
+                var EPSILON = 1.0;
 
-                reader.onerror = function () {
-                    showError('Failed to read file');
+                /**
+                 * Validate quadrilateral (convex, non-degenerate)
+                 * @param {Array<{x: number, y: number}>} points - Four corner points
+                 * @returns {boolean} Valid quadrilateral
+                 */
+                function isValidQuad(points) {
+                    if (!points || !Array.isArray(points) || points.length !== 4) {
+                        return false;
+                    }
+
+                    // Validate all points
+                    for (var i = 0; i < 4; i++) {
+                        var p = points[i];
+                        if (!p || !Utils.isValidNumber(p.x) || !Utils.isValidNumber(p.y)) {
+                            return false;
+                        }
+                    }
+
+                    // Check edges and collinearity
+                    for (var i = 0; i < 4; i++) {
+                        var p1 = points[i];
+                        var p2 = points[(i + 1) % 4];
+                        var p3 = points[(i + 2) % 4];
+
+                        // Check minimum edge length
+                        if (Utils.dist(p1, p2) < EPSILON) {
+                            return false;
+                        }
+
+                        // Check for collinearity
+                        if (Math.abs(Utils.crossProduct2D(p1, p2, p3)) < EPSILON) {
+                            return false;
+                        }
+                    }
+
+                    // Check convexity (consistent winding order)
+                    var signs = [];
+                    for (var i = 0; i < 4; i++) {
+                        var cp = Utils.crossProduct2D(
+                            points[i],
+                            points[(i + 1) % 4],
+                            points[(i + 2) % 4]
+                        );
+                        signs.push(Math.sign(cp));
+                    }
+
+                    var firstSign = signs[0];
+                    if (firstSign === 0) return false;
+
+                    for (var i = 1; i < 4; i++) {
+                        if (signs[i] !== firstSign) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+                /**
+                 * Calculate output dimensions from quadrilateral
+                 * @param {Array<{x: number, y: number}>} points - Corner points (display coords)
+                 * @param {number} scale - Display scale factor
+                 * @returns {{w: number, h: number, src: Array|null, isValid: boolean}} Dimensions
+                 */
+                function calculateDimensions(points, scale) {
+                    scale = scale || 1;
+
+                    // Convert to original image coordinates
+                    var srcPts = [];
+                    for (var i = 0; i < points.length; i++) {
+                        srcPts.push({
+                            x: points[i].x / scale,
+                            y: points[i].y / scale
+                        });
+                    }
+
+                    if (!isValidQuad(srcPts)) {
+                        return { w: 0, h: 0, src: null, isValid: false };
+                    }
+
+                    var topW = Utils.dist(srcPts[0], srcPts[1]);
+                    var bottomW = Utils.dist(srcPts[3], srcPts[2]);
+                    var leftH = Utils.dist(srcPts[0], srcPts[3]);
+                    var rightH = Utils.dist(srcPts[1], srcPts[2]);
+
+                    var w = Math.round(Math.max(topW, bottomW));
+                    var h = Math.round(Math.max(leftH, rightH));
+
+                    return {
+                        w: Math.max(1, w),
+                        h: Math.max(1, h),
+                        src: srcPts,
+                        isValid: true
+                    };
+                }
+
+                /**
+                 * Validate output dimensions against limits
+                 * @param {number} w - Width
+                 * @param {number} h - Height
+                 * @returns {{valid: boolean, reason: string|null}} Validation result
+                 */
+                function validateOutputDimensions(w, h) {
+                    if (w > Config.MAX_OUTPUT_DIMENSION || h > Config.MAX_OUTPUT_DIMENSION) {
+                        return {
+                            valid: false,
+                            reason: 'Output dimensions (' + w + '×' + h + ') exceed maximum (' +
+                                Config.MAX_OUTPUT_DIMENSION + 'px per side).'
+                        };
+                    }
+
+                    var totalPixels = w * h;
+                    if (totalPixels > Config.MAX_OUTPUT_PIXELS) {
+                        return {
+                            valid: false,
+                            reason: 'Output size (' + (totalPixels / 1000000).toFixed(1) +
+                                'MP) exceeds limit (' + (Config.MAX_OUTPUT_PIXELS / 1000000) + 'MP).'
+                        };
+                    }
+
+                    return { valid: true, reason: null };
+                }
+
+                /**
+                 * Get default corner positions
+                 * @param {number} width - Canvas width
+                 * @param {number} height - Canvas height
+                 * @param {number} [marginRatio] - Margin ratio (default 0.1)
+                 * @returns {Array<{x: number, y: number}>} Default corner positions
+                 */
+                function getDefaultCorners(width, height, marginRatio) {
+                    marginRatio = marginRatio || Config.CORNER_MARGIN_RATIO;
+                    var margin = Math.min(width, height) * marginRatio;
+
+                    return [
+                        { x: margin, y: margin },
+                        { x: width - margin, y: margin },
+                        { x: width - margin, y: height - margin },
+                        { x: margin, y: height - margin }
+                    ];
+                }
+
+                /**
+                 * Scale points to new dimensions
+                 * @param {Array<{x: number, y: number}>} points - Points to scale
+                 * @param {number} scaleX - X scale factor
+                 * @param {number} scaleY - Y scale factor
+                 * @param {number} maxW - Maximum X value
+                 * @param {number} maxH - Maximum Y value
+                 * @returns {Array<{x: number, y: number}>} Scaled points
+                 */
+                function scalePoints(points, scaleX, scaleY, maxW, maxH) {
+                    var result = [];
+                    for (var i = 0; i < points.length; i++) {
+                        result.push({
+                            x: Utils.clamp(points[i].x * scaleX, 0, maxW),
+                            y: Utils.clamp(points[i].y * scaleY, 0, maxH)
+                        });
+                    }
+                    return result;
+                }
+
+                return Object.freeze({
+                    isValidQuad: isValidQuad,
+                    calculateDimensions: calculateDimensions,
+                    validateOutputDimensions: validateOutputDimensions,
+                    getDefaultCorners: getDefaultCorners,
+                    scalePoints: scalePoints
+                });
+            })();
+
+            // ============================================
+            // MODULE: UI Controller
+            // ============================================
+            var UI = (function () {
+                /**
+                 * Show error message
+                 * @param {string} msg - Error message
+                 */
+                function showError(msg) {
+                    var errorEl = DOM.get('errorMsg');
+                    if (errorEl) {
+                        errorEl.textContent = msg;
+                        DOM.show(errorEl);
+                        A11y.announce('Error: ' + msg, 'assertive');
+                    }
+                }
+
+                /**
+                 * Hide error message
+                 */
+                function hideError() {
+                    DOM.hide('errorMsg');
+                }
+
+                /**
+                 * Show loading overlay
+                 */
+                function showLoading() {
+                    DOM.toggleClass('loadingOverlay', 'show', true);
+                }
+
+                /**
+                 * Hide loading overlay
+                 */
+                function hideLoading() {
+                    DOM.toggleClass('loadingOverlay', 'show', false);
+                }
+
+                /**
+                 * Update dimension displays
+                 * @param {{w: number, h: number}|null} original - Original dimensions
+                 * @param {{w: number, h: number}|null} preview - Preview dimensions
+                 */
+                function updateDimensions(original, preview) {
+                    var origDim = DOM.get('origDim');
+                    var prevDim = DOM.get('prevDim');
+
+                    if (origDim && original && original.w && original.h) {
+                        origDim.textContent = original.w + ' × ' + original.h;
+                    }
+
+                    if (prevDim) {
+                        if (preview && preview.w && preview.h) {
+                            prevDim.textContent = preview.w + ' × ' + preview.h;
+                        } else if (preview === null) {
+                            prevDim.textContent = '—';
+                        }
+                    }
+                }
+
+                /**
+                 * Show editor, hide hero section
+                 */
+                function showEditor() {
+                    DOM.hide('heroSection');
+                    DOM.hide('uploadZone');
+                    DOM.toggleClass('editor', 'active', true);
+                }
+
+                /**
+                 * Show hero section, hide editor
+                 */
+                function showHero() {
+                    DOM.show('heroSection');
+                    DOM.show('uploadZone');
+                    DOM.toggleClass('editor', 'active', false);
+                }
+
+                /**
+                 * Set download button state
+                 * @param {'ready'|'processing'|'disabled'} state - Button state
+                 */
+                function setDownloadState(state) {
+                    var btn = DOM.get('downloadBtn');
+                    var icon = DOM.get('downloadIcon');
+                    var text = DOM.get('downloadText');
+                    var format = DOM.get('formatSelect');
+
+                    switch (state) {
+                        case 'processing':
+                            if (btn) btn.disabled = true;
+                            if (format) format.disabled = true;
+                            if (icon) icon.classList.add('spin');
+                            if (text) text.textContent = 'Processing...';
+                            break;
+                        case 'disabled':
+                            if (btn) btn.disabled = true;
+                            if (format) format.disabled = false;
+                            if (icon) icon.classList.remove('spin');
+                            if (text) text.textContent = 'Download';
+                            break;
+                        case 'ready':
+                        default:
+                            if (btn) btn.disabled = false;
+                            if (format) format.disabled = false;
+                            if (icon) icon.classList.remove('spin');
+                            if (text) text.textContent = 'Download';
+                            break;
+                    }
+                }
+
+                /**
+                 * Show initialization error
+                 * @param {string} message - Error message
+                 */
+                function showInitError(message) {
+                    var errorDiv = DOM.create('div', {
+                        style: {
+                            position: 'fixed',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            background: '#fee',
+                            color: '#c00',
+                            padding: '20px',
+                            borderRadius: '8px',
+                            textAlign: 'center',
+                            zIndex: '9999',
+                            maxWidth: '90%',
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+                        }
+                    });
+                    errorDiv.innerHTML = '<h3 style="margin-bottom:10px">Application Error</h3><p>' + message + '</p>';
+                    document.body.appendChild(errorDiv);
+                }
+
+                return Object.freeze({
+                    showError: showError,
+                    hideError: hideError,
+                    showLoading: showLoading,
+                    hideLoading: hideLoading,
+                    updateDimensions: updateDimensions,
+                    showEditor: showEditor,
+                    showHero: showHero,
+                    setDownloadState: setDownloadState,
+                    showInitError: showInitError
+                });
+            })();
+
+            // ============================================
+            // MODULE: Quad Renderer
+            // ============================================
+            var QuadRenderer = (function () {
+                var quadSvg = null;
+                var cornersDiv = null;
+                var cornerElements = [];
+
+                /**
+                 * Initialize renderer
+                 */
+                function init() {
+                    quadSvg = DOM.get('quadSvg');
+                    cornersDiv = DOM.get('corners');
+                }
+
+                /**
+                 * Set SVG dimensions
+                 * @param {number} width - Width
+                 * @param {number} height - Height
+                 */
+                function setSize(width, height) {
+                    if (!quadSvg) return;
+                    quadSvg.setAttribute('width', String(width));
+                    quadSvg.setAttribute('height', String(height));
+                    quadSvg.style.width = width + 'px';
+                    quadSvg.style.height = height + 'px';
+                }
+
+                /**
+                 * Render quad polygon and dashed edges
+                 * @param {Array<{x: number, y: number}>} points - Corner points
+                 */
+                function renderQuad(points) {
+                    if (!quadSvg || points.length !== 4) return;
+
+                    var style = getComputedStyle(document.documentElement);
+                    var color = style.getPropertyValue('--accent').trim() || '#059669';
+
+                    var pointsStr = points.map(function (p) {
+                        return p.x + ',' + p.y;
+                    }).join(' ');
+
+                    var linesHtml = '';
+                    for (var i = 0; i < 4; i++) {
+                        var next = (i + 1) % 4;
+                        linesHtml += '<line x1="' + points[i].x + '" y1="' + points[i].y +
+                            '" x2="' + points[next].x + '" y2="' + points[next].y +
+                            '" stroke="' + color + '" stroke-width="2" stroke-dasharray="5,4"/>';
+                    }
+
+                    quadSvg.innerHTML =
+                        '<polygon points="' + pointsStr + '" fill="' + color +
+                        '" fill-opacity="0.12" stroke="' + color + '" stroke-width="2"/>' +
+                        linesHtml;
+                }
+
+                /**
+                 * Render corner handles
+                 * @param {Array<{x: number, y: number}>} points - Corner positions
+                 * @param {number} canvasWidth - Canvas width for ARIA
+                 * @param {number} canvasHeight - Canvas height for ARIA
+                 * @param {Object} handlers - Event handlers
+                 */
+                function renderCorners(points, canvasWidth, canvasHeight, handlers) {
+                    if (!cornersDiv) return;
+
+                    cornersDiv.innerHTML = '';
+                    cornerElements = [];
+
+                    for (var i = 0; i < 4; i++) {
+                        var el = DOM.create('div', {
+                            className: 'corner',
+                            'data-idx': String(i),
+                            role: 'slider',
+                            'aria-label': Config.CORNER_LABELS[i] + ' corner',
+                            'aria-valuemin': '0',
+                            'aria-valuemax': '100',
+                            tabIndex: 0
+                        });
+
+                        el.style.left = points[i].x + 'px';
+                        el.style.top = points[i].y + 'px';
+
+                        A11y.updateCornerAria(el, i, points[i].x, points[i].y, canvasWidth, canvasHeight);
+
+                        if (handlers) {
+                            if (handlers.onDragStart) {
+                                el.addEventListener('mousedown', handlers.onDragStart);
+                                el.addEventListener('touchstart', handlers.onDragStart, { passive: false });
+                            }
+                            if (handlers.onKeydown) {
+                                el.addEventListener('keydown', handlers.onKeydown);
+                            }
+                        }
+
+                        cornersDiv.appendChild(el);
+                        cornerElements.push(el);
+                    }
+                }
+
+                /**
+                 * Update single corner position
+                 * @param {number} index - Corner index
+                 * @param {number} x - X position
+                 * @param {number} y - Y position
+                 * @param {number} canvasWidth - Canvas width
+                 * @param {number} canvasHeight - Canvas height
+                 */
+                function updateCornerPosition(index, x, y, canvasWidth, canvasHeight) {
+                    var el = cornerElements[index];
+                    if (!el) return;
+
+                    el.style.left = x + 'px';
+                    el.style.top = y + 'px';
+                    A11y.updateCornerAria(el, index, x, y, canvasWidth, canvasHeight);
+                }
+
+                /**
+                 * Set corner active state
+                 * @param {number} index - Corner index
+                 * @param {boolean} active - Active state
+                 */
+                function setCornerActive(index, active) {
+                    var el = cornerElements[index];
+                    if (el) {
+                        el.classList.toggle('active', active);
+                    }
+                }
+
+                /**
+                 * Get corner element
+                 * @param {number} index - Corner index
+                 * @returns {HTMLElement|null} Corner element
+                 */
+                function getCornerElement(index) {
+                    return cornerElements[index] || null;
+                }
+
+                return Object.freeze({
+                    init: init,
+                    setSize: setSize,
+                    renderQuad: renderQuad,
+                    renderCorners: renderCorners,
+                    updateCornerPosition: updateCornerPosition,
+                    setCornerActive: setCornerActive,
+                    getCornerElement: getCornerElement
+                });
+            })();
+
+            // ============================================
+            // MODULE: Image Processor
+            // ============================================
+            var ImageProcessor = (function () {
+                var processing = false;
+                var pending = null;
+                var requestCounter = 0;
+                var downloadRequestId = null;
+                var fullResCanvas = null;
+                var requestHandlers = {};
+
+                // Error messages
+                var ERROR_MESSAGES = {
+                    'INVALID_HOMOGRAPHY': 'Invalid corner positions. Please adjust corners.',
+                    'INVALID_TRANSFORM': 'Transform failed. Corners may be invalid.',
+                    'INVALID_COORDINATES': 'Invalid coordinates detected. Adjust corners.',
+                    'TIMEOUT': 'Processing timed out. Try a smaller selection.',
+                    'WORKER_ERROR': 'Processing failed. Please try again.',
+                    'WORKER_UNAVAILABLE': 'Failed to initialize processor.'
                 };
 
-                reader.onload = function (e) {
+                /**
+                 * Initialize processor
+                 */
+                function init() {
+                    WorkerManager.onMessage(handleWorkerMessage);
+                }
+
+                /**
+                 * Generate next request ID
+                 * @returns {number} Request ID
+                 */
+                function nextRequestId() {
+                    return ++requestCounter;
+                }
+
+                /**
+                 * Get error message for code
+                 * @param {string} code - Error code
+                 * @returns {string} Error message
+                 */
+                function getErrorMessage(code) {
+                    return ERROR_MESSAGES[code] || 'Processing failed. Adjust the corners.';
+                }
+
+                /**
+                 * Process image transformation
+                 * @param {Object} params - Processing parameters
+                 * @returns {number|null} Request ID or null if failed
+                 */
+                function process(params) {
+                    var srcCorners = params.srcCorners;
+                    var destWidth = params.destWidth;
+                    var destHeight = params.destHeight;
+                    var isPreview = params.isPreview;
+                    var imageData = params.imageData;
+                    var onComplete = params.onComplete;
+                    var onError = params.onError;
+                    var requestId = nextRequestId();
+
+                    // Validate inputs
+                    if (!imageData || destWidth < 1 || destHeight < 1 || !srcCorners) {
+                        if (onError) onError('Invalid parameters');
+                        return null;
+                    }
+
+                    // Queue if processing preview
+                    if (isPreview && processing) {
+                        pending = {
+                            srcCorners: srcCorners,
+                            destWidth: destWidth,
+                            destHeight: destHeight,
+                            imageData: imageData,
+                            isPreview: true,
+                            onComplete: onComplete,
+                            onError: onError,
+                            requestId: requestId
+                        };
+                        return requestId;
+                    }
+
+                    // Validate output dimensions for full-res
+                    if (!isPreview) {
+                        var validation = Geometry.validateOutputDimensions(destWidth, destHeight);
+                        if (!validation.valid) {
+                            if (onError) onError(validation.reason + ' Select a smaller region.');
+                            return null;
+                        }
+                    }
+
+                    processing = true;
+                    if (isPreview) UI.showLoading();
+
+                    // Clone image data for transfer
+                    try {
+                        var clonedData = new ImageData(
+                            new Uint8ClampedArray(imageData.data),
+                            imageData.width,
+                            imageData.height
+                        );
+
+                        // Store handlers
+                        requestHandlers[requestId] = {
+                            isPreview: isPreview,
+                            onComplete: onComplete,
+                            onError: onError
+                        };
+
+                        if (!isPreview) {
+                            downloadRequestId = requestId;
+                        }
+
+                        WorkerManager.postMessage({
+                            imageData: clonedData,
+                            srcCorners: srcCorners,
+                            destWidth: destWidth,
+                            destHeight: destHeight,
+                            preview: isPreview,
+                            requestId: requestId
+                        }, [clonedData.data.buffer]);
+
+                        return requestId;
+
+                    } catch (err) {
+                        console.error('Process error:', err);
+                        processing = false;
+                        UI.hideLoading();
+                        if (onError) onError('Failed to process image.');
+                        return null;
+                    }
+                }
+
+                /**
+                 * Handle worker message
+                 * @param {Object} data - Worker response data
+                 */
+                function handleWorkerMessage(data) {
+                    if (!data) {
+                        processing = false;
+                        pending = null;
+                        UI.hideLoading();
+                        return;
+                    }
+
+                    var handlers = requestHandlers[data.requestId];
+                    delete requestHandlers[data.requestId];
+
+                    // Handle errors
+                    if (data.error) {
+                        var msg = getErrorMessage(data.errorCode);
+                        processing = false;
+                        pending = null;
+                        UI.hideLoading();
+
+                        if (data.requestId === downloadRequestId) {
+                            downloadRequestId = null;
+                        }
+
+                        if (handlers && handlers.onError) {
+                            handlers.onError(msg);
+                        }
+                        return;
+                    }
+
+                    // Process result
+                    try {
+                        var imgData = new ImageData(
+                            new Uint8ClampedArray(data.data),
+                            data.w,
+                            data.h
+                        );
+
+                        if (data.preview) {
+                            UI.hideLoading();
+                            processing = false;
+
+                            if (handlers && handlers.onComplete) {
+                                handlers.onComplete(imgData);
+                            }
+
+                            // Process pending request
+                            if (pending) {
+                                var p = pending;
+                                pending = null;
+                                process(p);
+                            }
+                        } else {
+                            if (data.requestId === downloadRequestId) {
+                                fullResCanvas = CanvasManager.createFullResCanvas(imgData);
+                                processing = false;
+
+                                if (handlers && handlers.onComplete) {
+                                    handlers.onComplete(fullResCanvas);
+                                }
+                            } else {
+                                processing = false;
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Result processing error:', err);
+                        processing = false;
+                        pending = null;
+                        UI.hideLoading();
+
+                        if (handlers && handlers.onError) {
+                            handlers.onError('Failed to render result.');
+                        }
+                    }
+                }
+
+                /**
+                 * Get full resolution canvas
+                 * @returns {Object|null} Full res canvas object
+                 */
+                function getFullResCanvas() {
+                    return fullResCanvas;
+                }
+
+                /**
+                 * Clear full resolution canvas
+                 */
+                function clearFullResCanvas() {
+                    if (fullResCanvas) {
+                        CanvasManager.cleanup(fullResCanvas);
+                        fullResCanvas = null;
+                    }
+                }
+
+                /**
+                 * Check if currently processing
+                 * @returns {boolean} Processing state
+                 */
+                function isProcessing() {
+                    return processing;
+                }
+
+                /**
+                 * Reset processor state
+                 */
+                function reset() {
+                    processing = false;
+                    pending = null;
+                    requestHandlers = {};
+                    downloadRequestId = null;
+                    clearFullResCanvas();
+                }
+
+                return Object.freeze({
+                    init: init,
+                    process: process,
+                    getFullResCanvas: getFullResCanvas,
+                    clearFullResCanvas: clearFullResCanvas,
+                    isProcessing: isProcessing,
+                    reset: reset
+                });
+            })();
+
+            // ============================================
+            // MODULE: File Handler
+            // ============================================
+            var FileHandler = (function () {
+                var currentFileName = '';
+                var onLoadCallback = null;
+
+                /**
+                 * Set load callback
+                 * @param {Function} callback - Callback function
+                 */
+                function onLoad(callback) {
+                    onLoadCallback = callback;
+                }
+
+                /**
+                 * Get current filename
+                 * @returns {string} Current filename
+                 */
+                function getFileName() {
+                    return currentFileName;
+                }
+
+                /**
+                 * Load file
+                 * @param {File} file - File to load
+                 */
+                function loadFile(file) {
+                    if (!file) {
+                        UI.showError('No file provided');
+                        return;
+                    }
+
+                    currentFileName = file.name || 'image';
+
+                    var reader = new FileReader();
+
+                    reader.onerror = function () {
+                        UI.showError('Failed to read file');
+                    };
+
+                    reader.onload = function (e) {
+                        loadFromDataUrl(e.target.result);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+
+                /**
+                 * Load from data URL
+                 * @param {string} dataUrl - Data URL
+                 */
+                function loadFromDataUrl(dataUrl) {
                     var img = new Image();
 
                     img.onerror = function () {
-                        showError('Failed to load image. File may be corrupted or unsupported.');
+                        UI.showError('Failed to load image. File may be corrupted or unsupported.');
                     };
 
                     img.onload = function () {
                         if (img.width < 1 || img.height < 1) {
-                            showError('Invalid image: zero or negative dimensions.');
+                            UI.showError('Invalid image: zero or negative dimensions.');
                             return;
                         }
 
-                        var MAX_INPUT_PIXELS = 100000000;
                         var totalPixels = img.width * img.height;
-
-                        if (totalPixels > MAX_INPUT_PIXELS) {
-                            showError(
+                        if (totalPixels > Config.MAX_INPUT_PIXELS) {
+                            UI.showError(
                                 'Image too large (' + (totalPixels / 1000000).toFixed(1) +
-                                'MP). Maximum is ' + (MAX_INPUT_PIXELS / 1000000) + 'MP.'
+                                'MP). Maximum is ' + (Config.MAX_INPUT_PIXELS / 1000000) + 'MP.'
                             );
                             return;
                         }
 
-                        origImg = img;
-
                         try {
-                            var tempCanvas = document.createElement('canvas');
-                            tempCanvas.width = img.width;
-                            tempCanvas.height = img.height;
-                            var tempCtx = tempCanvas.getContext('2d');
+                            var imageData = CanvasManager.getImageData(img);
 
-                            if (!tempCtx) {
-                                showError('Canvas context creation failed.');
-                                return;
+                            A11y.announce('Image loaded: ' + currentFileName + ', ' +
+                                img.width + ' by ' + img.height + ' pixels');
+
+                            if (onLoadCallback) {
+                                onLoadCallback({
+                                    image: img,
+                                    imageData: imageData,
+                                    fileName: currentFileName
+                                });
                             }
-
-                            tempCtx.drawImage(img, 0, 0);
-                            origData = tempCtx.getImageData(0, 0, img.width, img.height);
-
-                            // Announce successful load
-                            announce('Image loaded: ' + currentFileName + ', ' + img.width + ' by ' + img.height + ' pixels');
-
-                            setup();
                         } catch (err) {
                             console.error('Image processing error:', err);
-                            showError('Failed to process image. It may be too large for this browser.');
+                            UI.showError('Failed to process image. It may be too large for this browser.');
                         }
                     };
 
-                    img.src = e.target.result;
-                };
-
-                reader.readAsDataURL(file);
-            }
-
-            // ============================================
-            // EDITOR SETUP
-            // ============================================
-            function setup() {
-                if (heroSection) heroSection.classList.add('hidden');
-                uploadZone.classList.add('hidden');
-                if (editor) editor.classList.add('active');
-
-                var container = document.getElementById('origContainer');
-                var containerWidth = container ? container.clientWidth - 32 : window.innerWidth - 64;
-                var maxW = containerWidth;
-                var maxH = window.innerHeight * 0.5;
-
-                scale = Math.min(maxW / origImg.width, maxH / origImg.height, 1);
-
-                var displayW = Math.round(origImg.width * scale);
-                var displayH = Math.round(origImg.height * scale);
-
-                srcCanvas.width = displayW;
-                srcCanvas.height = displayH;
-                srcCtx.drawImage(origImg, 0, 0, displayW, displayH);
-
-                quadSvg.setAttribute('width', displayW);
-                quadSvg.setAttribute('height', displayH);
-                quadSvg.style.width = displayW + 'px';
-                quadSvg.style.height = displayH + 'px';
-
-                if (origDim) origDim.textContent = origImg.width + ' × ' + origImg.height;
-                if (prevDim) prevDim.textContent = '—';
-
-                resetPts();
-            }
-
-            function resetPts() {
-                var w = srcCanvas.width;
-                var h = srcCanvas.height;
-                var margin = Math.min(w, h) * 0.1;
-
-                pts = [
-                    { x: margin, y: margin },
-                    { x: w - margin, y: margin },
-                    { x: w - margin, y: h - margin },
-                    { x: margin, y: h - margin }
-                ];
-
-                hideError();
-                renderCorners();
-                renderQuad();
-                updatePreview();
-
-                announce('Corner positions reset');
-            }
-
-            // ============================================
-            // CORNER RENDERING
-            // ============================================
-            function renderCorners() {
-                cornersDiv.innerHTML = '';
-                var labels = ['Top-left', 'Top-right', 'Bottom-right', 'Bottom-left'];
-
-                for (var i = 0; i < 4; i++) {
-                    var el = document.createElement('div');
-                    el.className = 'corner';
-                    el.style.left = pts[i].x + 'px';
-                    el.style.top = pts[i].y + 'px';
-                    el.setAttribute('data-idx', String(i));
-                    el.setAttribute('role', 'slider');
-                    el.setAttribute('aria-label', labels[i] + ' corner');
-                    el.setAttribute('aria-valuemin', '0');
-                    el.setAttribute('aria-valuemax', '100');
-                    // Calculate percentage position for aria-valuenow
-                    var xPercent = Math.round((pts[i].x / srcCanvas.width) * 100);
-                    var yPercent = Math.round((pts[i].y / srcCanvas.height) * 100);
-                    el.setAttribute('aria-valuenow', xPercent + ',' + yPercent);
-                    el.setAttribute('aria-valuetext', labels[i] + ' at ' + xPercent + '% horizontal, ' + yPercent + '% vertical');
-                    el.setAttribute('tabindex', '0');
-                    el.addEventListener('mousedown', startDrag);
-                    el.addEventListener('touchstart', startDrag, { passive: false });
-                    el.addEventListener('keydown', handleCornerKeydown);
-                    cornersDiv.appendChild(el);
-                }
-            }
-
-            function updateCornerAria(idx) {
-                if (idx < 0 || idx > 3) return;
-                var cornerEl = cornersDiv.children[idx];
-                if (!cornerEl) return;
-
-                var labels = ['Top-left', 'Top-right', 'Bottom-right', 'Bottom-left'];
-                var xPercent = Math.round((pts[idx].x / srcCanvas.width) * 100);
-                var yPercent = Math.round((pts[idx].y / srcCanvas.height) * 100);
-
-                cornerEl.setAttribute('aria-valuenow', xPercent + ',' + yPercent);
-                cornerEl.setAttribute('aria-valuetext', labels[idx] + ' at ' + xPercent + '% horizontal, ' + yPercent + '% vertical');
-            }
-
-            function renderQuad() {
-                var style = getComputedStyle(document.documentElement);
-                var color = style.getPropertyValue('--accent').trim() || '#059669';
-
-                var pointsStr = pts.map(function (p) {
-                    return p.x + ',' + p.y;
-                }).join(' ');
-
-                var linesHtml = '';
-                for (var i = 0; i < 4; i++) {
-                    var next = (i + 1) % 4;
-                    linesHtml += '<line x1="' + pts[i].x + '" y1="' + pts[i].y +
-                        '" x2="' + pts[next].x + '" y2="' + pts[next].y +
-                        '" stroke="' + color + '" stroke-width="2" stroke-dasharray="5,4"/>';
+                    img.src = dataUrl;
                 }
 
-                quadSvg.innerHTML =
-                    '<polygon points="' + pointsStr + '" fill="' + color +
-                    '" fill-opacity="0.12" stroke="' + color + '" stroke-width="2"/>' +
-                    linesHtml;
-            }
-
-            // ============================================
-            // DRAG HANDLERS
-            // ============================================
-            function startDrag(e) {
-                e.preventDefault();
-                dragging = true;
-                dragIdx = parseInt(e.target.getAttribute('data-idx'), 10);
-                e.target.classList.add('active');
-
-                document.addEventListener('mousemove', onDrag);
-                document.addEventListener('mouseup', stopDrag);
-                document.addEventListener('touchmove', onDrag, { passive: false });
-                document.addEventListener('touchend', stopDrag);
-            }
-
-            function onDrag(e) {
-                if (!dragging || dragIdx < 0) return;
-                e.preventDefault();
-
-                var rect = srcCanvas.getBoundingClientRect();
-                var clientX, clientY;
-
-                if (e.touches && e.touches.length > 0) {
-                    clientX = e.touches[0].clientX;
-                    clientY = e.touches[0].clientY;
-                } else {
-                    clientX = e.clientX;
-                    clientY = e.clientY;
+                /**
+                 * Check if file is valid image
+                 * @param {File} file - File to check
+                 * @returns {boolean} Is valid image
+                 */
+                function isValidImageFile(file) {
+                    return file && file.type && file.type.indexOf('image') === 0;
                 }
 
-                var x = Math.max(0, Math.min(srcCanvas.width, clientX - rect.left));
-                var y = Math.max(0, Math.min(srcCanvas.height, clientY - rect.top));
-
-                pts[dragIdx] = { x: x, y: y };
-
-                var cornerEl = cornersDiv.children[dragIdx];
-                if (cornerEl) {
-                    cornerEl.style.left = x + 'px';
-                    cornerEl.style.top = y + 'px';
-                }
-
-                // Update ARIA values
-                updateCornerAria(dragIdx);
-
-                hideError();
-                renderQuad();
-
-                var now = Date.now();
-                if (!rafPending && (now - lastDragUpdateTime) >= DRAG_THROTTLE_MS) {
-                    rafPending = true;
-                    requestAnimationFrame(function () {
-                        rafPending = false;
-                        lastDragUpdateTime = Date.now();
-                        updatePreview();
-                    });
-                }
-            }
-
-            function stopDrag() {
-                if (dragIdx >= 0 && cornersDiv.children[dragIdx]) {
-                    cornersDiv.children[dragIdx].classList.remove('active');
-                }
-
-                dragging = false;
-                dragIdx = -1;
-
-                document.removeEventListener('mousemove', onDrag);
-                document.removeEventListener('mouseup', stopDrag);
-                document.removeEventListener('touchmove', onDrag);
-                document.removeEventListener('touchend', stopDrag);
-
-                updatePreview();
-            }
-
-            // ============================================
-            // KEYBOARD CORNER CONTROL
-            // ============================================
-            var CORNER_STEP = 2;
-            var CORNER_STEP_FAST = 10;
-
-            function handleCornerKeydown(e) {
-                var key = e.key;
-
-                if (key !== 'ArrowUp' && key !== 'ArrowDown' &&
-                    key !== 'ArrowLeft' && key !== 'ArrowRight') {
-                    return;
-                }
-
-                e.preventDefault();
-
-                var idx = parseInt(e.target.getAttribute('data-idx'), 10);
-                if (isNaN(idx) || idx < 0 || idx > 3) return;
-
-                var step = e.shiftKey ? CORNER_STEP_FAST : CORNER_STEP;
-                var pt = pts[idx];
-                var newX = pt.x;
-                var newY = pt.y;
-
-                switch (key) {
-                    case 'ArrowUp': newY -= step; break;
-                    case 'ArrowDown': newY += step; break;
-                    case 'ArrowLeft': newX -= step; break;
-                    case 'ArrowRight': newX += step; break;
-                }
-
-                newX = Math.max(0, Math.min(srcCanvas.width, newX));
-                newY = Math.max(0, Math.min(srcCanvas.height, newY));
-
-                pts[idx] = { x: newX, y: newY };
-
-                var cornerEl = cornersDiv.children[idx];
-                if (cornerEl) {
-                    cornerEl.style.left = newX + 'px';
-                    cornerEl.style.top = newY + 'px';
-                }
-
-                // Update ARIA values
-                updateCornerAria(idx);
-
-                hideError();
-                renderQuad();
-                updatePreview();
-            }
-
-            // ============================================
-            // DIMENSION CALCULATION
-            // ============================================
-            function calcDims() {
-                var srcPts = pts.map(function (p) {
-                    return { x: p.x / scale, y: p.y / scale };
+                return Object.freeze({
+                    onLoad: onLoad,
+                    loadFile: loadFile,
+                    isValidImageFile: isValidImageFile,
+                    getFileName: getFileName
                 });
-
-                if (!isQuadrilateralValid(srcPts)) {
-                    return { w: 0, h: 0, src: null, isValid: false };
-                }
-
-                var topW = dist(srcPts[0], srcPts[1]);
-                var bottomW = dist(srcPts[3], srcPts[2]);
-                var leftH = dist(srcPts[0], srcPts[3]);
-                var rightH = dist(srcPts[1], srcPts[2]);
-
-                var w = Math.round(Math.max(topW, bottomW));
-                var h = Math.round(Math.max(leftH, rightH));
-
-                return {
-                    w: Math.max(1, w),
-                    h: Math.max(1, h),
-                    src: srcPts,
-                    isValid: true
-                };
-            }
+            })();
 
             // ============================================
-            // IMAGE PROCESSING
+            // MODULE: Download Manager
             // ============================================
-            function process(srcCorners, destW, destH, isPreview, requestId) {
-                // Validate input first
-                if (!origData || destW < 1 || destH < 1 || !srcCorners) {
-                    return;
+            var DownloadManager = (function () {
+                var inProgress = false;
+                var lastDownloadTime = 0;
+
+                /**
+                 * Check if download is in progress
+                 * @returns {boolean} In progress state
+                 */
+                function isInProgress() {
+                    return inProgress;
                 }
 
-                // Queue if already processing preview
-                if (isPreview && processing) {
-                    pending = {
-                        srcCorners: srcCorners,
-                        dw: destW,
-                        dh: destH,
-                        rid: requestId
-                    };
-                    return;
-                }
-
-                // Validate output dimensions for full-res
-                if (!isPreview) {
-                    var validation = validateOutputDimensions(destW, destH);
-                    if (!validation.valid) {
-                        showError(validation.reason + ' Select a smaller region.');
-                        if (downloadInProgress) {
-                            resetDlBtn();
-                            dlReqId = null;
-                        }
-                        return;
-                    }
-                }
-
-                // Clear any existing timeout and set new one
-                clearWorkerTimeout();
-                currentWorkerRequestId = requestId;
-
-                workerTimeoutId = setTimeout(function () {
-                    if (currentWorkerRequestId === requestId) {
-                        console.warn('Worker timeout for request:', requestId);
-                        currentWorkerRequestId = null;
-                        terminateWorker();
-                        processing = false;
-                        pending = null;
-                        hideLoading();
-                        showError('Processing timed out. Try a smaller selection.');
-                        if (downloadInProgress && requestId === dlReqId) {
-                            resetDlBtn();
-                            dlReqId = null;
-                        }
-                    }
-                }, WORKER_TIMEOUT_MS);
-
-                processing = true;
-                if (isPreview) showLoading();
-
-                var w = getWorker();
-                if (!w) {
-                    clearWorkerTimeout();
-                    currentWorkerRequestId = null;
-                    processing = false;
-                    pending = null;
-                    hideLoading();
-                    return;
-                }
-
-                try {
-                    var clonedData = new ImageData(
-                        new Uint8ClampedArray(origData.data),
-                        origData.width,
-                        origData.height
-                    );
-
-                    w.postMessage({
-                        imageData: clonedData,
-                        srcCorners: srcCorners,
-                        destWidth: destW,
-                        destHeight: destH,
-                        preview: isPreview,
-                        requestId: requestId
-                    }, [clonedData.data.buffer]);
-
-                } catch (err) {
-                    console.error('Worker message error:', err);
-                    clearWorkerTimeout();
-                    currentWorkerRequestId = null;
-                    processing = false;
-                    pending = null;
-                    hideLoading();
-                    showError('Failed to process image.');
-                    if (downloadInProgress && requestId === dlReqId) {
-                        resetDlBtn();
-                        dlReqId = null;
-                    }
-                }
-            }
-
-            function onWorkerMsg(e) {
-                clearWorkerTimeout();
-                var data = e.data;
-
-                // Validate data
-                if (!data) {
-                    processing = false;
-                    pending = null;
-                    hideLoading();
-                    return;
-                }
-
-                // Check if this response is still relevant
-                if (data.requestId !== currentWorkerRequestId) {
-                    // Stale response, ignore but don't reset processing state
-                    // as there might be a newer request in flight
-                    return;
-                }
-
-                currentWorkerRequestId = null;
-
-                // Handle errors
-                if (data.error) {
-                    var msg = 'Processing failed. Adjust the corners.';
-
-                    switch (data.errorCode) {
-                        case 'INVALID_HOMOGRAPHY':
-                            msg = 'Invalid corner positions. Please adjust corners.';
-                            break;
-                        case 'INVALID_TRANSFORM':
-                            msg = 'Transform failed. Corners may be invalid.';
-                            break;
-                        case 'INVALID_COORDINATES':
-                            msg = 'Invalid coordinates detected. Adjust corners.';
-                            break;
+                /**
+                 * Start download process
+                 * @param {Object} canvasObj - Canvas object
+                 * @param {string} format - Output format ('png' or 'jpg')
+                 * @returns {Promise} Download promise
+                 */
+                function startDownload(canvasObj, format) {
+                    if (inProgress) {
+                        return Promise.reject(new Error('Download in progress'));
                     }
 
-                    processing = false;
-                    pending = null;
-                    hideLoading();
-
-                    if (downloadInProgress && data.requestId === dlReqId) {
-                        resetDlBtn();
-                        dlReqId = null;
-                        showError(msg);
+                    // Throttle downloads
+                    var now = Date.now();
+                    if (now - lastDownloadTime < Config.DOWNLOAD_THROTTLE_MS) {
+                        return Promise.reject(new Error('Please wait before downloading again'));
                     }
-                    return;
-                }
+                    lastDownloadTime = now;
 
-                // Process successful result
-                try {
-                    var imgData = new ImageData(
-                        new Uint8ClampedArray(data.data),
-                        data.w,
-                        data.h
-                    );
+                    inProgress = true;
+                    UI.setDownloadState('processing');
 
-                    if (data.preview) {
-                        prevCanvas.width = data.w;
-                        prevCanvas.height = data.h;
-                        prevCtx.putImageData(imgData, 0, 0);
-
-                        var dims = calcDims();
-                        if (prevDim && dims.isValid) {
-                            prevDim.textContent = dims.w + ' × ' + dims.h;
-                            // Announce preview update (debounced by the preview timer)
-                            announce('Preview updated: ' + dims.w + ' by ' + dims.h + ' pixels');
-                        } else if (prevDim) {
-                            prevDim.textContent = '—';
-                        }
-
-                        hideLoading();
-                        processing = false;
-
-                        if (pending) {
-                            var p = pending;
-                            pending = null;
-                            process(p.srcCorners, p.dw, p.dh, true, p.rid);
-                        }
-                    } else {
-                        if (data.requestId === dlReqId) {
-                            fullCanvas = document.createElement('canvas');
-                            fullCanvas.width = data.w;
-                            fullCanvas.height = data.h;
-                            var ctx = fullCanvas.getContext('2d');
-                            if (ctx) {
-                                ctx.putImageData(imgData, 0, 0);
-                            }
-                            processing = false;
-                            doDownload();
-                        } else {
-                            processing = false;
-                        }
-                    }
-                } catch (err) {
-                    console.error('Result processing error:', err);
-                    processing = false;
-                    pending = null;
-                    hideLoading();
-                    showError('Failed to render result.');
-                    if (downloadInProgress && data.requestId === dlReqId) {
-                        resetDlBtn();
-                        dlReqId = null;
-                    }
-                }
-            }
-
-            function updatePreview() {
-                clearTimeout(previewTimer);
-
-                previewTimer = setTimeout(function () {
-                    var dims = calcDims();
-
-                    if (!dims.isValid || !dims.src) {
-                        prevCtx.clearRect(0, 0, prevCanvas.width, prevCanvas.height);
-                        if (prevDim) prevDim.textContent = '—';
-                        showError('Invalid selection: corners form an invalid shape.');
-                        if (!downloadInProgress) {
-                            downloadBtn.disabled = true;
-                        }
-                        hideLoading();
-                        processing = false;
-                        pending = null;
-                        return;
-                    }
-
-                    hideError();
-                    if (!downloadInProgress) {
-                        downloadBtn.disabled = false;
-                    }
-
-                    var maxPreviewSize = 480;
-                    var previewScale = Math.min(maxPreviewSize / dims.w, maxPreviewSize / dims.h, 1);
-                    var previewW = Math.max(1, Math.round(dims.w * previewScale));
-                    var previewH = Math.max(1, Math.round(dims.h * previewScale));
-
-                    reqId++;
-                    process(dims.src, previewW, previewH, true, reqId);
-                }, 50);
-            }
-
-            // ============================================
-            // BUTTON HANDLERS
-            // ============================================
-            if (newBtn) {
-                newBtn.addEventListener('click', function () {
-                    fileInput.value = '';
-                    fileInput.click();
-                });
-            }
-
-            if (resetBtn) {
-                resetBtn.addEventListener('click', resetPts);
-            }
-
-            var lastDownloadTime = 0;
-            var DOWNLOAD_THROTTLE_MS = 1000;
-            
-            downloadBtn.addEventListener('click', function () {
-                if (!origImg || downloadBtn.disabled || downloadInProgress) return;
-
-                // Throttle rapid downloads
-                var now = Date.now();
-                if (now - lastDownloadTime < DOWNLOAD_THROTTLE_MS) {
-                    showError('Please wait before downloading again');
-                    return;
-                }
-                lastDownloadTime = now;
-
-                hideError();
-
-                var dims = calcDims();
-
-                if (!dims.isValid || !dims.src) {
-                    showError('Cannot download: invalid corner selection.');
-                    return;
-                }
-
-                var validation = validateOutputDimensions(dims.w, dims.h);
-                if (!validation.valid) {
-                    showError(validation.reason);
-                    return;
-                }
-
-                downloadInProgress = true;
-                downloadBtn.disabled = true;
-                
-                // Lock format selector during download
-                var formatSelect = document.getElementById('formatSelect');
-                if (formatSelect) {
-                    formatSelect.disabled = true;
-                }
-                
-                if (downloadIcon) downloadIcon.classList.add('spin');
-                if (downloadText) downloadText.textContent = 'Processing...';
-
-                announce('Processing image for download');
-
-                reqId++;
-                dlReqId = reqId;
-                process(dims.src, dims.w, dims.h, false, dlReqId);
-            });
-
-            function resetDlBtn() {
-                downloadInProgress = false;
-                downloadBtn.disabled = false;
-                
-                // Re-enable format selector
-                var formatSelect = document.getElementById('formatSelect');
-                if (formatSelect) {
-                    formatSelect.disabled = false;
-                }
-                
-                if (downloadIcon) downloadIcon.classList.remove('spin');
-                if (downloadText) downloadText.textContent = 'Download';
-            }
-
-            function doDownload() {
-                if (!fullCanvas) {
-                    resetDlBtn();
-                    dlReqId = null;
-                    return;
-                }
-
-                try {
-                    // Get selected format safely
-                    var formatSelect = document.getElementById('formatSelect');
-                    var format = 'png'; // Default to PNG
-                    
-                    if (formatSelect && formatSelect.value) {
-                        format = formatSelect.value;
-                    }
-                    
+                    format = format || 'png';
                     var extension = format === 'jpg' ? 'jpg' : 'png';
                     var mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
                     var filename = 'perspectivefix-corrected.' + extension;
-                    
-                    // Calculate adaptive quality for JPG based on image size
-                    var quality = 0.95;
+
+                    // Calculate quality for JPG
+                    var quality;
                     if (format === 'jpg') {
-                        var totalPixels = fullCanvas.width * fullCanvas.height;
+                        var totalPixels = canvasObj.width * canvasObj.height;
                         if (totalPixels > 10000000) {
-                            quality = 0.98; // Near lossless for large images
+                            quality = Config.jpgQuality.large;
                         } else if (totalPixels > 5000000) {
-                            quality = 0.95;
+                            quality = Config.jpgQuality.medium;
                         } else {
-                            quality = 0.92;
+                            quality = Config.jpgQuality.small;
                         }
                     }
-                    
-                    // Use toBlob if available (better for large images)
-                    if (fullCanvas.toBlob && typeof fullCanvas.toBlob === 'function') {
-                        fullCanvas.toBlob(function(blob) {
-                            if (!blob) {
-                                showError('Failed to create download file. Image may be too large.');
-                                resetDlBtn();
-                                dlReqId = null;
-                                fullCanvas = null;
-                                return;
-                            }
-                            
-                            try {
-                                var url = URL.createObjectURL(blob);
-                                var link = document.createElement('a');
-                                link.download = filename;
-                                link.href = url;
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
-                                
-                                // Clean up blob URL after brief delay
-                                setTimeout(function() {
-                                    try {
-                                        URL.revokeObjectURL(url);
-                                    } catch (e) {
-                                        console.warn('Blob URL cleanup failed:', e);
-                                    }
-                                }, 100);
-                                
-                                announce('Download started: ' + filename);
-                            } catch (err) {
-                                console.error('Blob download error:', err);
-                                showError('Download failed. Please try again.');
-                            }
-                            
-                            resetDlBtn();
-                            dlReqId = null;
-                            
-                            // Clean up canvas
-                            try {
-                                var ctx = fullCanvas.getContext('2d');
-                                if (ctx) {
-                                    ctx.clearRect(0, 0, fullCanvas.width, fullCanvas.height);
-                                }
-                            } catch (e) {
-                                console.warn('Canvas cleanup failed:', e);
-                            }
-                            fullCanvas = null;
-                        }, mimeType, format === 'jpg' ? quality : undefined);
-                    } else {
-                        // Fallback to toDataURL for older browsers
+
+                    return CanvasManager.toBlob(canvasObj, mimeType, quality)
+                        .then(function (blob) {
+                            return triggerDownload(blob, filename);
+                        })
+                        .then(function () {
+                            A11y.announce('Download started: ' + filename);
+                            finishDownload();
+                        })
+                        .catch(function (err) {
+                            console.error('Download error:', err);
+                            finishDownload();
+                            throw err;
+                        });
+                }
+
+                /**
+                 * Trigger browser download
+                 * @param {Blob} blob - Blob to download
+                 * @param {string} filename - Download filename
+                 * @returns {Promise} Download promise
+                 */
+                function triggerDownload(blob, filename) {
+                    return new Promise(function (resolve, reject) {
                         try {
+                            var url = URL.createObjectURL(blob);
                             var link = document.createElement('a');
                             link.download = filename;
-                            
-                            if (format === 'jpg') {
-                                link.href = fullCanvas.toDataURL(mimeType, quality);
-                            } else {
-                                link.href = fullCanvas.toDataURL(mimeType);
-                            }
-                            
+                            link.href = url;
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);
-                            
-                            announce('Download started: ' + filename);
-                        } catch (canvasError) {
-                            console.error('Canvas toDataURL error:', canvasError);
-                            showError('Failed to generate image. Image may be too large for this browser.');
+
+                            // Cleanup blob URL after delay
+                            setTimeout(function () {
+                                try {
+                                    URL.revokeObjectURL(url);
+                                } catch (e) {
+                                    console.warn('Blob URL cleanup failed:', e);
+                                }
+                            }, 100);
+
+                            resolve();
+                        } catch (err) {
+                            reject(err);
                         }
-                        
-                        resetDlBtn();
-                        dlReqId = null;
-                        
-                        // Clean up canvas
-                        try {
-                            var ctx = fullCanvas.getContext('2d');
-                            if (ctx) {
-                                ctx.clearRect(0, 0, fullCanvas.width, fullCanvas.height);
-                            }
-                        } catch (e) {
-                            console.warn('Canvas cleanup failed:', e);
-                        }
-                        fullCanvas = null;
-                    }
-                } catch (err) {
-                    console.error('Download error:', err);
-                    showError('Download failed. Please try again.');
-                    resetDlBtn();
-                    dlReqId = null;
-                    fullCanvas = null;
+                    });
                 }
-            }
+
+                /**
+                 * Finish download and reset state
+                 */
+                function finishDownload() {
+                    inProgress = false;
+                    UI.setDownloadState('ready');
+                }
+
+                /**
+                 * Reset download state
+                 */
+                function reset() {
+                    inProgress = false;
+                    UI.setDownloadState('ready');
+                }
+
+                return Object.freeze({
+                    isInProgress: isInProgress,
+                    startDownload: startDownload,
+                    reset: reset
+                });
+            })();
 
             // ============================================
-            // RESIZE HANDLER
+            // MODULE: Editor Controller
             // ============================================
-            window.addEventListener('resize', function () {
-                if (!origImg || !editor || !editor.classList.contains('active')) return;
+            var Editor = (function () {
+                var origImg = null;
+                var origData = null;
+                var scale = 1;
+                var pts = [];
+                var dragging = false;
+                var dragIdx = -1;
+                var rafPending = false;
+                var lastDragUpdateTime = 0;
+                var previewTimer = null;
 
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function () {
-                    var oldW = srcCanvas.width;
-                    var oldH = srcCanvas.height;
+                /**
+                 * Initialize editor
+                 */
+                function init() {
+                    QuadRenderer.init();
+                    ImageProcessor.init();
+                }
+
+                /**
+                 * Setup editor with loaded image
+                 * @param {Object} imageData - Loaded image data
+                 */
+                function setup(imageData) {
+                    origImg = imageData.image;
+                    origData = imageData.imageData;
+
+                    // Calculate display scale
+                    var container = DOM.get('origContainer');
+                    var containerWidth = container ? container.clientWidth - 32 : window.innerWidth - 64;
+                    var maxW = containerWidth;
+                    var maxH = window.innerHeight * 0.5;
+
+                    scale = Math.min(maxW / origImg.width, maxH / origImg.height, 1);
+
+                    var displayW = Math.round(origImg.width * scale);
+                    var displayH = Math.round(origImg.height * scale);
+
+                    // Draw source image
+                    CanvasManager.drawSource(origImg, displayW, displayH);
+                    QuadRenderer.setSize(displayW, displayH);
+
+                    // Update dimension display
+                    UI.updateDimensions(
+                        { w: origImg.width, h: origImg.height },
+                        null
+                    );
+
+                    // Initialize corners
+                    resetCorners();
+
+                    // Show editor
+                    UI.showEditor();
+                }
+
+                /**
+                 * Reset corners to default positions
+                 */
+                function resetCorners() {
+                    var dims = CanvasManager.getSourceDimensions();
+                    pts = Geometry.getDefaultCorners(dims.width, dims.height);
+
+                    UI.hideError();
+                    renderAll();
+                    updatePreview();
+
+                    A11y.announce('Corner positions reset');
+                }
+
+                /**
+                 * Render corners and quad overlay
+                 */
+                function renderAll() {
+                    var dims = CanvasManager.getSourceDimensions();
+
+                    QuadRenderer.renderCorners(pts, dims.width, dims.height, {
+                        onDragStart: startDrag,
+                        onKeydown: handleCornerKeydown
+                    });
+                    QuadRenderer.renderQuad(pts);
+                }
+
+                /**
+                 * Start dragging a corner
+                 * @param {Event} e - Mouse/touch event
+                 */
+                function startDrag(e) {
+                    e.preventDefault();
+                    dragging = true;
+                    dragIdx = parseInt(e.target.getAttribute('data-idx'), 10);
+                    QuadRenderer.setCornerActive(dragIdx, true);
+
+                    document.addEventListener('mousemove', onDrag);
+                    document.addEventListener('mouseup', stopDrag);
+                    document.addEventListener('touchmove', onDrag, { passive: false });
+                    document.addEventListener('touchend', stopDrag);
+                }
+
+                /**
+                 * Handle drag movement
+                 * @param {Event} e - Mouse/touch event
+                 */
+                function onDrag(e) {
+                    if (!dragging || dragIdx < 0) return;
+                    e.preventDefault();
+
+                    var canvas = CanvasManager.srcCanvas;
+                    var rect = canvas.getBoundingClientRect();
+                    var clientX, clientY;
+
+                    if (e.touches && e.touches.length > 0) {
+                        clientX = e.touches[0].clientX;
+                        clientY = e.touches[0].clientY;
+                    } else {
+                        clientX = e.clientX;
+                        clientY = e.clientY;
+                    }
+
+                    var x = Utils.clamp(clientX - rect.left, 0, canvas.width);
+                    var y = Utils.clamp(clientY - rect.top, 0, canvas.height);
+
+                    pts[dragIdx] = { x: x, y: y };
+
+                    QuadRenderer.updateCornerPosition(dragIdx, x, y, canvas.width, canvas.height);
+                    QuadRenderer.renderQuad(pts);
+
+                    UI.hideError();
+
+                    // Throttled preview update
+                    var now = Date.now();
+                    if (!rafPending && (now - lastDragUpdateTime) >= Config.DRAG_THROTTLE_MS) {
+                        rafPending = true;
+                        requestAnimationFrame(function () {
+                            rafPending = false;
+                            lastDragUpdateTime = Date.now();
+                            updatePreview();
+                        });
+                    }
+                }
+
+                /**
+                 * Stop dragging
+                 */
+                function stopDrag() {
+                    if (dragIdx >= 0) {
+                        QuadRenderer.setCornerActive(dragIdx, false);
+                    }
+
+                    dragging = false;
+                    dragIdx = -1;
+
+                    document.removeEventListener('mousemove', onDrag);
+                    document.removeEventListener('mouseup', stopDrag);
+                    document.removeEventListener('touchmove', onDrag);
+                    document.removeEventListener('touchend', stopDrag);
+
+                    updatePreview();
+                }
+
+                /**
+                 * Handle corner keyboard navigation
+                 * @param {KeyboardEvent} e - Keyboard event
+                 */
+                function handleCornerKeydown(e) {
+                    var key = e.key;
+
+                    if (key !== 'ArrowUp' && key !== 'ArrowDown' &&
+                        key !== 'ArrowLeft' && key !== 'ArrowRight') {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    var idx = parseInt(e.target.getAttribute('data-idx'), 10);
+                    if (isNaN(idx) || idx < 0 || idx > 3) return;
+
+                    var step = e.shiftKey ? Config.CORNER_STEP_FAST : Config.CORNER_STEP;
+                    var canvas = CanvasManager.srcCanvas;
+                    var pt = pts[idx];
+                    var newX = pt.x;
+                    var newY = pt.y;
+
+                    switch (key) {
+                        case 'ArrowUp': newY -= step; break;
+                        case 'ArrowDown': newY += step; break;
+                        case 'ArrowLeft': newX -= step; break;
+                        case 'ArrowRight': newX += step; break;
+                    }
+
+                    newX = Utils.clamp(newX, 0, canvas.width);
+                    newY = Utils.clamp(newY, 0, canvas.height);
+
+                    pts[idx] = { x: newX, y: newY };
+
+                    QuadRenderer.updateCornerPosition(idx, newX, newY, canvas.width, canvas.height);
+                    QuadRenderer.renderQuad(pts);
+
+                    UI.hideError();
+                    updatePreview();
+                }
+
+                /**
+                 * Update preview (debounced)
+                 */
+                function updatePreview() {
+                    if (previewTimer !== null) {
+                        clearTimeout(previewTimer);
+                    }
+
+                    previewTimer = setTimeout(function () {
+                        previewTimer = null;
+
+                        var dims = Geometry.calculateDimensions(pts, scale);
+
+                        if (!dims.isValid || !dims.src) {
+                            CanvasManager.clearPreview();
+                            UI.updateDimensions(null, null);
+                            UI.showError('Invalid selection: corners form an invalid shape.');
+                            UI.setDownloadState('disabled');
+                            UI.hideLoading();
+                            return;
+                        }
+
+                        UI.hideError();
+                        if (!DownloadManager.isInProgress()) {
+                            UI.setDownloadState('ready');
+                        }
+
+                        // Calculate preview size
+                        var previewScale = Math.min(
+                            Config.MAX_PREVIEW_SIZE / dims.w,
+                            Config.MAX_PREVIEW_SIZE / dims.h,
+                            1
+                        );
+                        var previewW = Math.max(1, Math.round(dims.w * previewScale));
+                        var previewH = Math.max(1, Math.round(dims.h * previewScale));
+
+                        ImageProcessor.process({
+                            srcCorners: dims.src,
+                            destWidth: previewW,
+                            destHeight: previewH,
+                            isPreview: true,
+                            imageData: origData,
+                            onComplete: function (imgData) {
+                                CanvasManager.drawPreview(imgData);
+                                UI.updateDimensions(null, { w: dims.w, h: dims.h });
+                            },
+                            onError: function (msg) {
+                                UI.showError(msg);
+                            }
+                        });
+                    }, Config.PREVIEW_DEBOUNCE_MS);
+                }
+
+                /**
+                 * Download current selection at full resolution
+                 */
+                function download() {
+                    if (!origImg || DownloadManager.isInProgress()) return;
+
+                    UI.hideError();
+
+                    var dims = Geometry.calculateDimensions(pts, scale);
+
+                    if (!dims.isValid || !dims.src) {
+                        UI.showError('Cannot download: invalid corner selection.');
+                        return;
+                    }
+
+                    var validation = Geometry.validateOutputDimensions(dims.w, dims.h);
+                    if (!validation.valid) {
+                        UI.showError(validation.reason);
+                        return;
+                    }
+
+                    UI.setDownloadState('processing');
+                    A11y.announce('Processing image for download');
+
+                    ImageProcessor.process({
+                        srcCorners: dims.src,
+                        destWidth: dims.w,
+                        destHeight: dims.h,
+                        isPreview: false,
+                        imageData: origData,
+                        onComplete: function (canvasObj) {
+                            var formatSelect = DOM.get('formatSelect');
+                            var format = formatSelect ? formatSelect.value : 'png';
+
+                            DownloadManager.startDownload(canvasObj, format)
+                                .then(function () {
+                                    ImageProcessor.clearFullResCanvas();
+                                })
+                                .catch(function (err) {
+                                    UI.showError('Download failed: ' + (err.message || err));
+                                });
+                        },
+                        onError: function (msg) {
+                            UI.showError(msg);
+                            DownloadManager.reset();
+                        }
+                    });
+                }
+
+                /**
+                 * Handle window resize
+                 */
+                function handleResize() {
+                    if (!origImg) return;
+
+                    var oldW = CanvasManager.srcCanvas.width;
+                    var oldH = CanvasManager.srcCanvas.height;
                     if (oldW === 0 || oldH === 0) return;
 
-                    var container = document.getElementById('origContainer');
+                    var container = DOM.get('origContainer');
                     var containerWidth = container ? container.clientWidth - 32 : window.innerWidth - 64;
                     var maxH = window.innerHeight * 0.5;
 
@@ -2834,113 +4028,469 @@
                     var scaleX = newW / oldW;
                     var scaleY = newH / oldH;
 
-                    pts = pts.map(function (p) {
-                        return {
-                            x: Math.max(0, Math.min(newW, p.x * scaleX)),
-                            y: Math.max(0, Math.min(newH, p.y * scaleY))
-                        };
-                    });
-
+                    pts = Geometry.scalePoints(pts, scaleX, scaleY, newW, newH);
                     scale = newScale;
 
-                    srcCanvas.width = newW;
-                    srcCanvas.height = newH;
-                    srcCtx.drawImage(origImg, 0, 0, newW, newH);
-
-                    quadSvg.setAttribute('width', newW);
-                    quadSvg.setAttribute('height', newH);
-                    quadSvg.style.width = newW + 'px';
-                    quadSvg.style.height = newH + 'px';
-
-                    renderCorners();
-                    renderQuad();
+                    CanvasManager.drawSource(origImg, newW, newH);
+                    QuadRenderer.setSize(newW, newH);
+                    renderAll();
                     updatePreview();
-                }, 200);
-            });
-
-            // ============================================
-            // KEYBOARD SHORTCUTS
-            // ============================================
-            document.addEventListener('keydown', function (e) {
-                var key = e.key;
-                if (!key) return;
-
-                var activeEl = document.activeElement;
-                var isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
-
-                if (key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
-                    e.preventDefault();
-                    toggleTheme();
-                    return;
                 }
 
-                if (!editor || !editor.classList.contains('active')) return;
+                /**
+                 * Check if editor is active
+                 * @returns {boolean} Active state
+                 */
+                function isActive() {
+                    return DOM.hasClass('editor', 'active');
+                }
 
-                if ((e.ctrlKey || e.metaKey) && key.toLowerCase() === 's') {
-                    e.preventDefault();
-                    if (!downloadBtn.disabled && !downloadInProgress) {
-                        downloadBtn.click();
+                /**
+                 * Cancel current drag operation
+                 */
+                function cancelDrag() {
+                    if (dragging) {
+                        stopDrag();
                     }
-                    return;
                 }
 
-                if (key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
-                    e.preventDefault();
-                    resetPts();
-                    return;
+                /**
+                 * Reset editor state completely
+                 */
+                function reset() {
+                    origImg = null;
+                    origData = null;
+                    scale = 1;
+                    pts = [];
+                    dragging = false;
+                    dragIdx = -1;
+                    rafPending = false;
+
+                    if (previewTimer !== null) {
+                        clearTimeout(previewTimer);
+                        previewTimer = null;
+                    }
+
+                    ImageProcessor.reset();
+                    DownloadManager.reset();
                 }
 
-                if (key === 'Escape' && dragging) {
-                    stopDrag();
+                return Object.freeze({
+                    init: init,
+                    setup: setup,
+                    resetCorners: resetCorners,
+                    download: download,
+                    handleResize: handleResize,
+                    isActive: isActive,
+                    cancelDrag: cancelDrag,
+                    reset: reset
+                });
+            })();
+
+            // ============================================
+            // MODULE: Event Bindings
+            // ============================================
+            var EventBindings = (function () {
+                /**
+                 * Initialize all event bindings
+                 */
+                function init() {
+                    bindTheme();
+                    bindFileUpload();
+                    bindButtons();
+                    bindKeyboard();
+                    bindResize();
+                    bindGlobalErrors();
+                    bindContextMenu();
+                    bindUnload();
+                }
+
+                /**
+                 * Bind theme toggle button
+                 */
+                function bindTheme() {
+                    var themeBtn = DOM.get('themeBtn');
+                    if (themeBtn) {
+                        DOM.on(themeBtn, 'click', function () {
+                            Theme.toggle();
+                        });
+                    }
+                }
+
+                /**
+                 * Bind file upload events
+                 */
+                function bindFileUpload() {
+                    var uploadZone = DOM.get('uploadZone');
+                    var fileInput = DOM.get('fileInput');
+                    var errorMsg = DOM.get('errorMsg');
+
+                    if (uploadZone && fileInput) {
+                        // Click to upload
+                        DOM.on(uploadZone, 'click', function (e) {
+                            if (e.target !== errorMsg) {
+                                fileInput.click();
+                            }
+                        });
+
+                        // Keyboard activation
+                        DOM.on(uploadZone, 'keydown', function (e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                fileInput.click();
+                            }
+                        });
+
+                        // Drag over
+                        DOM.on(uploadZone, 'dragover', function (e) {
+                            e.preventDefault();
+                            uploadZone.classList.add('drag-over');
+                        });
+
+                        // Drag leave
+                        DOM.on(uploadZone, 'dragleave', function (e) {
+                            e.preventDefault();
+                            uploadZone.classList.remove('drag-over');
+                        });
+
+                        // Drop
+                        DOM.on(uploadZone, 'drop', function (e) {
+                            e.preventDefault();
+                            uploadZone.classList.remove('drag-over');
+                            UI.hideError();
+
+                            var files = e.dataTransfer && e.dataTransfer.files;
+                            if (files && files[0]) {
+                                if (FileHandler.isValidImageFile(files[0])) {
+                                    FileHandler.loadFile(files[0]);
+                                } else {
+                                    UI.showError('Please upload an image file (JPG, PNG, WebP)');
+                                }
+                            }
+                        });
+
+                        // File input change
+                        DOM.on(fileInput, 'change', function () {
+                            UI.hideError();
+                            if (fileInput.files && fileInput.files[0]) {
+                                FileHandler.loadFile(fileInput.files[0]);
+                            }
+                        });
+                    }
+
+                    // Paste handler
+                    DOM.on(document, 'paste', function (e) {
+                        var items = e.clipboardData && e.clipboardData.items;
+                        if (!items) return;
+
+                        for (var i = 0; i < items.length; i++) {
+                            if (items[i].type.indexOf('image') === 0) {
+                                e.preventDefault();
+                                UI.hideError();
+                                var file = items[i].getAsFile();
+                                if (file) {
+                                    FileHandler.loadFile(file);
+                                }
+                                break;
+                            }
+                        }
+                    });
+                }
+
+                /**
+                 * Bind button events
+                 */
+                function bindButtons() {
+                    var newBtn = DOM.get('newBtn');
+                    var resetBtn = DOM.get('resetBtn');
+                    var downloadBtn = DOM.get('downloadBtn');
+                    var fileInput = DOM.get('fileInput');
+
+                    if (newBtn && fileInput) {
+                        DOM.on(newBtn, 'click', function () {
+                            fileInput.value = '';
+                            fileInput.click();
+                        });
+                    }
+
+                    if (resetBtn) {
+                        DOM.on(resetBtn, 'click', function () {
+                            Editor.resetCorners();
+                        });
+                    }
+
+                    if (downloadBtn) {
+                        DOM.on(downloadBtn, 'click', function () {
+                            Editor.download();
+                        });
+                    }
+                }
+
+                /**
+                 * Bind keyboard shortcuts
+                 */
+                function bindKeyboard() {
+                    DOM.on(document, 'keydown', function (e) {
+                        var key = e.key;
+                        if (!key) return;
+
+                        var activeEl = document.activeElement;
+                        var tagName = activeEl ? activeEl.tagName : '';
+                        var isInput = tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT';
+
+                        // Theme toggle: T (when not in input)
+                        if (key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
+                            e.preventDefault();
+                            Theme.toggle();
+                            return;
+                        }
+
+                        // Editor-specific shortcuts
+                        if (!Editor.isActive()) return;
+
+                        // Save/Download: Ctrl+S / Cmd+S
+                        if ((e.ctrlKey || e.metaKey) && key.toLowerCase() === 's') {
+                            e.preventDefault();
+                            Editor.download();
+                            return;
+                        }
+
+                        // Reset corners: R (when not in input)
+                        if (key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
+                            e.preventDefault();
+                            Editor.resetCorners();
+                            return;
+                        }
+
+                        // Cancel drag: Escape
+                        if (key === 'Escape') {
+                            Editor.cancelDrag();
+                        }
+                    });
+                }
+
+                /**
+                 * Bind resize handler (debounced)
+                 */
+                function bindResize() {
+                    var debouncedResize = Utils.debounce(function () {
+                        if (Editor.isActive()) {
+                            Editor.handleResize();
+                        }
+                    }, Config.RESIZE_DEBOUNCE_MS);
+
+                    DOM.on(window, 'resize', debouncedResize);
+                }
+
+                /**
+                 * Bind global error handlers
+                 */
+                function bindGlobalErrors() {
+                    DOM.on(window, 'error', function (e) {
+                        console.error('Global error:', e.message, e.filename, e.lineno);
+                        UI.showError('An error occurred. Please refresh the page.');
+                        UI.hideLoading();
+                        DownloadManager.reset();
+                    });
+
+                    DOM.on(window, 'unhandledrejection', function (e) {
+                        console.error('Unhandled rejection:', e.reason);
+                        UI.showError('An error occurred. Please refresh the page.');
+                        UI.hideLoading();
+                        DownloadManager.reset();
+                    });
+                }
+
+                /**
+                 * Bind context menu prevention on corners
+                 */
+                function bindContextMenu() {
+                    var corners = DOM.get('corners');
+                    if (corners) {
+                        DOM.on(corners, 'contextmenu', function (e) {
+                            e.preventDefault();
+                        });
+                    }
+                }
+
+                /**
+                 * Bind unload cleanup
+                 */
+                function bindUnload() {
+                    DOM.on(window, 'beforeunload', function () {
+                        WorkerManager.terminate();
+                        A11y.destroy();
+                        DOM.removeAllListeners();
+                    });
+                }
+
+                return Object.freeze({
+                    init: init
+                });
+            })();
+
+            // ============================================
+            // MODULE: Application Controller
+            // ============================================
+            var App = (function () {
+                var initialized = false;
+
+                /**
+                 * Initialize application
+                 */
+                function init() {
+                    if (initialized) {
+                        console.warn('App already initialized');
+                        return;
+                    }
+
+                    // Initialize DOM manager first
+                    var domResult = DOM.init();
+                    if (!domResult.success) {
+                        UI.showInitError(
+                            'Failed to initialize. Missing elements: ' +
+                            domResult.missing.join(', ') + '. Please refresh the page.'
+                        );
+                        return;
+                    }
+
+                    // Initialize canvas manager
+                    var canvasResult = CanvasManager.init();
+                    if (!canvasResult.success) {
+                        UI.showInitError(canvasResult.error + '. Please use a modern browser.');
+                        return;
+                    }
+
+                    // Initialize other modules
+                    A11y.init();
+                    Theme.init();
+                    Editor.init();
+
+                    // Set up file handler callback
+                    FileHandler.onLoad(function (imageData) {
+                        // Reset previous state
+                        Editor.reset();
+                        ImageProcessor.reset();
+                        DownloadManager.reset();
+
+                        // Setup editor with new image
+                        Editor.setup(imageData);
+                    });
+
+                    // Bind all event handlers
+                    EventBindings.init();
+
+                    // Mark as initialized
+                    initialized = true;
+
+                    // Log initialization info
+                    if (typeof console !== 'undefined' && console.log) {
+                        console.log('%cPerspectiveFix Pro v2.0.0', 'color: #059669; font-weight: bold; font-size: 14px;');
+                        console.log('OffscreenCanvas:', Config.supportsOffscreenCanvas ? '✓' : '✗');
+                        console.log('ImageBitmap:', Config.supportsImageBitmap ? '✓' : '✗');
+                    }
+
+                    // Add ready class after brief delay for smooth transitions
+                    setTimeout(function () {
+                        document.body.classList.add('ready');
+                    }, 100);
+                }
+
+                /**
+                 * Check if app is initialized
+                 * @returns {boolean} Initialized state
+                 */
+                function isInitialized() {
+                    return initialized;
+                }
+
+                /**
+                 * Get current configuration (readonly copy)
+                 * @returns {Object} Configuration object
+                 */
+                function getConfig() {
+                    return Utils.deepClone(Config);
+                }
+
+                /**
+                 * Get public API for debugging/testing
+                 * @returns {Object} API object
+                 */
+                function getAPI() {
+                    return {
+                        Config: Config,
+                        Utils: Utils,
+                        DOM: DOM,
+                        A11y: A11y,
+                        Theme: Theme,
+                        CanvasManager: CanvasManager,
+                        WorkerManager: WorkerManager,
+                        Geometry: Geometry,
+                        UI: UI,
+                        QuadRenderer: QuadRenderer,
+                        ImageProcessor: ImageProcessor,
+                        FileHandler: FileHandler,
+                        DownloadManager: DownloadManager,
+                        Editor: Editor
+                    };
+                }
+
+                /**
+                 * Get version info
+                 * @returns {Object} Version information
+                 */
+                function getVersion() {
+                    return {
+                        version: '2.0.0',
+                        name: 'PerspectiveFix Pro',
+                        author: 'OathanRex'
+                    };
+                }
+
+                return Object.freeze({
+                    init: init,
+                    isInitialized: isInitialized,
+                    getConfig: getConfig,
+                    getAPI: getAPI,
+                    getVersion: getVersion
+                });
+            })();
+
+            // ============================================
+            // INITIALIZATION
+            // ============================================
+
+            /**
+             * Safe initialization wrapper
+             */
+            function safeInit() {
+                try {
+                    App.init();
+                } catch (e) {
+                    console.error('Application initialization failed:', e);
+                    UI.showInitError('Failed to start application. Error: ' + e.message);
+                }
+            }
+
+            // Wait for DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', safeInit);
+            } else {
+                // DOM already loaded, initialize immediately
+                safeInit();
+            }
+
+            // Fallback: Also check on window load
+            window.addEventListener('load', function () {
+                if (!App.isInitialized()) {
+                    safeInit();
                 }
             });
 
-            // ============================================
-            // GLOBAL ERROR HANDLERS
-            // ============================================
-            window.addEventListener('error', function (e) {
-                console.error('Global error:', e.message, e.filename, e.lineno);
-                showError('An error occurred. Please refresh the page.');
-                hideLoading();
-                processing = false;
-                pending = null;
-                clearWorkerTimeout();
-                if (downloadInProgress) {
-                    resetDlBtn();
-                    dlReqId = null;
-                }
-            });
-
-            window.addEventListener('unhandledrejection', function (e) {
-                console.error('Unhandled rejection:', e.reason);
-                showError('An error occurred. Please refresh the page.');
-                hideLoading();
-                processing = false;
-                pending = null;
-                clearWorkerTimeout();
-                if (downloadInProgress) {
-                    resetDlBtn();
-                    dlReqId = null;
-                }
-            });
-
-            // ============================================
-            // CONTEXT MENU
-            // ============================================
-            cornersDiv.addEventListener('contextmenu', function (e) {
-                e.preventDefault();
-            });
-
-            // ============================================
-            // CLEANUP ON UNLOAD
-            // ============================================
-            window.addEventListener('beforeunload', function () {
-                terminateWorker();
-                // Clean up live region
-                if (liveRegion && liveRegion.parentNode) {
-                    liveRegion.parentNode.removeChild(liveRegion);
-                }
-            });
+            // Expose app globally for debugging (remove in production if desired)
+            if (typeof window !== 'undefined') {
+                window.PerspectiveFixApp = App;
+            }
 
         })();
     </script>
