@@ -2430,10 +2430,15 @@
                         worker.onerror = function (e) {
                             console.error('Worker error:', e);
                             clearTimeoutSafe();
+                            var requestId = currentRequestId;
                             currentRequestId = null;
 
                             if (messageHandler) {
-                                messageHandler({ error: true, errorCode: 'WORKER_ERROR' });
+                                messageHandler({
+                                    error: true,
+                                    errorCode: 'WORKER_ERROR',
+                                    requestId: requestId
+                                });
                             }
 
                             terminate();
@@ -2488,6 +2493,13 @@
                         console.error('Worker postMessage error:', e);
                         clearTimeoutSafe();
                         currentRequestId = null;
+                        if (messageHandler) {
+                            messageHandler({
+                                error: true,
+                                errorCode: 'WORKER_POSTMESSAGE',
+                                requestId: data.requestId
+                            });
+                        }
                         return false;
                     }
                 }
@@ -2766,7 +2778,12 @@
                             boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
                         }
                     });
-                    errorDiv.innerHTML = '<h3 style="margin-bottom:10px">Application Error</h3><p>' + message + '</p>';
+                    var title = DOM.create('h3', {
+                        style: { marginBottom: '10px' }
+                    }, 'Application Error');
+                    var text = DOM.create('p', null, message);
+                    errorDiv.appendChild(title);
+                    errorDiv.appendChild(text);
                     document.body.appendChild(errorDiv);
                 }
 
@@ -2918,7 +2935,8 @@
                     'INVALID_COORDINATES': 'Invalid coordinates detected. Adjust corners.',
                     'TIMEOUT': 'Processing timed out. Try a smaller selection.',
                     'WORKER_ERROR': 'Processing failed. Please try again.',
-                    'WORKER_UNAVAILABLE': 'Failed to initialize processor.'
+                    'WORKER_UNAVAILABLE': 'Failed to initialize processor.',
+                    'WORKER_POSTMESSAGE': 'Failed to start processing. Please try again.'
                 };
 
                 function init() {
@@ -2990,7 +3008,7 @@
                             downloadRequestId = requestId;
                         }
 
-                        WorkerManager.postMessage({
+                        var posted = WorkerManager.postMessage({
                             imageData: clonedData,
                             srcCorners: srcCorners,
                             destWidth: destWidth,
@@ -2998,6 +3016,13 @@
                             preview: isPreview,
                             requestId: requestId
                         }, [clonedData.data.buffer]);
+
+                        if (!posted) {
+                            processing = false;
+                            UI.hideLoading();
+                            if (onError) onError(getErrorMessage('WORKER_POSTMESSAGE'));
+                            return null;
+                        }
 
                         return requestId;
 
@@ -3195,7 +3220,14 @@
                 }
 
                 function isValidImageFile(file) {
-                    return file && file.type && file.type.indexOf('image') === 0;
+                    if (!file) return false;
+                    if (file.type && file.type.indexOf('image') === 0) return true;
+                    if (file.name) {
+                        var ext = Utils.getFileExtension(file.name);
+                        return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif', 'heic', 'heif', 'avif']
+                            .indexOf(ext) !== -1;
+                    }
+                    return false;
                 }
 
                 return Object.freeze({
