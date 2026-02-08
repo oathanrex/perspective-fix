@@ -2466,7 +2466,11 @@
                     var w = create();
                     if (!w) {
                         if (messageHandler) {
-                            messageHandler({ error: true, errorCode: 'WORKER_UNAVAILABLE' });
+                            messageHandler({
+                                error: true,
+                                errorCode: 'WORKER_UNAVAILABLE',
+                                requestId: data && data.requestId ? data.requestId : null
+                            });
                         }
                         return false;
                     }
@@ -2988,9 +2992,6 @@
                         }
                     }
 
-                    processing = true;
-                    if (isPreview) UI.showLoading();
-
                     try {
                         var clonedData = new ImageData(
                             new Uint8ClampedArray(imageData.data),
@@ -3008,6 +3009,9 @@
                             downloadRequestId = requestId;
                         }
 
+                        processing = true;
+                        if (isPreview) UI.showLoading();
+
                         var posted = WorkerManager.postMessage({
                             imageData: clonedData,
                             srcCorners: srcCorners,
@@ -3020,6 +3024,10 @@
                         if (!posted) {
                             processing = false;
                             UI.hideLoading();
+                            delete requestHandlers[requestId];
+                            if (requestId === downloadRequestId) {
+                                downloadRequestId = null;
+                            }
                             if (onError) onError(getErrorMessage('WORKER_POSTMESSAGE'));
                             return null;
                         }
@@ -3039,6 +3047,27 @@
                     if (!data) {
                         processing = false;
                         pending = null;
+                        UI.hideLoading();
+                        return;
+                    }
+
+                    if (!data.requestId) {
+                        console.warn('Worker message missing requestId');
+                        processing = false;
+                        pending = null;
+                        if (data.error) {
+                            var fallbackMessage = getErrorMessage(data.errorCode);
+                            for (var key in requestHandlers) {
+                                if (Object.prototype.hasOwnProperty.call(requestHandlers, key)) {
+                                    var handler = requestHandlers[key];
+                                    if (handler && handler.onError) {
+                                        handler.onError(fallbackMessage);
+                                    }
+                                }
+                            }
+                        }
+                        requestHandlers = {};
+                        downloadRequestId = null;
                         UI.hideLoading();
                         return;
                     }
