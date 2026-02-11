@@ -814,8 +814,8 @@
             align-items: center;
             justify-content: center;
             min-height: 280px;
-            max-height: 55vh;
-            overflow: auto;
+            height: clamp(280px, 55vh, 600px);
+            overflow: hidden;
             background: var(--bg-tertiary);
         }
 
@@ -827,7 +827,8 @@
 
         .canvas-wrap canvas {
             max-width: 100%;
-            max-height: 50vh;
+            max-height: 100%;
+            object-fit: contain;
             display: block;
             border-radius: 4px;
         }
@@ -854,7 +855,8 @@
             display: block;
             border-radius: 4px;
             max-width: 100%;
-            max-height: 50vh;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         /* ========================================
