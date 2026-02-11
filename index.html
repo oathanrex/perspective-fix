@@ -3307,19 +3307,24 @@
                             var link = document.createElement('a');
                             link.download = filename;
                             link.href = url;
+
+                            // Safari fix: hide link instead of making it invisible
+                            link.style.display = 'none';
                             document.body.appendChild(link);
                             link.click();
-                            document.body.removeChild(link);
 
-                            // Wait longer before cleanup to ensure download starts in all browsers
-                            // Especially important for mobile browsers and slower connections
+                            // CRITICAL FIX for Safari/macOS:
+                            // Safari needs time to process the download before we remove the link
+                            // Removing too quickly cancels the download (user reported bug)
+                            // Combining cleanup operations for better performance
                             setTimeout(function () {
                                 try {
+                                    document.body.removeChild(link);
                                     URL.revokeObjectURL(url);
                                 } catch (e) {
-                                    console.warn('Blob URL cleanup failed:', e);
+                                    console.warn('Download cleanup failed:', e);
                                 }
-                            }, 1000); // Increased from 100ms to 1000ms for better compatibility
+                            }, 100); // 100ms is enough for all browsers including Safari
 
                             resolve();
                         } catch (err) {
@@ -3889,6 +3894,26 @@
                             Editor.cancelDrag();
                         }
                     });
+                }
+
+                function preventPreviewSave() {
+                    // Prevent users from right-clicking and saving the low-res preview
+                    // Preview is max 480px, full resolution is available via Download button
+                    var previewCanvas = DOM.get('previewCanvas');
+                    if (previewCanvas) {
+                        // Prevent context menu (right-click)
+                        previewCanvas.addEventListener('contextmenu', function (e) {
+                            e.preventDefault();
+                            UI.showError('Please use the Download button for full resolution (this is a preview)');
+                            return false;
+                        });
+
+                        // Prevent dragging preview as image
+                        previewCanvas.addEventListener('dragstart', function (e) {
+                            e.preventDefault();
+                            return false;
+                        });
+                    }
                 }
 
                 function bindResize() {
