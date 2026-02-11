@@ -2221,8 +2221,29 @@
                 }
 
                 function drawPreview(imageData) {
+                    // Get the preview container dimensions
+                    var container = prevCanvas.parentElement;
+                    var containerWidth = container ? container.clientWidth : 400;
+                    var containerHeight = container ? container.clientHeight : 400;
+                    
+                    // Calculate scale to fit preview in container while maintaining aspect ratio
+                    var scale = Math.min(
+                        containerWidth / imageData.width,
+                        containerHeight / imageData.height,
+                        1 // Don't scale up, only down if needed
+                    );
+                    
+                    var displayWidth = Math.round(imageData.width * scale);
+                    var displayHeight = Math.round(imageData.height * scale);
+                    
+                    // Set canvas internal resolution to match imageData
                     prevCanvas.width = imageData.width;
                     prevCanvas.height = imageData.height;
+                    
+                    // Set canvas display size via CSS to fit container
+                    prevCanvas.style.width = displayWidth + 'px';
+                    prevCanvas.style.height = displayHeight + 'px';
+                    
                     prevCtx.putImageData(imageData, 0, 0);
                 }
 
