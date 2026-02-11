@@ -1686,12 +1686,17 @@
                     RESIZE_DEBOUNCE_MS: 200,
                     DOWNLOAD_THROTTLE_MS: 1000,
 
+
                     // UI
                     CORNER_STEP: 2,
                     CORNER_STEP_FAST: 10,
                     MAX_PREVIEW_SIZE: 480,
                     CORNER_MARGIN_RATIO: 0.1,
                     MIN_CANVAS_SIZE: 50, // Minimum canvas dimension
+                    CONTAINER_PADDING: 32, // Padding for container calculations
+                    MAX_HEIGHT_VIEWPORT_RATIO: 0.5, // Max height as fraction of viewport
+                    MAX_ASPECT_RATIO: 10, // Maximum allowed aspect ratio (width:height or height:width)
+                    MAX_FILE_SIZE_MB: 50, // Maximum file size for paste operations in MB
 
                     // Feature flags
                     supportsOffscreenCanvas: _supportsOffscreenCanvas,
@@ -2346,10 +2351,20 @@
                         if (canvasObj.ctx) {
                             canvasObj.ctx.clearRect(0, 0, canvasObj.width, canvasObj.height);
                         }
-                        if (!canvasObj.isOffscreen && canvasObj.canvas) {
-                            canvasObj.canvas.width = 0;
-                            canvasObj.canvas.height = 0;
+
+                        // Properly cleanup both regular and OffscreenCanvas
+                        if (canvasObj.canvas) {
+                            if (canvasObj.isOffscreen) {
+                                // OffscreenCanvas cleanup: set dimensions to 0 to release memory
+                                canvasObj.canvas.width = 0;
+                                canvasObj.canvas.height = 0;
+                            } else {
+                                // Regular canvas cleanup
+                                canvasObj.canvas.width = 0;
+                                canvasObj.canvas.height = 0;
+                            }
                         }
+
                         canvasObj.canvas = null;
                         canvasObj.ctx = null;
                     } catch (e) {
@@ -2430,15 +2445,10 @@
                         worker.onerror = function (e) {
                             console.error('Worker error:', e);
                             clearTimeoutSafe();
-                            var requestId = currentRequestId;
                             currentRequestId = null;
 
                             if (messageHandler) {
-                                messageHandler({
-                                    error: true,
-                                    errorCode: 'WORKER_ERROR',
-                                    requestId: requestId
-                                });
+                                messageHandler({ error: true, errorCode: 'WORKER_ERROR' });
                             }
 
                             terminate();
@@ -2466,11 +2476,7 @@
                     var w = create();
                     if (!w) {
                         if (messageHandler) {
-                            messageHandler({
-                                error: true,
-                                errorCode: 'WORKER_UNAVAILABLE',
-                                requestId: data && data.requestId ? data.requestId : null
-                            });
+                            messageHandler({ error: true, errorCode: 'WORKER_UNAVAILABLE' });
                         }
                         return false;
                     }
@@ -2497,13 +2503,6 @@
                         console.error('Worker postMessage error:', e);
                         clearTimeoutSafe();
                         currentRequestId = null;
-                        if (messageHandler) {
-                            messageHandler({
-                                error: true,
-                                errorCode: 'WORKER_POSTMESSAGE',
-                                requestId: data.requestId
-                            });
-                        }
                         return false;
                     }
                 }
@@ -2517,8 +2516,9 @@
                             worker.terminate();
                         } catch (e) {
                             console.warn('Worker termination error:', e);
+                        } finally {
+                            worker = null;
                         }
-                        worker = null;
                     }
 
                     if (workerUrl) {
@@ -2526,8 +2526,9 @@
                             URL.revokeObjectURL(workerUrl);
                         } catch (e) {
                             console.warn('URL revocation error:', e);
+                        } finally {
+                            workerUrl = null;
                         }
-                        workerUrl = null;
                     }
                 }
 
@@ -2620,6 +2621,21 @@
 
                     var w = Math.round(Math.max(topW, bottomW));
                     var h = Math.round(Math.max(leftH, rightH));
+
+                    // Validate aspect ratio to prevent extreme dimensions
+                    var MAX_ASPECT_RATIO = 10;
+                    if (w > 0 && h > 0) {
+                        var aspectRatio = Math.max(w, h) / Math.min(w, h);
+                        if (aspectRatio > MAX_ASPECT_RATIO) {
+                            return {
+                                w: 0,
+                                h: 0,
+                                src: null,
+                                isValid: false,
+                                reason: 'Aspect ratio too extreme (max ' + MAX_ASPECT_RATIO + ':1)'
+                            };
+                        }
+                    }
 
                     return {
                         w: Math.max(1, w),
@@ -2782,12 +2798,7 @@
                             boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
                         }
                     });
-                    var title = DOM.create('h3', {
-                        style: { marginBottom: '10px' }
-                    }, 'Application Error');
-                    var text = DOM.create('p', null, message);
-                    errorDiv.appendChild(title);
-                    errorDiv.appendChild(text);
+                    errorDiv.innerHTML = '<h3 style="margin-bottom:10px">Application Error</h3><p>' + message + '</p>';
                     document.body.appendChild(errorDiv);
                 }
 
@@ -2939,8 +2950,7 @@
                     'INVALID_COORDINATES': 'Invalid coordinates detected. Adjust corners.',
                     'TIMEOUT': 'Processing timed out. Try a smaller selection.',
                     'WORKER_ERROR': 'Processing failed. Please try again.',
-                    'WORKER_UNAVAILABLE': 'Failed to initialize processor.',
-                    'WORKER_POSTMESSAGE': 'Failed to start processing. Please try again.'
+                    'WORKER_UNAVAILABLE': 'Failed to initialize processor.'
                 };
 
                 function init() {
@@ -2992,7 +3002,15 @@
                         }
                     }
 
+                    processing = true;
+                    if (isPreview) UI.showLoading();
+
                     try {
+                        // Validate ImageData integrity before cloning
+                        if (!imageData.data || imageData.data.length !== imageData.width * imageData.height * 4) {
+                            throw new Error('Invalid or corrupted image data');
+                        }
+
                         var clonedData = new ImageData(
                             new Uint8ClampedArray(imageData.data),
                             imageData.width,
@@ -3009,10 +3027,7 @@
                             downloadRequestId = requestId;
                         }
 
-                        processing = true;
-                        if (isPreview) UI.showLoading();
-
-                        var posted = WorkerManager.postMessage({
+                        WorkerManager.postMessage({
                             imageData: clonedData,
                             srcCorners: srcCorners,
                             destWidth: destWidth,
@@ -3020,17 +3035,6 @@
                             preview: isPreview,
                             requestId: requestId
                         }, [clonedData.data.buffer]);
-
-                        if (!posted) {
-                            processing = false;
-                            UI.hideLoading();
-                            delete requestHandlers[requestId];
-                            if (requestId === downloadRequestId) {
-                                downloadRequestId = null;
-                            }
-                            if (onError) onError(getErrorMessage('WORKER_POSTMESSAGE'));
-                            return null;
-                        }
 
                         return requestId;
 
@@ -3047,27 +3051,6 @@
                     if (!data) {
                         processing = false;
                         pending = null;
-                        UI.hideLoading();
-                        return;
-                    }
-
-                    if (!data.requestId) {
-                        console.warn('Worker message missing requestId');
-                        processing = false;
-                        pending = null;
-                        if (data.error) {
-                            var fallbackMessage = getErrorMessage(data.errorCode);
-                            for (var key in requestHandlers) {
-                                if (Object.prototype.hasOwnProperty.call(requestHandlers, key)) {
-                                    var handler = requestHandlers[key];
-                                    if (handler && handler.onError) {
-                                        handler.onError(fallbackMessage);
-                                    }
-                                }
-                            }
-                        }
-                        requestHandlers = {};
-                        downloadRequestId = null;
                         UI.hideLoading();
                         return;
                     }
@@ -3249,14 +3232,7 @@
                 }
 
                 function isValidImageFile(file) {
-                    if (!file) return false;
-                    if (file.type && file.type.indexOf('image') === 0) return true;
-                    if (file.name) {
-                        var ext = Utils.getFileExtension(file.name);
-                        return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff', 'tif', 'heic', 'heif', 'avif']
-                            .indexOf(ext) !== -1;
-                    }
-                    return false;
+                    return file && file.type && file.type.indexOf('image') === 0;
                 }
 
                 return Object.freeze({
@@ -3335,13 +3311,15 @@
                             link.click();
                             document.body.removeChild(link);
 
+                            // Wait longer before cleanup to ensure download starts in all browsers
+                            // Especially important for mobile browsers and slower connections
                             setTimeout(function () {
                                 try {
                                     URL.revokeObjectURL(url);
                                 } catch (e) {
                                     console.warn('Blob URL cleanup failed:', e);
                                 }
-                            }, 100);
+                            }, 1000); // Increased from 100ms to 1000ms for better compatibility
 
                             resolve();
                         } catch (err) {
@@ -3547,9 +3525,10 @@
                     dragging = false;
                     dragIdx = -1;
 
+                    // CRITICAL: Must match options used in addEventListener
                     document.removeEventListener('mousemove', onDrag);
                     document.removeEventListener('mouseup', stopDrag);
-                    document.removeEventListener('touchmove', onDrag);
+                    document.removeEventListener('touchmove', onDrag, { passive: false }); // Fixed: added { passive: false }
                     document.removeEventListener('touchend', stopDrag);
 
                     updatePreview();
@@ -3835,6 +3814,14 @@
                                 UI.hideError();
                                 var file = items[i].getAsFile();
                                 if (file) {
+                                    // Validate file size before loading (max 50MB)
+                                    var MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+                                    if (file.size > MAX_FILE_SIZE) {
+                                        UI.showError('Pasted image too large (' +
+                                            (file.size / 1024 / 1024).toFixed(1) +
+                                            'MB). Maximum is 50MB.');
+                                        return;
+                                    }
                                     FileHandler.loadFile(file);
                                 }
                                 break;
