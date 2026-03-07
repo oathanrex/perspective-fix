@@ -888,8 +888,13 @@
 
         @media (max-width: 768px) {
             .corner {
-                width: 44px;
-                height: 44px;
+                width: 48px;
+                height: 48px;
+            }
+
+            .corner-label {
+                font-size: 8px;
+                bottom: -16px;
             }
         }
 
@@ -1311,6 +1316,83 @@
         .hidden {
             display: none !important;
         }
+
+        /* ========================================
+           ZOOM LENS MAGNIFIER
+           ======================================== */
+        .zoom-lens {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+            background: var(--bg-secondary);
+        }
+
+        .zoom-lens canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        /* ========================================
+           CORNER CROSSHAIR & LABELS
+           ======================================== */
+        .corner::before,
+        .corner::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            pointer-events: none;
+        }
+
+        .corner::before {
+            width: 1px;
+            height: 60%;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .corner::after {
+            width: 60%;
+            height: 1px;
+            left: 20%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .corner-label {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--bg-secondary);
+            padding: 1px 4px;
+            border-radius: 3px;
+            pointer-events: none;
+            white-space: nowrap;
+            line-height: 1.2;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            user-select: none;
+        }
+
+        /* ========================================
+           ROTATE ICON
+           ======================================== */
+        .icon-rotate {
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0020 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0020 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z'/%3E%3C/svg%3E");
+        }
     </style>
 </head>
 
@@ -1373,6 +1455,11 @@
                         aria-label="Reset corner positions">
                         <span class="icon icon-reset"></span>
                         <span class="btn-text">Reset</span>
+                    </button>
+                    <button id="rotateBtn" class="btn btn-sec" type="button" title="Rotate 90° (Q)"
+                        aria-label="Rotate image 90 degrees">
+                        <span class="icon icon-rotate"></span>
+                        <span class="btn-text">Rotate</span>
                     </button>
                 </div>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -1821,9 +1908,9 @@
                     'themeBtn', 'uploadZone', 'fileInput', 'errorMsg',
                     'heroSection', 'editor', 'srcCanvas', 'prevCanvas',
                     'quadSvg', 'corners', 'origDim', 'prevDim',
-                    'loadingOverlay', 'newBtn', 'resetBtn', 'downloadBtn',
+                    'loadingOverlay', 'newBtn', 'resetBtn', 'rotateBtn', 'downloadBtn',
                     'downloadIcon', 'downloadText', 'formatSelect', 'origContainer',
-                    'canvasWrap', 'previewWrap'
+                    'canvasWrap', 'previewWrap', 'zoomLens'
                 ];
 
                 var criticalIds = [
@@ -2873,6 +2960,7 @@
                     cornersDiv.innerHTML = '';
                     cornerElements = [];
 
+                    var shortLabels = ['TL', 'TR', 'BR', 'BL'];
                     for (var i = 0; i < 4; i++) {
                         var el = DOM.create('div', {
                             className: 'corner',
@@ -2883,6 +2971,9 @@
                             'aria-valuemax': '100',
                             tabIndex: 0
                         });
+
+                        var label = DOM.create('span', { className: 'corner-label' }, shortLabels[i]);
+                        el.appendChild(label);
 
                         el.style.left = points[i].x + 'px';
                         el.style.top = points[i].y + 'px';
@@ -2932,6 +3023,90 @@
                     updateCornerPosition: updateCornerPosition,
                     setCornerActive: setCornerActive,
                     getCornerElement: getCornerElement
+                });
+            })();
+
+            // ============================================
+            // MODULE: Zoom Lens
+            // ============================================
+            var ZoomLens = (function () {
+                var LENS_SIZE = 120;
+                var ZOOM_FACTOR = 3;
+                var lensEl = null;
+                var lensCanvas = null;
+                var lensCtx = null;
+
+                function init() {
+                    lensEl = DOM.get('zoomLens');
+                    if (!lensEl) return;
+
+                    lensCanvas = document.createElement('canvas');
+                    lensCanvas.width = LENS_SIZE;
+                    lensCanvas.height = LENS_SIZE;
+                    lensCtx = lensCanvas.getContext('2d');
+                    lensEl.appendChild(lensCanvas);
+                }
+
+                function show(srcCanvas, cornerX, cornerY, mouseClientX, mouseClientY) {
+                    if (!lensEl || !lensCtx || !srcCanvas) return;
+
+                    var radius = LENS_SIZE / 2;
+                    var sampleSize = LENS_SIZE / ZOOM_FACTOR;
+
+                    lensCtx.clearRect(0, 0, LENS_SIZE, LENS_SIZE);
+                    lensCtx.save();
+                    lensCtx.beginPath();
+                    lensCtx.arc(radius, radius, radius, 0, Math.PI * 2);
+                    lensCtx.clip();
+
+                    var sx = cornerX - sampleSize / 2;
+                    var sy = cornerY - sampleSize / 2;
+                    lensCtx.drawImage(
+                        srcCanvas,
+                        sx, sy, sampleSize, sampleSize,
+                        0, 0, LENS_SIZE, LENS_SIZE
+                    );
+
+                    // Draw crosshair in lens center
+                    lensCtx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                    lensCtx.lineWidth = 1;
+                    lensCtx.beginPath();
+                    lensCtx.moveTo(radius, 0);
+                    lensCtx.lineTo(radius, LENS_SIZE);
+                    lensCtx.moveTo(0, radius);
+                    lensCtx.lineTo(LENS_SIZE, radius);
+                    lensCtx.stroke();
+
+                    lensCtx.restore();
+
+                    // Position near cursor with smart viewport clamping
+                    var offsetX = 20;
+                    var offsetY = -LENS_SIZE - 20;
+                    var lensX = mouseClientX + offsetX;
+                    var lensY = mouseClientY + offsetY;
+
+                    var vw = window.innerWidth;
+                    var vh = window.innerHeight;
+                    if (lensX + LENS_SIZE > vw) lensX = mouseClientX - LENS_SIZE - offsetX;
+                    if (lensY < 0) lensY = mouseClientY + 20;
+                    if (lensY + LENS_SIZE > vh) lensY = vh - LENS_SIZE - 10;
+                    if (lensX < 0) lensX = 10;
+
+                    lensEl.style.left = lensX + 'px';
+                    lensEl.style.top = lensY + 'px';
+                    lensEl.style.display = 'block';
+                }
+
+                function hide() {
+                    if (lensEl) {
+                        lensEl.style.display = 'none';
+                    }
+                }
+
+                return Object.freeze({
+                    init: init,
+                    show: show,
+                    hide: hide
                 });
             })();
 
@@ -3369,6 +3544,7 @@
                 function init() {
                     QuadRenderer.init();
                     ImageProcessor.init();
+                    ZoomLens.init();
                 }
 
                 /**
@@ -3511,14 +3687,16 @@
                     QuadRenderer.updateCornerPosition(dragIdx, x, y, canvas.width, canvas.height);
                     QuadRenderer.renderQuad(pts);
 
+                    // Show zoom lens magnifier near cursor
+                    ZoomLens.show(canvas, x, y, clientX, clientY);
+
                     UI.hideError();
 
-                    var now = Date.now();
-                    if (!rafPending && (now - lastDragUpdateTime) >= Config.DRAG_THROTTLE_MS) {
+                    // Live preview: use requestAnimationFrame without throttle delay
+                    if (!rafPending) {
                         rafPending = true;
                         requestAnimationFrame(function () {
                             rafPending = false;
-                            lastDragUpdateTime = Date.now();
                             updatePreview();
                         });
                     }
@@ -3532,10 +3710,13 @@
                     dragging = false;
                     dragIdx = -1;
 
+                    // Hide zoom lens
+                    ZoomLens.hide();
+
                     // CRITICAL: Must match options used in addEventListener
                     document.removeEventListener('mousemove', onDrag);
                     document.removeEventListener('mouseup', stopDrag);
-                    document.removeEventListener('touchmove', onDrag, { passive: false }); // Fixed: added { passive: false }
+                    document.removeEventListener('touchmove', onDrag, { passive: false });
                     document.removeEventListener('touchend', stopDrag);
 
                     updatePreview();
@@ -3582,50 +3763,59 @@
                 function updatePreview() {
                     if (previewTimer !== null) {
                         clearTimeout(previewTimer);
+                        previewTimer = null;
                     }
 
-                    previewTimer = setTimeout(function () {
-                        previewTimer = null;
+                    // During active drag, update immediately for true live preview
+                    if (dragging) {
+                        doPreviewUpdate();
+                    } else {
+                        previewTimer = setTimeout(function () {
+                            previewTimer = null;
+                            doPreviewUpdate();
+                        }, Config.PREVIEW_DEBOUNCE_MS);
+                    }
+                }
 
-                        var dims = Geometry.calculateDimensions(pts, scale);
+                function doPreviewUpdate() {
+                    var dims = Geometry.calculateDimensions(pts, scale);
 
-                        if (!dims.isValid || !dims.src) {
-                            CanvasManager.clearPreview();
-                            UI.updateDimensions(null, null);
-                            UI.showError('Invalid selection: corners form an invalid shape.');
-                            UI.setDownloadState('disabled');
-                            UI.hideLoading();
-                            return;
+                    if (!dims.isValid || !dims.src) {
+                        CanvasManager.clearPreview();
+                        UI.updateDimensions(null, null);
+                        UI.showError('Invalid selection: corners form an invalid shape.');
+                        UI.setDownloadState('disabled');
+                        UI.hideLoading();
+                        return;
+                    }
+
+                    UI.hideError();
+                    if (!DownloadManager.isInProgress()) {
+                        UI.setDownloadState('ready');
+                    }
+
+                    var previewScale = Math.min(
+                        Config.MAX_PREVIEW_SIZE / dims.w,
+                        Config.MAX_PREVIEW_SIZE / dims.h,
+                        1
+                    );
+                    var previewW = Math.max(1, Math.round(dims.w * previewScale));
+                    var previewH = Math.max(1, Math.round(dims.h * previewScale));
+
+                    ImageProcessor.process({
+                        srcCorners: dims.src,
+                        destWidth: previewW,
+                        destHeight: previewH,
+                        isPreview: true,
+                        imageData: origData,
+                        onComplete: function (imgData) {
+                            CanvasManager.drawPreview(imgData);
+                            UI.updateDimensions(null, { w: dims.w, h: dims.h });
+                        },
+                        onError: function (msg) {
+                            UI.showError(msg);
                         }
-
-                        UI.hideError();
-                        if (!DownloadManager.isInProgress()) {
-                            UI.setDownloadState('ready');
-                        }
-
-                        var previewScale = Math.min(
-                            Config.MAX_PREVIEW_SIZE / dims.w,
-                            Config.MAX_PREVIEW_SIZE / dims.h,
-                            1
-                        );
-                        var previewW = Math.max(1, Math.round(dims.w * previewScale));
-                        var previewH = Math.max(1, Math.round(dims.h * previewScale));
-
-                        ImageProcessor.process({
-                            srcCorners: dims.src,
-                            destWidth: previewW,
-                            destHeight: previewH,
-                            isPreview: true,
-                            imageData: origData,
-                            onComplete: function (imgData) {
-                                CanvasManager.drawPreview(imgData);
-                                UI.updateDimensions(null, { w: dims.w, h: dims.h });
-                            },
-                            onError: function (msg) {
-                                UI.showError(msg);
-                            }
-                        });
-                    }, Config.PREVIEW_DEBOUNCE_MS);
+                    });
                 }
 
                 function download() {
@@ -3719,8 +3909,95 @@
                         previewTimer = null;
                     }
 
+                    ZoomLens.hide();
                     ImageProcessor.reset();
                     DownloadManager.reset();
+                }
+
+                function rotateImage() {
+                    if (!origImg) return;
+
+                    var oldW = origImg.width;
+                    var oldH = origImg.height;
+
+                    // Create temporary canvas for 90° clockwise rotation
+                    var tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = oldH;
+                    tempCanvas.height = oldW;
+                    var tempCtx = tempCanvas.getContext('2d');
+
+                    tempCtx.translate(oldH, 0);
+                    tempCtx.rotate(Math.PI / 2);
+                    tempCtx.drawImage(origImg, 0, 0);
+
+                    var rotatedImg = new Image();
+                    rotatedImg.onload = function () {
+                        // Convert corners from display space to original image space
+                        var oldDisplayDims = CanvasManager.getSourceDimensions();
+                        var oldScaleX = oldW / oldDisplayDims.width;
+                        var oldScaleY = oldH / oldDisplayDims.height;
+
+                        var origPts = [];
+                        for (var i = 0; i < pts.length; i++) {
+                            origPts.push({
+                                x: pts[i].x * oldScaleX,
+                                y: pts[i].y * oldScaleY
+                            });
+                        }
+
+                        // Apply 90° CW rotation: (x, y) -> (oldH - y, x)
+                        var rotatedPts = [];
+                        for (var i = 0; i < origPts.length; i++) {
+                            rotatedPts.push({
+                                x: oldH - origPts[i].y,
+                                y: origPts[i].x
+                            });
+                        }
+
+                        // Reorder corners: BL->TL, TL->TR, TR->BR, BR->BL
+                        var reorderedPts = [rotatedPts[3], rotatedPts[0], rotatedPts[1], rotatedPts[2]];
+
+                        // Update image references
+                        origImg = rotatedImg;
+                        origData = CanvasManager.getImageData(rotatedImg);
+
+                        // Recalculate display size
+                        var displaySize = calculateDisplaySize(origImg);
+                        scale = displaySize.scale;
+
+                        // Draw rotated source
+                        CanvasManager.drawSource(origImg, displaySize.width, displaySize.height);
+                        QuadRenderer.setSize(displaySize.width, displaySize.height);
+
+                        // Convert rotated corners back to display space
+                        var newW = rotatedImg.width;
+                        var newH = rotatedImg.height;
+                        var newScaleX = displaySize.width / newW;
+                        var newScaleY = displaySize.height / newH;
+
+                        pts = [];
+                        for (var i = 0; i < reorderedPts.length; i++) {
+                            pts.push({
+                                x: Utils.clamp(reorderedPts[i].x * newScaleX, 0, displaySize.width),
+                                y: Utils.clamp(reorderedPts[i].y * newScaleY, 0, displaySize.height)
+                            });
+                        }
+
+                        // Update dimension display
+                        UI.updateDimensions({ w: newW, h: newH }, null);
+
+                        // Re-render
+                        renderAll();
+                        updatePreview();
+
+                        A11y.announce('Image rotated 90 degrees clockwise');
+                    };
+
+                    rotatedImg.src = tempCanvas.toDataURL();
+
+                    // Clean up temp canvas
+                    tempCanvas.width = 0;
+                    tempCanvas.height = 0;
                 }
 
                 return Object.freeze({
@@ -3731,7 +4008,8 @@
                     handleResize: handleResize,
                     isActive: isActive,
                     cancelDrag: cancelDrag,
-                    reset: reset
+                    reset: reset,
+                    rotateImage: rotateImage
                 });
             })();
 
@@ -3840,6 +4118,7 @@
                 function bindButtons() {
                     var newBtn = DOM.get('newBtn');
                     var resetBtn = DOM.get('resetBtn');
+                    var rotateBtn = DOM.get('rotateBtn');
                     var downloadBtn = DOM.get('downloadBtn');
                     var fileInput = DOM.get('fileInput');
 
@@ -3853,6 +4132,12 @@
                     if (resetBtn) {
                         DOM.on(resetBtn, 'click', function () {
                             Editor.resetCorners();
+                        });
+                    }
+
+                    if (rotateBtn) {
+                        DOM.on(rotateBtn, 'click', function () {
+                            Editor.rotateImage();
                         });
                     }
 
@@ -3889,6 +4174,12 @@
                         if (key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
                             e.preventDefault();
                             Editor.resetCorners();
+                            return;
+                        }
+
+                        if (key.toLowerCase() === 'q' && !e.ctrlKey && !e.metaKey && !e.altKey && !isInput) {
+                            e.preventDefault();
+                            Editor.rotateImage();
                             return;
                         }
 
@@ -4105,6 +4396,7 @@
 
         })();
     </script>
+    <div id="zoomLens" class="zoom-lens" aria-hidden="true"></div>
 </body>
 
 </html>
