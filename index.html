@@ -10,7 +10,7 @@
   <!-- ✅ META: Descriptive but redirect-honest, so Google doesn't penalise -->
   <title>PerspectiveFix Has a New Home – perspectivefix.app</title>
   <meta name="description" content="PerspectiveFix has moved to perspectivefix.app — now with more features, blog guides, and the same free, private, browser-based perspective correction tool.">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="follow">
 
   <!-- ✅ OG / Social (keeps share previews clean) -->
   <meta property="og:type" content="website">
@@ -23,11 +23,8 @@
   <meta name="twitter:title" content="PerspectiveFix – Now at perspectivefix.app">
   <meta name="twitter:description" content="The free perspective correction tool has a new home. Same tool, more features.">
   <meta name="twitter:image" content="https://perspectivefix.app/og-image.webp">
+  <meta http-equiv="refresh" content="0; url=https://perspectivefix.app/">
 
-  <!-- ✅ HTTP-EQUIV REDIRECT: Crawlers follow this, humans get 5s to read -->
-  <meta http-equiv="refresh" content="6; url=https://perspectivefix.app/">
-
-  <!-- ✅ STRUCTURED DATA: Helps Google understand the move -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -275,7 +272,7 @@
       background: linear-gradient(90deg, var(--green), var(--green-lit));
       border-radius: 99px;
       width: 100%;
-      animation: drain 6s linear forwards;
+      animation: drain 0.4s linear forwards;
     }
     @keyframes drain {
       from { width: 100%; }
@@ -357,9 +354,9 @@
       ☕ &nbsp;Like the tool? Support the project
     </a>
 
-    <div class="timer-wrap" aria-live="polite" aria-label="Auto-redirect countdown">
-      <p class="timer-label">Redirecting automatically in <span id="count">6</span>s</p>
-      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="6">
+    <div class="timer-wrap" aria-live="polite" aria-label="Redirecting now">
+      <p class="timer-label">Redirecting to <span>perspectivefix.app</span>…</p>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="1">
         <div class="progress-bar"></div>
       </div>
     </div>
@@ -371,19 +368,8 @@
     <a href="https://perspectivefix.app/" rel="noopener">perspectivefix.app</a>
   </p>
 
-  <!-- ✅ JS REDIRECT: Faster than meta refresh, works if meta is stripped -->
   <script>
-    // Countdown display
-    let t = 6;
-    const el = document.getElementById('count');
-    const tick = setInterval(() => {
-      t--;
-      if (el) el.textContent = t;
-      if (t <= 0) {
-        clearInterval(tick);
-        window.location.replace('https://perspectivefix.app/');
-      }
-    }, 1000);
+    window.location.replace('https://perspectivefix.app/');
   </script>
 
 </body>
