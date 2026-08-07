@@ -4,15 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ✅ PRIMARY SEO: Tell Google this page's canonical home is the new domain -->
   <link rel="canonical" href="https://perspectivefix.app/">
 
-  <!-- ✅ META: Descriptive but redirect-honest, so Google doesn't penalise -->
   <title>PerspectiveFix Has a New Home – perspectivefix.app</title>
   <meta name="description" content="PerspectiveFix has moved to perspectivefix.app — now with more features, blog guides, and the same free, private, browser-based perspective correction tool.">
-  <meta name="robots" content="follow">
+  <meta name="robots" content="index, follow">
 
-  <!-- ✅ OG / Social (keeps share previews clean) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://perspectivefix.app/">
   <meta property="og:title" content="PerspectiveFix – Straighten Skewed Photos & Documents Online">
@@ -23,40 +20,32 @@
   <meta name="twitter:title" content="PerspectiveFix – Now at perspectivefix.app">
   <meta name="twitter:description" content="The free perspective correction tool has a new home. Same tool, more features.">
   <meta name="twitter:image" content="https://perspectivefix.app/og-image.webp">
-  <meta http-equiv="refresh" content="0; url=https://perspectivefix.app/">
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "PerspectiveFix",
-    "url": "https://perspectivefix.app/",
-    "description": "Free browser-based perspective correction tool. Straighten skewed document scans and tilted photos instantly.",
-    "sameAs": [
-      "https://github.com/oathanrex",
-      "https://youtube.com/@oathanrex"
-    ]
-  }
-  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="3; url=https://perspectivefix.app/">
+  </noscript>
 
   <style>
-    /* ── DESIGN TOKENS ─────────────────────────────────────────── */
     :root {
-      --bg:        #0a0f0d;
-      --surface:   #111a16;
-      --border:    #1e2e26;
-      --green:     #047857;
+      --bg: #0a0f0d;
+      --surface: #111a16;
+      --border: #1e2e26;
+      --green: #047857;
       --green-lit: #10b981;
       --green-dim: #064e35;
-      --text:      #e2ede8;
-      --muted:     #7a9e8e;
-      --white:     #ffffff;
-      --radius:    14px;
+      --text: #e2ede8;
+      --muted: #7a9e8e;
+      --white: #ffffff;
+      --radius: 14px;
       --font-head: 'Georgia', 'Times New Roman', serif;
       --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--bg);
@@ -71,7 +60,6 @@
       overflow-x: hidden;
     }
 
-    /* ── AMBIENT GLOW ───────────────────────────────────────────── */
     body::before {
       content: '';
       position: fixed;
@@ -83,7 +71,6 @@
       z-index: 0;
     }
 
-    /* ── CARD ───────────────────────────────────────────────────── */
     .card {
       position: relative;
       z-index: 1;
@@ -96,7 +83,6 @@
       box-shadow: 0 0 0 1px rgba(16,185,129,0.06), 0 24px 60px rgba(0,0,0,0.5);
     }
 
-    /* ── BADGE ──────────────────────────────────────────────────── */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -112,32 +98,43 @@
       border: 1px solid rgba(16,185,129,0.25);
       margin-bottom: 1.5rem;
     }
+
     .badge-dot {
-      width: 6px; height: 6px;
+      width: 6px;
+      height: 6px;
       background: var(--green-lit);
       border-radius: 50%;
       animation: pulse 2s ease-in-out infinite;
     }
+
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.4; transform: scale(0.7); }
+      50% { opacity: 0.4; transform: scale(0.7); }
     }
 
-    /* ── LOGO AREA ──────────────────────────────────────────────── */
     .logo-row {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 0.5rem;
     }
+
     .logo-icon {
-      width: 36px; height: 36px;
+      width: 36px;
+      height: 36px;
       background: var(--green);
       border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
     }
-    .logo-icon svg { width: 20px; height: 20px; }
+
+    .logo-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
     .logo-wordmark {
       font-family: var(--font-head);
       font-size: 1.15rem;
@@ -146,7 +143,6 @@
       letter-spacing: -0.01em;
     }
 
-    /* ── HEADLINE ───────────────────────────────────────────────── */
     h1 {
       font-family: var(--font-head);
       font-size: clamp(1.6rem, 5vw, 2rem);
@@ -156,11 +152,11 @@
       margin-bottom: 0.85rem;
       letter-spacing: -0.02em;
     }
+
     h1 span {
       color: var(--green-lit);
     }
 
-    /* ── BODY TEXT ──────────────────────────────────────────────── */
     .desc {
       font-size: 0.95rem;
       color: var(--muted);
@@ -168,7 +164,6 @@
       margin-bottom: 1.75rem;
     }
 
-    /* ── FEATURE LIST ───────────────────────────────────────────── */
     .features {
       list-style: none;
       display: flex;
@@ -176,6 +171,7 @@
       gap: 8px;
       margin-bottom: 2rem;
     }
+
     .features li {
       display: flex;
       align-items: center;
@@ -183,9 +179,11 @@
       font-size: 0.88rem;
       color: var(--text);
     }
+
     .features li::before {
       content: '';
-      width: 16px; height: 16px;
+      width: 16px;
+      height: 16px;
       background: var(--green-dim);
       border: 1px solid rgba(16,185,129,0.3);
       border-radius: 4px;
@@ -194,14 +192,12 @@
       background-size: contain;
     }
 
-    /* ── DIVIDER ────────────────────────────────────────────────── */
     hr {
       border: none;
       border-top: 1px solid var(--border);
       margin-bottom: 1.5rem;
     }
 
-    /* ── PRIMARY CTA ────────────────────────────────────────────── */
     .btn-primary {
       display: flex;
       align-items: center;
@@ -219,13 +215,24 @@
       transition: background 0.2s, transform 0.15s;
       margin-bottom: 0.85rem;
     }
+
     .btn-primary:hover {
       background: var(--green-lit);
       transform: translateY(-1px);
     }
-    .btn-primary svg { width: 17px; height: 17px; flex-shrink: 0; }
 
-    /* ── SECONDARY CTA ──────────────────────────────────────────── */
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--green-lit);
+      outline-offset: 2px;
+    }
+
+    .btn-primary svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+
     .btn-secondary {
       display: flex;
       align-items: center;
@@ -242,44 +249,48 @@
       text-decoration: none;
       transition: border-color 0.2s, color 0.2s;
     }
+
     .btn-secondary:hover {
       border-color: rgba(16,185,129,0.4);
       color: var(--green-lit);
     }
 
-    /* ── TIMER BAR ──────────────────────────────────────────────── */
     .timer-wrap {
       margin-top: 1.75rem;
       text-align: center;
     }
+
     .timer-label {
       font-size: 0.78rem;
       color: var(--muted);
       margin-bottom: 8px;
     }
-    .timer-label span {
+
+    .timer-label span#countdown {
       color: var(--green-lit);
       font-weight: 700;
     }
+
     .progress-track {
       height: 3px;
       background: var(--border);
       border-radius: 99px;
       overflow: hidden;
     }
+
     .progress-bar {
       height: 100%;
       background: linear-gradient(90deg, var(--green), var(--green-lit));
       border-radius: 99px;
       width: 100%;
-      animation: drain 0.4s linear forwards;
-    }
-    @keyframes drain {
-      from { width: 100%; }
-      to   { width: 0%; }
+      animation: drain 3s linear forwards;
     }
 
-    /* ── FOOTER NOTE ────────────────────────────────────────────── */
+    @keyframes drain {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
     .footer-note {
       margin-top: 2rem;
       font-size: 0.75rem;
@@ -287,37 +298,49 @@
       text-align: center;
       line-height: 1.6;
     }
+
     .footer-note a {
       color: var(--green-lit);
       text-decoration: none;
     }
-    .footer-note a:hover { text-decoration: underline; }
 
-    /* ── RESPONSIVE ─────────────────────────────────────────────── */
+    .footer-note a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-note a:focus-visible {
+      outline: 2px solid var(--green-lit);
+      outline-offset: 2px;
+    }
+
     @media (max-width: 480px) {
-      .card { padding: 2rem 1.5rem 1.75rem; }
+      .card {
+        padding: 2rem 1.5rem 1.75rem;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .badge-dot { animation: none; }
-      .progress-bar { animation: none; width: 0; }
+      .badge-dot {
+        animation: none;
+      }
+
+      .progress-track {
+        display: none;
+      }
     }
   </style>
 </head>
 
 <body>
-
-  <main class="card" role="main">
-
+  <main class="card">
     <div class="badge">
-      <span class="badge-dot"></span>
+      <span class="badge-dot" aria-hidden="true"></span>
       We've moved
     </div>
 
     <div class="logo-row">
       <div class="logo-icon" aria-hidden="true">
-        <!-- Perspective-warp icon -->
-        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M3 4l5-1 9 2v10l-9 2-5-1V4z" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
           <path d="M8 3v14M3 4l5 2M12 5l4 1" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
         </svg>
@@ -330,11 +353,11 @@
     <p class="desc">
       PerspectiveFix has a new address — <strong style="color:var(--text)">perspectivefix.app</strong>.
       Everything you loved is still there: free, private, no uploads, no watermarks.
-      Plus new features and guides you've been asking for.
+      Plus new features and helpful guides.
     </p>
 
     <ul class="features" aria-label="What's new on the new site">
-      <li>Blog guides on document scanning & perspective correction</li>
+      <li>Blog guides on document scanning &amp; perspective correction</li>
       <li>Document Enhance with Magic Color &amp; Deep Ink modes</li>
       <li>Export to JPG, WebP, and single-page PDF</li>
       <li>Full undo/redo stack &amp; exact pixel output sizing</li>
@@ -343,34 +366,56 @@
 
     <hr>
 
-    <a href="https://perspectivefix.app/" class="btn-primary" rel="noopener">
+    <a href="https://perspectivefix.app/" class="btn-primary">
       <svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M8.5 2l6.5 6.5-6.5 6.5M2 8.5h13" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      Go to perspectivefix.app
+      Go to perspectivefix.app Now
     </a>
 
-    <a href="https://www.buymeacoffee.com/oathanrex" class="btn-secondary" target="_blank" rel="noopener">
+    <a href="https://www.buymeacoffee.com/oathanrex" class="btn-secondary" target="_blank" rel="noopener noreferrer">
       ☕ &nbsp;Like the tool? Support the project
     </a>
 
-    <div class="timer-wrap" aria-live="polite" aria-label="Redirecting now">
-      <p class="timer-label">Redirecting to <span>perspectivefix.app</span>…</p>
-      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="1">
+    <div class="timer-wrap">
+      <p class="timer-label">
+        Redirecting to <span>perspectivefix.app</span> in <span id="countdown" aria-live="polite">3</span>s…
+      </p>
+      <div class="progress-track" aria-hidden="true">
         <div class="progress-bar"></div>
       </div>
     </div>
-
   </main>
 
   <p class="footer-note">
     Old link bookmarked? Update it to
-    <a href="https://perspectivefix.app/" rel="noopener">perspectivefix.app</a>
+    <a href="https://perspectivefix.app/">perspectivefix.app</a>
   </p>
 
   <script>
-    window.location.replace('https://perspectivefix.app/');
-  </script>
+    (function () {
+      'use strict';
 
+      var targetUrl = 'https://perspectivefix.app/';
+      var secondsLeft = 3;
+      var countdownEl = document.getElementById('countdown');
+
+      var interval = setInterval(function () {
+        secondsLeft -= 1;
+
+        if (countdownEl && secondsLeft >= 0) {
+          countdownEl.textContent = secondsLeft;
+        }
+
+        if (secondsLeft <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
+
+      setTimeout(function () {
+        window.location.replace(targetUrl);
+      }, 3000);
+    })();
+  </script>
 </body>
 </html>
