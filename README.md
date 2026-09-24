@@ -1,6 +1,6 @@
 # PerspectiveFix
 
-**PerspectiveFix** is a free, browser-based perspective correction tool. Fix skewed document scans, whiteboard photos, and tilted images — instantly, privately, with no uploads.
+**PerspectiveFix** is a free, browser-based perspective correction tool. Fix skewed document scans, whiteboard photos, and tilted images instantly, privately, and with no uploads.
 
 🌐 **Live Tool:** [https://perspectivefix.app/](https://perspectivefix.app/)  
 📖 **Blog:** [perspectivefix.app/blog](https://perspectivefix.app/blog/index.html)
@@ -18,7 +18,7 @@ Straighten and correct perspective distortion in:
 - Posters, signs & product packaging
 - Screenshots & screen captures
 
-All processing runs **locally in your browser** — your images never leave your device.
+All processing runs **locally in your browser**, so your images never leave your device.
 
 ---
 
@@ -26,7 +26,7 @@ All processing runs **locally in your browser** — your images never leave your
 
 ### Core Correction
 - 4-corner drag-based perspective warp with real-time preview
-- Zoom lens — 3× magnified view while placing corners for pixel-perfect accuracy
+- Zoom lens: 3× magnified view while placing corners for pixel-perfect accuracy
 - Alignment grid overlay (toggle with `G`) for straightening reference
 - Corner reset (`R`) returns all four points to default positions
 - 90° image rotation (`Q`) before correcting
@@ -47,13 +47,13 @@ All processing runs **locally in your browser** — your images never leave your
 - Negative / invert toggle
 
 ### Document Enhance
-- **Magic Color mode** — cleans background, boosts contrast for document scans
-- **Deep Ink mode** — high-contrast black-and-white output for handwritten notes and receipts
+- **Magic Color mode**: cleans background, boosts contrast for document scans
+- **Deep Ink mode**: high-contrast black-and-white output for handwritten notes and receipts
 - Adjustable enhance strength slider
 
 ### History & Workflow
 - Full undo/redo stack for corner adjustments
-- Keyboard shortcuts: `Ctrl+Z` undo, `Ctrl+Y` redo, `Ctrl+S` download
+- Keyboard shortcuts: `Ctrl+Z` undo, `Ctrl+Y` redo, `Ctrl+S` export
 - Paste image directly from clipboard with `Ctrl+V`
 - Supports JPG, PNG, WebP input (drag & drop, file picker, or clipboard paste)
 
@@ -62,12 +62,12 @@ All processing runs **locally in your browser** — your images never leave your
 - Full keyboard navigation for corner handles (arrow keys)
 - ARIA labels and live region announcements throughout
 - `prefers-reduced-motion` respected for animations
-- Touch-friendly on Android and iPhone — no app install needed
+- Touch-friendly on Android and iPhone, with no app install needed
 - Sticky header with blur-backdrop for one-handed mobile use
 
 ### Performance
 - OffscreenCanvas + ImageBitmap used where supported for faster rendering
-- Zero external dependencies — pure vanilla HTML, CSS, JavaScript
+- Zero external dependencies: pure vanilla HTML, CSS, JavaScript
 - Works offline after first page load (PWA manifest included)
 
 ---
@@ -83,14 +83,14 @@ All processing runs **locally in your browser** — your images never leave your
 | `G` | Toggle alignment grid |
 | `Ctrl+Z` | Undo |
 | `Ctrl+Y` | Redo |
-| `Ctrl+S` | Download corrected image |
+| `Ctrl+S` | Export corrected image |
 | `Ctrl+V` | Paste image from clipboard |
 
 ---
 
 ## Tech Stack
 
-- Vanilla HTML5, CSS3, JavaScript — zero dependencies
+- Vanilla HTML5, CSS3, JavaScript with zero dependencies
 - Canvas API & OffscreenCanvas for image processing
 - CSS custom properties with full dark/light theme system
 - PWA manifest for offline capability
@@ -113,5 +113,5 @@ Free for personal and non-commercial use. Attribution required. Unauthorized com
 
 ## About
 
-Built by [OathanRex](https://github.com/oathanrex) — a suite of zero-dependency, privacy-first browser tools.  
+Built by [OathanRex](https://github.com/oathanrex), a suite of zero-dependency, privacy-first browser tools.  
 [☕ Support this project](https://www.buymeacoffee.com/oathanrex)
