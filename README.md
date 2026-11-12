@@ -74,6 +74,16 @@ All processing runs **locally in your browser**, so your images never leave your
 
 ---
 
+## Support
+
+If PerspectiveFix is useful to you, you can support its development:
+
+<a href="https://www.buymeacoffee.com/oathanrex" target="_blank" rel="noopener noreferrer">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="217" height="60">
+</a>
+
+---
+
 ## License
 
 Tool interface and code: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)  
@@ -83,5 +93,4 @@ Free for personal and non-commercial use. Attribution required. Unauthorized com
 
 ## About
 
-Built by [OathanRex](https://github.com/oathanrex), a suite of zero-dependency, privacy-first browser tools.  
-[☕ Support this project](https://www.buymeacoffee.com/oathanrex)
+Built by [OathanRex](https://github.com/oathanrex), a suite of privacy-first browser tools.
