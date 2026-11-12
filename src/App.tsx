@@ -140,11 +140,14 @@ export default function App() {
         }}
         className="mx-auto w-full max-w-[90rem] px-4 sm:px-6 flex-1 py-4 sm:py-6"
       >
-        <div className="mb-5 max-w-3xl">
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+        <div className="mx-auto mb-8 max-w-5xl text-center sm:mb-10">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+            Free · Private · No uploads
+          </p>
+          <h1 className="mx-auto max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-[3.25rem]">
             Straighten Photos &amp; Document Scans in Seconds
           </h1>
-          <p className="mt-2 text-sm sm:text-base text-muted leading-relaxed">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
             Ever snapped a quick photo of a document or a whiteboard only to find
             it&apos;s crooked or hard to read? PerspectiveFix is here to help you
             straighten those skewed images instantly, right in your browser. No
@@ -174,22 +177,24 @@ export default function App() {
                 fileInputRef.current?.click();
               }
             }}
-            className={`mt-4 flex cursor-pointer items-center gap-3 rounded-xl border-2 border-dashed p-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:p-5 ${
+            className={`mx-auto mt-6 flex min-h-36 w-full max-w-3xl cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed p-6 text-center transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:min-h-40 sm:gap-4 sm:p-8 ${
               isDraggingImage
-                ? 'border-primary bg-primary/10'
-                : 'border-border bg-surface hover:border-primary/60 hover:bg-well'
+                ? 'border-primary bg-primary/5 shadow-md ring-4 ring-primary/10'
+                : 'border-border/80 bg-surface hover:border-primary/60 hover:bg-well hover:shadow-sm'
             }`}
           >
-            <UploadCloud className="h-8 w-8 shrink-0 text-primary" aria-hidden="true" />
-            <span className="text-left">
-              <span className="block text-sm font-semibold text-foreground">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <UploadCloud className="h-6 w-6" aria-hidden="true" />
+            </span>
+            <span>
+              <span className="block text-sm font-semibold text-foreground sm:text-base">
                 Drop your image here or click to upload
               </span>
-              <span className="mt-1 block text-xs text-muted">
-                Supports JPG, PNG, WebP • Paste from clipboard (Ctrl+V)
+              <span className="mt-1.5 block text-xs text-muted sm:text-sm">
+                Supports JPG, PNG, WebP · Paste from clipboard (Ctrl+V)
               </span>
               {isDraggingImage && (
-                <span className="mt-1 block text-xs font-medium text-primary" aria-live="polite">
+                <span className="mt-2 block text-xs font-semibold text-primary" aria-live="polite">
                   Drop the image to open it
                 </span>
               )}
