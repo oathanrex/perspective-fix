@@ -109,11 +109,20 @@ export default function App() {
       <main className="mx-auto w-full max-w-[90rem] px-4 sm:px-6 flex-1 py-4 sm:py-6">
         <div className="mb-5 max-w-3xl">
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
-            Straighten photos and document scans in seconds
+            Straighten Photos &amp; Document Scans in Seconds
           </h1>
           <p className="mt-2 text-sm sm:text-base text-muted leading-relaxed">
-            Fix skewed receipts, book pages, whiteboards, and tilted photos right
-            in your browser. No uploads, account, or watermark.
+            Ever snapped a quick photo of a document or a whiteboard only to find
+            it&apos;s crooked or hard to read? PerspectiveFix is here to help you
+            straighten those skewed images instantly, right in your browser. No
+            software to install, no accounts to create—just a simple, private way
+            to fix tiled photos.
+          </p>
+          <p className="mt-3 text-sm font-medium text-foreground">
+            Drop your image here or click to upload
+          </p>
+          <p className="mt-1 text-xs text-muted">
+            Supports JPG, PNG, WebP • Paste from clipboard (Ctrl+V)
           </p>
         </div>
         <Workbench

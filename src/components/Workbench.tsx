@@ -1321,7 +1321,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({ onRecordExport, actionRef 
                   ))}
                 </div>
                 <p className="mt-2 text-[11px] text-muted">
-                  Drag 4 corners to align edges
+                  Original – Drag the corners
                 </p>
               </div>
 
@@ -1353,7 +1353,10 @@ export const Workbench: React.FC<WorkbenchProps> = ({ onRecordExport, actionRef 
                   )}
                 </div>
                 <p className="mt-2 text-[11px] text-muted">
-                  Straightened Result (Hold <kbd className="px-1 py-0.5 rounded bg-surface border border-border text-[10px]">Space</kbd> to peek)
+                  Fixed – Ready to download
+                </p>
+                <p className="mt-1 text-[10px] text-muted">
+                  Hold <kbd className="px-1 py-0.5 rounded bg-surface border border-border text-[10px]">Space</kbd> to peek
                 </p>
               </div>
             </div>

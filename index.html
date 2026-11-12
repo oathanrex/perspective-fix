@@ -51,11 +51,7 @@
       content="PerspectiveFix perspective correction editor for straightening a document photo"
     />
 
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23059669'/%3E%3Cpath d='M9 11L23 8L25 22L7 24Z' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linejoin='round'/%3E%3Ccircle cx='9' cy='11' r='2.3' fill='%23ffffff'/%3E%3Ccircle cx='23' cy='8' r='2.3' fill='%23ffffff'/%3E%3Ccircle cx='25' cy='22' r='2.3' fill='%23ffffff'/%3E%3Ccircle cx='7' cy='24' r='2.3' fill='%23ffffff'/%3E%3C/svg%3E"
-    />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%perspectivefix-mark.svg" />
     <link rel="apple-touch-icon" href="%BASE_URL%favicon-512.png" />
     <link rel="manifest" href="%BASE_URL%site.webmanifest" />
 
@@ -119,26 +115,26 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "Are my photos and scanned documents kept private?",
+            "name": "Is this tool really free?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, 100%. All edge detection, projective homography mathematics, and illumination whitening execute entirely inside your device browser memory via Web Workers. No file is ever transmitted to an external server."
+              "text": "Yes, PerspectiveFix is a 100% free online perspective correction tool. There are no hidden fees, no subscriptions, and we don't add watermarks to your work."
             }
           },
           {
             "@type": "Question",
-            "name": "Is PerspectiveFix free to use?",
+            "name": "Do I need to upload my private photos to a server?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. You can use the perspective correction tools and export your results for free, with no watermark."
+              "text": "No. Unlike other \"online\" tools, our processing happens locally on your device. Your photos are never sent to a server, making it the safest way to fix sensitive documents like contracts, IDs, or personal notes."
             }
           },
           {
             "@type": "Question",
-            "name": "Can I use PerspectiveFix on my phone?",
+            "name": "Can I use this on my phone?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. PerspectiveFix works in modern mobile browsers, and its corner controls support touch input."
+              "text": "Absolutely. It's designed to be lightweight and works directly in any modern mobile browser. The touch-friendly corner handles make it easy to fix your \"scanned\" photos on the go."
             }
           },
           {
@@ -146,31 +142,31 @@
             "name": "Which image formats can I use?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "You can open common browser-supported image formats, including JPG, PNG, and WebP, or paste an image from your clipboard. Corrected images can be exported as PNG, JPG, or WebP."
+              "text": "You can use JPG, PNG, WebP, and most common image formats. You can also paste an image directly from your clipboard by pressing Ctrl+V (or Cmd+V on Mac)."
             }
           },
           {
             "@type": "Question",
-            "name": "How is this different from standard cropping or rotation?",
+            "name": "How does the perspective correction actually work?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Standard crop and rotate tools only turn an image around a 2D axis. Perspective solves a full 3×3 projective homography matrix across all 4 corner coordinates, straightening non-parallel keystone distortion and restoring true rectangular proportions."
+              "text": "When you drag the four corners, the tool calculates a 3D perspective transformation. It then \"pulls\" those corners to form a perfect rectangle, straightening your image mathematically. Think of it like stretching a rubber photo until it looks perfectly flat and centered."
             }
           },
           {
             "@type": "Question",
-            "name": "Which enhancement filter should I choose?",
+            "name": "Why is PerspectiveFix better than just cropping?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Choose Document to whiten shadow-cast paper while preserving colored stamps and signatures. Choose B&W Ink for maximum text clarity on receipts and books. Use Whiteboard to eliminate glare while keeping marker pigments bright, or Photo to retain original natural colors."
+              "text": "Cropping only cuts out a piece of the image, but it doesn't fix the tilt or \"keystone\" effect. PerspectiveFix actually warps the pixels to correct the angle, ensuring that text is aligned and proportions are preserved."
             }
           },
           {
             "@type": "Question",
-            "name": "Is there a limit to how many images I can correct?",
+            "name": "Is there a limit to how many photos I can fix?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "There is no per-image or account quota. Images are processed in your browser, so very large files may be limited by the memory available on your device."
+              "text": "No, there are no limits. You can use PerspectiveFix as many times as you need. Since the processing happens on your own computer, we don't have to worry about server costs, and we're happy to keep it free for everyone."
             }
           }
         ]

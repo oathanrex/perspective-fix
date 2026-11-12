@@ -6,7 +6,6 @@ import {
   Github,
   Menu,
   Moon,
-  Scan,
   Sun,
   X,
 } from 'lucide-react';
@@ -38,12 +37,12 @@ export const Header: React.FC<HeaderProps> = ({
             href="#workbench"
             className="flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-xl"
           >
-            <div
-              className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-sm transition-transform hover:scale-105"
+            <img
+              src={`${import.meta.env.BASE_URL}perspectivefix-mark.svg`}
+              alt=""
               aria-hidden="true"
-            >
-              <Scan className="w-5 h-5" />
-            </div>
+              className="w-9 h-9 shrink-0 transition-transform hover:scale-105"
+            />
             <div className="flex flex-col">
               <span className="text-base font-semibold tracking-tight text-foreground leading-tight">
                 Perspective

@@ -22,75 +22,100 @@ interface FaqItem {
 
 const FAQ_ITEMS: readonly FaqItem[] = [
   {
-    id: 'privacy',
-    question: 'Are my photos and scanned documents kept private?',
+    id: 'free',
+    question: 'Is this tool really free?',
     answer:
-      'Yes, 100%. All edge detection, projective homography mathematics, and illumination whitening execute entirely inside your device browser memory via Web Workers. No file is ever transmitted to an external server.',
+      'Yes, PerspectiveFix is a 100% free online perspective correction tool. There are no hidden fees, no subscriptions, and we don\'t add watermarks to your work.',
   },
   {
-    id: 'free',
-    question: 'Is PerspectiveFix free to use?',
+    id: 'privacy',
+    question: 'Do I need to upload my private photos to a server?',
     answer:
-      'Yes. You can use the perspective correction tools and export your results for free, with no watermark.',
+      'No. Unlike other "online" tools, our processing happens locally on your device. Your photos are never sent to a server, making it the safest way to fix sensitive documents like contracts, IDs, or personal notes.',
   },
   {
     id: 'mobile',
-    question: 'Can I use PerspectiveFix on my phone?',
+    question: 'Can I use this on my phone?',
     answer:
-      'Yes. PerspectiveFix works in modern mobile browsers, and its corner controls support touch input.',
+      'Absolutely. It\'s designed to be lightweight and works directly in any modern mobile browser. The touch-friendly corner handles make it easy to fix your "scanned" photos on the go.',
   },
   {
     id: 'formats',
     question: 'Which image formats can I use?',
     answer:
-      'You can open common browser-supported image formats, including JPG, PNG, and WebP, or paste an image from your clipboard. Corrected images can be exported as PNG, JPG, or WebP.',
+      'You can use JPG, PNG, WebP, and most common image formats. You can also paste an image directly from your clipboard by pressing Ctrl+V (or Cmd+V on Mac).',
   },
   {
     id: 'homography',
-    question: 'How is this different from standard cropping or rotation?',
+    question: 'How does the perspective correction actually work?',
     answer:
-      'Standard crop and rotate tools only turn an image around a 2D axis. Perspective solves a full 3×3 projective homography matrix across all 4 corner coordinates, straightening non-parallel keystone distortion and restoring true rectangular proportions.',
+      'When you drag the four corners, the tool calculates a 3D perspective transformation. It then "pulls" those corners to form a perfect rectangle, straightening your image mathematically. Think of it like stretching a rubber photo until it looks perfectly flat and centered.',
   },
   {
-    id: 'filters',
-    question: 'Which enhancement filter should I choose?',
+    id: 'crop',
+    question: 'Why is PerspectiveFix better than just cropping?',
     answer:
-      'Choose "Document" to whiten shadow-cast paper while preserving colored stamps and signatures. Choose "B&W Ink" for maximum text clarity on receipts and books. Use "Whiteboard" to eliminate glare while keeping marker pigments bright, or "Photo" to retain original natural colors.',
+      'Cropping only cuts out a piece of the image, but it doesn\'t fix the tilt or "keystone" effect. PerspectiveFix actually warps the pixels to correct the angle, ensuring that text is aligned and proportions are preserved.',
   },
   {
     id: 'limits',
-    question: 'Is there a limit to how many images I can correct?',
+    question: 'Is there a limit to how many photos I can fix?',
     answer:
-      'There is no per-image or account quota. Images are processed in your browser, so very large files may be limited by the memory available on your device.',
+      'No, there are no limits. You can use PerspectiveFix as many times as you need. Since the processing happens on your own computer, we don\'t have to worry about server costs, and we\'re happy to keep it free for everyone.',
   },
 ];
 
 const HOW_IT_WORKS = [
   {
-    title: 'Choose an image',
-    description: 'Upload, drop, paste, or load one of the sample images.',
+    title: 'Upload',
+    description: 'Drop or pick your tilted photo',
   },
   {
-    title: 'Set the corners',
-    description: 'Drag the four handles to the page edges, or try Auto-Snap.',
+    title: 'Drag Corners',
+    description: 'Move the 4 handles to mark what should be straight',
   },
   {
-    title: 'Tune the result',
-    description: 'Preview the correction and choose an enhancement or aspect ratio.',
+    title: 'Fix Instantly',
+    description: 'Watch as your image is automatically straightened',
   },
   {
-    title: 'Save or copy',
-    description: 'Export a PNG, JPG, or WebP image, or copy it to your clipboard.',
+    title: 'Download',
+    description: 'Get your corrected image at full quality',
   },
 ] as const;
 
-const USE_CASES = [
-  'Receipts, forms, and document scans',
-  'Book pages and study notes',
-  'Whiteboards and presentation slides',
-  'Building and interior photos',
-  'Posters, signs, and product packaging',
-  'Screenshots and screen captures',
+const EVERYDAY_NEEDS = [
+  '✅ Professional Document Scans: Turn crooked photos of receipts or contracts into perfectly flat, readable documents.',
+  '✅ Save Your Study Notes: Straighten whiteboard lectures and book pages so you can focus on learning, not squinting.',
+  '✅ Architecture & Real Estate: Easily fix tilted horizontal or vertical lines in photos of buildings and room interiors.',
+  '✅ Clean Product Photography: Make your packaging and box photos look flat and professional for your online store.',
+] as const;
+
+const WORKS_WITH = [
+  'Document Scans',
+  'Real Estate',
+  'Book Pages',
+  'Whiteboards',
+  'Signs & Posters',
+  'Screens',
+] as const;
+
+const BENEFITS = [
+  {
+    title: 'Your Photos Stay Private',
+    description:
+      'Everything happens right here in your browser. We never see, store, or upload your images anywhere. Perfect for sensitive documents.',
+  },
+  {
+    title: 'No Waiting Around',
+    description:
+      'Since there\'s no server upload, you see the corrected result instantly as you move the corners. Super fast, even on slower connections.',
+  },
+  {
+    title: 'Full Quality, No Watermarks',
+    description:
+      'Download your fixed image at the original resolution. We don\'t slap a logo on your work—it\'s yours, clean and ready to use.',
+  },
 ] as const;
 
 export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
@@ -195,9 +220,6 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
           >
             How it works
           </h2>
-          <p className="mt-2 text-sm text-muted">
-            Straighten a tilted photo in a few simple steps, right in your browser.
-          </p>
         </div>
 
         <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -225,13 +247,21 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
           id="perspective-heading"
           className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground"
         >
-          More than a crop
+          Why do your photos end up looking crooked?
         </h2>
         <p className="mt-3 text-sm text-muted leading-relaxed">
-          A photo taken from an angle can make a page look like a trapezoid, with
-          text stretched toward one side. Cropping only removes the edges.
-          PerspectiveFix maps the four selected corners into a rectangle to
-          straighten the image while keeping the whole page in view.
+          It happens all the time: you&apos;re trying to capture a receipt, a page
+          from a book, or notes from a meeting, but you can&apos;t get perfectly
+          parallel to the surface. This results in a &quot;trapezoid&quot; effect
+          where one side is wider than the other, making text look stretched and
+          hard to read.
+        </p>
+        <p className="mt-3 text-sm text-muted leading-relaxed">
+          PerspectiveFix solves this by using a professional-grade{' '}
+          <strong>perspective warp</strong> algorithm. By simply marking the four
+          corners of your document, the tool mathematically &quot;pulls&quot; the
+          image flat, giving you a clean, rectangular result as if it were
+          scanned by a high-end office scanner.
         </p>
       </section>
 
@@ -241,14 +271,11 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
             id="use-cases-heading"
             className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground"
           >
-            Made for everyday photos and documents
+            Designed for your everyday needs:
           </h2>
-          <p className="mt-2 text-sm text-muted">
-            Fix perspective in the images you use for work, study, and daily life.
-          </p>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {USE_CASES.map((useCase) => (
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {EVERYDAY_NEEDS.map((useCase) => (
             <li
               key={useCase}
               className="p-4 rounded-xl border border-border/70 bg-surface text-sm text-foreground"
@@ -257,6 +284,49 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
             </li>
           ))}
         </ul>
+      </section>
+
+      <section aria-labelledby="works-with-heading">
+        <h2
+          id="works-with-heading"
+          className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground text-center mb-6"
+        >
+          Works Great With
+        </h2>
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {WORKS_WITH.map((item) => (
+            <li
+              key={item}
+              className="p-4 rounded-xl border border-border/70 bg-surface text-sm text-foreground text-center"
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="benefits-heading">
+        <h2
+          id="benefits-heading"
+          className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground text-center mb-6"
+        >
+          Why People Love This Tool
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {BENEFITS.map((benefit) => (
+            <div
+              key={benefit.title}
+              className="p-6 rounded-2xl border border-border/70 bg-surface"
+            >
+              <h3 className="text-base font-semibold text-foreground">
+                {benefit.title}
+              </h3>
+              <p className="mt-2 text-sm text-muted leading-relaxed">
+                {benefit.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Clean FAQ Accordion */}
