@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import {
   ArrowRight,
   ChevronDown,
+  Coffee,
   ExternalLink,
   Lock,
   SlidersHorizontal,
   Sparkles,
 } from 'lucide-react';
 import { SAMPLE_SPECIMENS, type SampleSpecimenKey } from '../utils/samples';
-import { Button } from './ui';
 
 interface InteractiveSectionsProps {
   onSelectSpecimen: (key: SampleSpecimenKey) => void;
@@ -380,12 +380,14 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
         </div>
       </section>
 
-      {/* Google-Clean Footer */}
-      <footer className="border-t border-border/70 pt-8 text-xs text-muted flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-          <span className="font-semibold text-foreground">Perspective</span>
-          <span className="hidden sm:inline" aria-hidden="true">·</span>
-          <span>
+      <footer className="border-t border-border/70 py-5 text-xs text-muted flex flex-col md:flex-row md:items-center justify-between gap-5">
+        <div className="max-w-md">
+          <p className="font-semibold text-foreground">PerspectiveFix</p>
+          <p className="mt-1 leading-relaxed">
+            Free client-side perspective correction workbench. Your images stay
+            inside your browser from first drop to final download.
+          </p>
+          <p className="mt-1">
             Created by{' '}
             <a
               href="https://oathanrex.github.io"
@@ -395,25 +397,25 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
             >
               Oathan Rex
             </a>
-          </span>
-          <span className="hidden sm:inline" aria-hidden="true">·</span>
-          <a
-            href="https://perspectivefix.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-primary hover:underline font-medium"
-          >
-            <span>perspectivefix.app</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
+            {' · More utilities at '}
+            <a
+              href="https://perspectivefix.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-primary hover:underline font-medium"
+            >
+              perspectivefix.app
+              <ExternalLink className="w-3 h-3" aria-hidden="true" />
+            </a>
+          </p>
         </div>
 
-        <div className="flex items-center gap-4">
+        <nav aria-label="Social links" className="flex flex-wrap items-center gap-2">
           <a
             href="https://github.com/oathanrex"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
+            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
           >
             GitHub
           </a>
@@ -421,19 +423,36 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
             href="https://youtube.com/@oathanrex"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
+            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
           >
             YouTube
+          </a>
+          <a
+            href="https://codepen.io/OathanRex"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
+          >
+            CodePen
+          </a>
+          <a
+            href="https://oathanrex.blogspot.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
+          >
+            Blog
           </a>
           <a
             href="https://www.buymeacoffee.com/oathanrex"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:underline font-medium"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Support Project
+            <Coffee className="h-4 w-4" aria-hidden="true" />
+            Support project
           </a>
-        </div>
+        </nav>
       </footer>
     </div>
   );

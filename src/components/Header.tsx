@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Coffee,
   Clock,
   Command,
   ExternalLink,
@@ -37,15 +38,9 @@ export const Header: React.FC<HeaderProps> = ({
             href="#workbench"
             className="flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-xl"
           >
-            <img
-              src={`${import.meta.env.BASE_URL}perspectivefix-mark.svg`}
-              alt=""
-              aria-hidden="true"
-              className="w-9 h-9 shrink-0 transition-transform hover:scale-105"
-            />
             <div className="flex flex-col">
               <span className="text-base font-semibold tracking-tight text-foreground leading-tight">
-                Perspective
+                PerspectiveFix
               </span>
               <span className="text-[11px] text-muted font-normal leading-tight">
                 Document &amp; Photo Lens
@@ -90,6 +85,16 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Right Tools Area */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <a
+            href="https://www.buymeacoffee.com/oathanrex"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            <Coffee className="h-4 w-4" aria-hidden="true" />
+            <span>Support</span>
+          </a>
+
           {/* Recent Scans Drawer Trigger */}
           <Button
             tone="quiet"
