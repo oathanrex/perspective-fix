@@ -4,15 +4,20 @@ import {
   BookOpen,
   Building2,
   ChevronDown,
+  Codepen,
   Coffee,
   ExternalLink,
   FileText,
+  Github,
+  Heart,
   Lock,
   Monitor,
   Presentation,
+  Rss,
   Signpost,
   SlidersHorizontal,
   Sparkles,
+  Youtube,
 } from 'lucide-react';
 import { SAMPLE_SPECIMENS, type SampleSpecimenKey } from '../utils/samples';
 
@@ -412,79 +417,108 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
         </div>
       </section>
 
-      <footer className="border-t border-border/70 py-5 text-xs text-muted flex flex-col md:flex-row md:items-center justify-between gap-5">
-        <div className="max-w-md">
-          <p className="font-semibold text-foreground">PerspectiveFix</p>
-          <p className="mt-1 leading-relaxed">
-            Free client-side perspective correction workbench. Your images stay
-            inside your browser from first drop to final download.
-          </p>
-          <p className="mt-1">
-            Created by{' '}
-            <a
-              href="https://oathanrex.github.io"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors font-medium underline-offset-2 hover:underline"
-            >
-              Oathan Rex
-            </a>
-            {' · More utilities at '}
-            <a
-              href="https://perspectivefix.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-primary hover:underline font-medium"
-            >
-              perspectivefix.app
-              <ExternalLink className="w-3 h-3" aria-hidden="true" />
-            </a>
-          </p>
-        </div>
+      <footer className="border-t border-border/70 py-8 text-xs text-muted">
+        <div className="flex flex-col items-center text-center">
+          <div className="flex items-center gap-2">
+            <img
+              src={`${import.meta.env.BASE_URL}perspectivefix-mark.svg`}
+              alt=""
+              aria-hidden="true"
+              className="h-8 w-8"
+            />
+            <span className="text-sm font-semibold text-foreground">
+              PerspectiveFix
+            </span>
+          </div>
 
-        <nav aria-label="Social links" className="flex flex-wrap items-center gap-2">
-          <a
-            href="https://github.com/oathanrex"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
+          <p className="mt-3 max-w-lg leading-relaxed">
+            Free online perspective correction tool. Your images never leave
+            your browser.
+          </p>
+
+          <nav
+            aria-label="Social links"
+            className="mt-5 flex items-center justify-center gap-3"
           >
-            GitHub
-          </a>
-          <a
-            href="https://youtube.com/@oathanrex"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
-          >
-            YouTube
-          </a>
-          <a
-            href="https://codepen.io/OathanRex"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
-          >
-            CodePen
-          </a>
-          <a
-            href="https://oathanrex.blogspot.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-9 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium text-foreground transition-colors hover:bg-well"
-          >
-            Blog
-          </a>
+            <a
+              href="https://github.com/oathanrex"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Oathan Rex on GitHub"
+              title="GitHub"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-surface text-muted transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <Github className="h-[18px] w-[18px]" aria-hidden="true" />
+            </a>
+            <a
+              href="https://youtube.com/@oathanrex"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Oathan Rex on YouTube"
+              title="YouTube"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-surface text-muted transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <Youtube className="h-[18px] w-[18px]" aria-hidden="true" />
+            </a>
+            <a
+              href="https://codepen.io/OathanRex"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Oathan Rex on CodePen"
+              title="CodePen"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-surface text-muted transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <Codepen className="h-[18px] w-[18px]" aria-hidden="true" />
+            </a>
+            <a
+              href="https://oathanrex.blogspot.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Oathan Rex Blog"
+              title="Blog"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-surface text-muted transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <Rss className="h-[18px] w-[18px]" aria-hidden="true" />
+            </a>
+          </nav>
+
           <a
             href="https://www.buymeacoffee.com/oathanrex"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+            className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#ffdd00] px-4 font-semibold text-black transition-transform hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            <Coffee className="h-4 w-4" aria-hidden="true" />
-            Support project
+            <Coffee className="h-[18px] w-[18px]" aria-hidden="true" />
+            Support this project
           </a>
-        </nav>
+
+          <p className="mt-5">
+            Looking for more tools? Visit{' '}
+            <a
+              href="https://perspectivefix.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
+            >
+              perspectivefix.app
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            </a>
+            {' · Made with '}
+            <Heart
+              className="inline h-3 w-3 fill-current text-rose-500"
+              aria-label="love"
+            />
+            {' by '}
+            <a
+              href="https://oathanrex.github.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-foreground hover:text-primary"
+            >
+              OathanRex
+            </a>
+          </p>
+        </div>
       </footer>
     </div>
   );
