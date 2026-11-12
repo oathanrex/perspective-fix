@@ -28,6 +28,24 @@ const FAQ_ITEMS: readonly FaqItem[] = [
       'Yes, 100%. All edge detection, projective homography mathematics, and illumination whitening execute entirely inside your device browser memory via Web Workers. No file is ever transmitted to an external server.',
   },
   {
+    id: 'free',
+    question: 'Is PerspectiveFix free to use?',
+    answer:
+      'Yes. You can use the perspective correction tools and export your results for free, with no watermark.',
+  },
+  {
+    id: 'mobile',
+    question: 'Can I use PerspectiveFix on my phone?',
+    answer:
+      'Yes. PerspectiveFix works in modern mobile browsers, and its corner controls support touch input.',
+  },
+  {
+    id: 'formats',
+    question: 'Which image formats can I use?',
+    answer:
+      'You can open common browser-supported image formats, including JPG, PNG, and WebP, or paste an image from your clipboard. Corrected images can be exported as PNG, JPG, or WebP.',
+  },
+  {
     id: 'homography',
     question: 'How is this different from standard cropping or rotation?',
     answer:
@@ -39,7 +57,41 @@ const FAQ_ITEMS: readonly FaqItem[] = [
     answer:
       'Choose "Document" to whiten shadow-cast paper while preserving colored stamps and signatures. Choose "B&W Ink" for maximum text clarity on receipts and books. Use "Whiteboard" to eliminate glare while keeping marker pigments bright, or "Photo" to retain original natural colors.',
   },
+  {
+    id: 'limits',
+    question: 'Is there a limit to how many images I can correct?',
+    answer:
+      'There is no per-image or account quota. Images are processed in your browser, so very large files may be limited by the memory available on your device.',
+  },
 ];
+
+const HOW_IT_WORKS = [
+  {
+    title: 'Choose an image',
+    description: 'Upload, drop, paste, or load one of the sample images.',
+  },
+  {
+    title: 'Set the corners',
+    description: 'Drag the four handles to the page edges, or try Auto-Snap.',
+  },
+  {
+    title: 'Tune the result',
+    description: 'Preview the correction and choose an enhancement or aspect ratio.',
+  },
+  {
+    title: 'Save or copy',
+    description: 'Export a PNG, JPG, or WebP image, or copy it to your clipboard.',
+  },
+] as const;
+
+const USE_CASES = [
+  'Receipts, forms, and document scans',
+  'Book pages and study notes',
+  'Whiteboards and presentation slides',
+  'Building and interior photos',
+  'Posters, signs, and product packaging',
+  'Screenshots and screen captures',
+] as const;
 
 export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
   onSelectSpecimen,
@@ -133,6 +185,78 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
             </button>
           ))}
         </div>
+      </section>
+
+      <section aria-labelledby="how-it-works-heading" className="pt-2">
+        <div className="text-center max-w-2xl mx-auto mb-8">
+          <h2
+            id="how-it-works-heading"
+            className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground"
+          >
+            How it works
+          </h2>
+          <p className="mt-2 text-sm text-muted">
+            Straighten a tilted photo in a few simple steps, right in your browser.
+          </p>
+        </div>
+
+        <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {HOW_IT_WORKS.map((step, index) => (
+            <li
+              key={step.title}
+              className="p-5 rounded-2xl border border-border/70 bg-surface"
+            >
+              <span className="text-xs font-semibold tracking-widest text-primary">
+                STEP 0{index + 1}
+              </span>
+              <h3 className="mt-3 text-sm font-semibold text-foreground">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-sm text-muted leading-relaxed">
+                {step.description}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="perspective-heading" className="max-w-3xl mx-auto">
+        <h2
+          id="perspective-heading"
+          className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground"
+        >
+          More than a crop
+        </h2>
+        <p className="mt-3 text-sm text-muted leading-relaxed">
+          A photo taken from an angle can make a page look like a trapezoid, with
+          text stretched toward one side. Cropping only removes the edges.
+          PerspectiveFix maps the four selected corners into a rectangle to
+          straighten the image while keeping the whole page in view.
+        </p>
+      </section>
+
+      <section aria-labelledby="use-cases-heading">
+        <div className="text-center max-w-2xl mx-auto mb-6">
+          <h2
+            id="use-cases-heading"
+            className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground"
+          >
+            Made for everyday photos and documents
+          </h2>
+          <p className="mt-2 text-sm text-muted">
+            Fix perspective in the images you use for work, study, and daily life.
+          </p>
+        </div>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {USE_CASES.map((useCase) => (
+            <li
+              key={useCase}
+              className="p-4 rounded-xl border border-border/70 bg-surface text-sm text-foreground"
+            >
+              {useCase}
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Clean FAQ Accordion */}

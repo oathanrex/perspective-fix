@@ -107,7 +107,15 @@ export default function App() {
       />
 
       <main className="mx-auto w-full max-w-[90rem] px-4 sm:px-6 flex-1 py-4 sm:py-6">
-        <h1 className="sr-only">PerspectiveFix: Straighten Photos &amp; Document Scans in Seconds</h1>
+        <div className="mb-5 max-w-3xl">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+            Straighten photos and document scans in seconds
+          </h1>
+          <p className="mt-2 text-sm sm:text-base text-muted leading-relaxed">
+            Fix skewed receipts, book pages, whiteboards, and tilted photos right
+            in your browser. No uploads, account, or watermark.
+          </p>
+        </div>
         <Workbench
           actionRef={workbenchRef}
           onRecordExport={handleRecordExport}

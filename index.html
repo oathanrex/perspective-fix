@@ -11,17 +11,30 @@
     />
     <meta name="author" content="Oathan Rex" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow" />
     <meta name="theme-color" content="#059669" />
     <link rel="canonical" href="https://oathanrex.github.io/perspective-fix/" />
     <meta property="og:url" content="https://oathanrex.github.io/perspective-fix/" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="PerspectiveFix – Straighten Tilted Image &amp; Document Online for Free" />
     <meta
       property="og:description"
       content="Fix skewed documents, whiteboard photos, or tilted images instantly. PerspectiveFix is a free, privacy-first online tool that straightens your photos directly in your browser without any watermarks."
     />
     <meta property="og:site_name" content="PerspectiveFix" />
+    <meta
+      property="og:image"
+      content="https://oathanrex.github.io/perspective-fix/perspective-correction-tool-preview.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="PerspectiveFix perspective correction editor for straightening a document photo"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1536" />
+    <meta property="og:image:height" content="1024" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="PerspectiveFix – Straighten Tilted Image &amp; Document Online for Free" />
@@ -29,12 +42,22 @@
       name="twitter:description"
       content="Get crisp, flat scans from crooked photos in seconds. 100% client-side in your browser—your files never touch a server."
     />
+    <meta
+      name="twitter:image"
+      content="https://oathanrex.github.io/perspective-fix/perspective-correction-tool-preview.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="PerspectiveFix perspective correction editor for straightening a document photo"
+    />
 
     <link
       rel="icon"
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23059669'/%3E%3Cpath d='M9 11L23 8L25 22L7 24Z' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linejoin='round'/%3E%3Ccircle cx='9' cy='11' r='2.3' fill='%23ffffff'/%3E%3Ccircle cx='23' cy='8' r='2.3' fill='%23ffffff'/%3E%3Ccircle cx='25' cy='22' r='2.3' fill='%23ffffff'/%3E%3Ccircle cx='7' cy='24' r='2.3' fill='%23ffffff'/%3E%3C/svg%3E"
     />
+    <link rel="apple-touch-icon" href="./favicon-512.png" />
+    <link rel="manifest" href="./manifest.json" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -65,6 +88,8 @@
         "name": "PerspectiveFix",
         "applicationCategory": "ImageEditingApplication",
         "operatingSystem": "Any (Web Browser)",
+        "url": "https://oathanrex.github.io/perspective-fix/",
+        "image": "https://oathanrex.github.io/perspective-fix/perspective-correction-tool-preview.png",
         "description": "Privacy-first browser workbench that straightens tilted photos, receipts, whiteboards, and document scans locally with homography perspective correction.",
         "featureList": [
           "Instant 4-corner perspective warp in your browser",
@@ -82,7 +107,8 @@
           "@type": "Offer",
           "price": "0",
           "priceCurrency": "USD"
-        }
+        },
+        "isAccessibleForFree": true
       }
     </script>
 
@@ -93,19 +119,79 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "Is my data safe on PerspectiveFix?",
+            "name": "Are my photos and scanned documents kept private?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. PerspectiveFix processes all images locally inside your browser using JavaScript and Web Workers. Your photos never leave your device or touch any server."
+              "text": "Yes, 100%. All edge detection, projective homography mathematics, and illumination whitening execute entirely inside your device browser memory via Web Workers. No file is ever transmitted to an external server."
             }
           },
           {
             "@type": "Question",
-            "name": "Can I fix crooked document scans and receipts?",
+            "name": "Is PerspectiveFix free to use?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Drag the four corner handles or click Auto-snap corners to flatten skewed documents, receipts, whiteboards, and book pages into crisp rectangular scans."
+              "text": "Yes. You can use the perspective correction tools and export your results for free, with no watermark."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use PerspectiveFix on my phone?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. PerspectiveFix works in modern mobile browsers, and its corner controls support touch input."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which image formats can I use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can open common browser-supported image formats, including JPG, PNG, and WebP, or paste an image from your clipboard. Corrected images can be exported as PNG, JPG, or WebP."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is this different from standard cropping or rotation?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Standard crop and rotate tools only turn an image around a 2D axis. Perspective solves a full 3×3 projective homography matrix across all 4 corner coordinates, straightening non-parallel keystone distortion and restoring true rectangular proportions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which enhancement filter should I choose?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose Document to whiten shadow-cast paper while preserving colored stamps and signatures. Choose B&W Ink for maximum text clarity on receipts and books. Use Whiteboard to eliminate glare while keeping marker pigments bright, or Photo to retain original natural colors."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a limit to how many images I can correct?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "There is no per-image or account quota. Images are processed in your browser, so very large files may be limited by the memory available on your device."
+            }
+          }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://oathanrex.github.io/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "PerspectiveFix",
+            "item": "https://oathanrex.github.io/perspective-fix/"
           }
         ]
       }
