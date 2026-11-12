@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import {
   ArrowRight,
+  BookOpen,
+  Building2,
   ChevronDown,
   Coffee,
   ExternalLink,
+  FileText,
   Lock,
+  Monitor,
+  Presentation,
+  Signpost,
   SlidersHorizontal,
   Sparkles,
 } from 'lucide-react';
@@ -108,12 +114,12 @@ const EVERYDAY_NEEDS = [
 ] as const;
 
 const WORKS_WITH = [
-  'Document Scans',
-  'Real Estate',
-  'Book Pages',
-  'Whiteboards',
-  'Signs & Posters',
-  'Screens',
+  { label: 'Document Scans', icon: FileText },
+  { label: 'Real Estate', icon: Building2 },
+  { label: 'Book Pages', icon: BookOpen },
+  { label: 'Whiteboards', icon: Presentation },
+  { label: 'Signs & Posters', icon: Signpost },
+  { label: 'Screens', icon: Monitor },
 ] as const;
 
 const BENEFITS = [
@@ -321,10 +327,11 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
         <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {WORKS_WITH.map((item) => (
             <li
-              key={item}
-              className="p-4 rounded-xl border border-border/70 bg-surface text-sm text-foreground text-center"
+              key={item.label}
+              className="flex items-center justify-center gap-2 p-4 rounded-xl border border-border/70 bg-surface text-sm text-foreground text-center"
             >
-              {item}
+              <item.icon className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              <span>{item.label}</span>
             </li>
           ))}
         </ul>
