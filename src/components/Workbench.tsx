@@ -14,7 +14,6 @@ import {
   Sparkles,
   SplitSquareHorizontal,
   Square,
-  UploadCloud,
 } from 'lucide-react';
 import {
   CORNER_LABELS,
@@ -50,6 +49,7 @@ export interface WorkbenchActionRef {
   nudgeSampleCorner: () => void;
   triggerDownload: () => void;
   loadSpecimen: (key: SampleSpecimenKey) => void;
+  loadFile: (file: File) => void;
   restoreSavedScan: (entry: RecentScanItem) => void;
 }
 
@@ -234,7 +234,6 @@ export const Workbench: React.FC<WorkbenchProps> = ({ onRecordExport, actionRef 
     cornerLabel: 'TL',
   });
 
-  const [isDraggingFile, setIsDraggingFile] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -806,6 +805,9 @@ export const Workbench: React.FC<WorkbenchProps> = ({ onRecordExport, actionRef 
       loadSpecimen: (key) => {
         loadSampleSpecimen(key);
       },
+      loadFile: (file) => {
+        handleUserFile(file);
+      },
       restoreSavedScan: (entry) => {
         if (entry.sampleKey) {
           loadSampleSpecimen(entry.sampleKey as SampleSpecimenKey);
@@ -820,7 +822,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({ onRecordExport, actionRef 
         showToast(`Loaded ${entry.fileName}`);
       },
     };
-  }, [actionRef, handleAutoSnap, handleExportDownload, loadSampleSpecimen, showToast]);
+  }, [actionRef, handleAutoSnap, handleExportDownload, handleUserFile, loadSampleSpecimen, showToast]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -1534,33 +1536,6 @@ export const Workbench: React.FC<WorkbenchProps> = ({ onRecordExport, actionRef 
         </div>
       )}
 
-      {/* Full-Window Drag & Drop Overlay */}
-      <div
-        onDragOver={(e) => {
-          e.preventDefault();
-          setIsDraggingFile(true);
-        }}
-        onDragLeave={(e) => {
-          if (e.currentTarget === e.target) {
-            setIsDraggingFile(false);
-          }
-        }}
-        onDrop={(e) => {
-          e.preventDefault();
-          setIsDraggingFile(false);
-          const f = e.dataTransfer.files?.[0];
-          if (f) handleUserFile(f);
-        }}
-        className={`pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs transition-opacity duration-150 ${
-          isDraggingFile ? 'pointer-events-auto opacity-100' : 'opacity-0'
-        }`}
-      >
-        <div className="rounded-2xl border-2 border-dashed border-primary bg-surface p-8 text-center shadow-2xl">
-          <UploadCloud className="w-12 h-12 text-primary mx-auto mb-2" />
-          <p className="text-base font-semibold text-foreground">Drop photo to straighten</p>
-          <p className="text-xs text-muted mt-1">Receipt, document, whiteboard, or sign</p>
-        </div>
-      </div>
     </section>
   );
 };
