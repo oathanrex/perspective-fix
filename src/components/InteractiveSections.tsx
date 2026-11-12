@@ -85,10 +85,26 @@ const HOW_IT_WORKS = [
 ] as const;
 
 const EVERYDAY_NEEDS = [
-  '✅ Professional Document Scans: Turn crooked photos of receipts or contracts into perfectly flat, readable documents.',
-  '✅ Save Your Study Notes: Straighten whiteboard lectures and book pages so you can focus on learning, not squinting.',
-  '✅ Architecture & Real Estate: Easily fix tilted horizontal or vertical lines in photos of buildings and room interiors.',
-  '✅ Clean Product Photography: Make your packaging and box photos look flat and professional for your online store.',
+  {
+    title: 'Professional Document Scans',
+    description:
+      'Turn crooked photos of receipts or contracts into perfectly flat, readable documents.',
+  },
+  {
+    title: 'Save Your Study Notes',
+    description:
+      'Straighten whiteboard lectures and book pages so you can focus on learning, not squinting.',
+  },
+  {
+    title: 'Architecture & Real Estate',
+    description:
+      'Easily fix tilted horizontal or vertical lines in photos of buildings and room interiors.',
+  },
+  {
+    title: 'Clean Product Photography',
+    description:
+      'Make your packaging and box photos look flat and professional for your online store.',
+  },
 ] as const;
 
 const WORKS_WITH = [
@@ -277,10 +293,19 @@ export const InteractiveSections: React.FC<InteractiveSectionsProps> = ({
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {EVERYDAY_NEEDS.map((useCase) => (
             <li
-              key={useCase}
-              className="p-4 rounded-xl border border-border/70 bg-surface text-sm text-foreground"
+              key={useCase.title}
+              className="flex items-start gap-2.5 p-4 rounded-xl border border-border/70 bg-surface text-sm text-foreground"
             >
-              {useCase}
+              <img
+                src={`${import.meta.env.BASE_URL}check-circle.svg`}
+                alt=""
+                aria-hidden="true"
+                className="mt-0.5 h-4 w-4 shrink-0"
+              />
+              <span>
+                <strong className="font-semibold">{useCase.title}:</strong>{' '}
+                {useCase.description}
+              </span>
             </li>
           ))}
         </ul>
