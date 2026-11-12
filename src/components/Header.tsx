@@ -38,6 +38,12 @@ export const Header: React.FC<HeaderProps> = ({
             href="#workbench"
             className="flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-xl"
           >
+            <img
+              src={`${import.meta.env.BASE_URL}perspectivefix-mark.svg`}
+              alt=""
+              aria-hidden="true"
+              className="w-9 h-9 shrink-0 transition-transform hover:scale-105"
+            />
             <div className="flex flex-col">
               <span className="text-base font-semibold tracking-tight text-foreground leading-tight">
                 PerspectiveFix
