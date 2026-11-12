@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--pfx-bg);
+  --color-surface: var(--pfx-surface);
+  --color-well: var(--pfx-well);
+  --color-foreground: var(--pfx-fg);
+  --color-muted: var(--pfx-muted);
+  --color-border: var(--pfx-border);
+  --color-primary: var(--pfx-primary);
+  --color-primary-hover: var(--pfx-primary-hover);
+  --color-primary-foreground: var(--pfx-primary-fg);
+  --color-accent-soft: var(--pfx-accent-soft);
+  --color-warning: var(--pfx-warning);
+  --color-danger: var(--pfx-danger);
+  --color-danger-soft: var(--pfx-danger-soft);
+
+  --font-sans: "Instrument Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --text-display: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+  --text-display--line-height: 1.12;
+  --text-display--font-weight: 600;
+
+  --radius-card: 0.75rem;
+  --radius-control: 0.5rem;
+  --shadow-surface: var(--pfx-shadow);
+}
+
+:root {
+  font-synthesis-weight: none;
+  --pfx-bg: oklch(0.968 0.008 165);
+  --pfx-surface: oklch(0.995 0.003 165);
+  --pfx-well: oklch(0.938 0.011 168);
+  --pfx-fg: oklch(0.205 0.028 195);
+  --pfx-muted: oklch(0.455 0.025 195);
+  --pfx-border: oklch(0.855 0.014 180);
+  --pfx-primary: oklch(0.545 0.145 162);
+  --pfx-primary-hover: oklch(0.485 0.14 162);
+  --pfx-primary-fg: oklch(0.992 0.004 165);
+  --pfx-accent-soft: oklch(0.935 0.038 162);
+  --pfx-warning: oklch(0.58 0.155 68);
+  --pfx-danger: oklch(0.52 0.19 25);
+  --pfx-danger-soft: oklch(0.95 0.03 25);
+  --pfx-shadow: 0 1px 2px oklch(0.2 0.02 195 / 0.05);
+  --pfx-checker-a: oklch(0.91 0.01 175);
+  --pfx-checker-b: oklch(0.97 0.005 175);
+}
+
+[data-theme="dark"] {
+  --pfx-bg: oklch(0.165 0.018 205);
+  --pfx-surface: oklch(0.215 0.02 205);
+  --pfx-well: oklch(0.14 0.016 205);
+  --pfx-fg: oklch(0.945 0.008 180);
+  --pfx-muted: oklch(0.72 0.016 190);
+  --pfx-border: oklch(0.32 0.022 205);
+  --pfx-primary: oklch(0.665 0.15 160);
+  --pfx-primary-hover: oklch(0.72 0.15 160);
+  --pfx-primary-fg: oklch(0.145 0.025 175);
+  --pfx-accent-soft: oklch(0.275 0.048 165);
+  --pfx-warning: oklch(0.76 0.145 75);
+  --pfx-danger: oklch(0.72 0.16 25);
+  --pfx-danger-soft: oklch(0.25 0.05 25);
+  --pfx-shadow: 0 2px 8px oklch(0.05 0.01 205 / 0.35);
+  --pfx-checker-a: oklch(0.205 0.018 205);
+  --pfx-checker-b: oklch(0.165 0.016 205);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  min-height: 100dvh;
+}
+
+.drafting-grid {
+  background-color: var(--color-well);
+  background-image:
+    linear-gradient(45deg, var(--pfx-checker-a) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--pfx-checker-a) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--pfx-checker-a) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--pfx-checker-a) 75%);
+  background-size: 18px 18px;
+  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *:not(.animate-spin):not(.animate-pulse),
+  *:not(.animate-spin):not(.animate-pulse)::before,
+  *:not(.animate-spin):not(.animate-pulse)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

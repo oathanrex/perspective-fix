@@ -1,0 +1,6 @@
+{
+  "name": "PerspectiveFix",
+  "description": "Free, privacy-first browser workbench to straighten crooked document scans, receipts, whiteboards, and tilted photos instantly with zero watermarks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
