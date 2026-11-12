@@ -44,6 +44,20 @@ All processing runs **locally in your browser**, so your images never leave your
 - Light and dark themes
 - Keyboard-operable corner handles and accessible editor controls
 - Touch-friendly controls for phones and tablets
+- Installable as a Progressive Web App (PWA) on supported browsers
+- The app shell and production assets are cached for offline reopening after the first visit
+
+---
+
+## Install the App
+
+Open the [live demo](https://oathanrex.github.io/perspective-fix/) over HTTPS:
+
+- **Desktop:** In Chrome or Edge, use the install icon in the address bar, or open the browser menu and choose **Install PerspectiveFix**.
+- **Android:** In Chrome, open the menu and choose **Install app** or **Add to Home screen**.
+- **iPhone/iPad:** In Safari, tap **Share**, then **Add to Home Screen**.
+
+The app must be opened online once so the browser can cache its app shell and files. Browser support and menu wording may vary.
 
 ---
 
