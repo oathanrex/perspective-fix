@@ -13,11 +13,12 @@ const SHORTCUTS = [
   { keys: ['Space (Hold)'], desc: 'Quick peek original skewed photo' },
   { keys: ['R'], desc: 'Reset / untangle corners' },
   { keys: ['Q'], desc: 'Rotate image 90° clockwise' },
-  { keys: ['Ctrl', 'S'], desc: 'Download full-resolution scan' },
-  { keys: ['Ctrl', 'C'], desc: 'Copy PNG to clipboard' },
-  { keys: ['Ctrl', 'V'], desc: 'Paste image from clipboard' },
+  { keys: ['Ctrl/Cmd', 'S'], desc: 'Download full-resolution scan' },
+  { keys: ['Ctrl/Cmd', 'C'], desc: 'Copy PNG to clipboard' },
+  { keys: ['Ctrl/Cmd', 'V'], desc: 'Paste image from clipboard' },
   { keys: ['T'], desc: 'Toggle light / dark theme' },
   { keys: ['?'], desc: 'Show this shortcuts guide' },
+  { keys: ['Esc'], desc: 'Close this guide or recent scans' },
 ];
 
 export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose }) => {
